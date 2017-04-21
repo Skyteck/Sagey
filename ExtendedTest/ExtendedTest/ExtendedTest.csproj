@@ -43,13 +43,15 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\AnimatedSprite.cs" />
+    <Compile Include="GameObjects\Items\Ore.cs" />
+    <Compile Include="GameObjects\Rock.cs" />
     <Compile Include="InventoryManager.cs" />
     <Compile Include="GameObjects\Items\Log.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="GameObjects\Tilemap.cs" />
     <Compile Include="GameObjects\Tree.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="GameObjects\Items\Item.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Sprite.cs" />
@@ -75,7 +77,9 @@
     <Content Include="Content\Art\inventoryBG.png" />
     <Content Include="Content\Art\inventoryBG2.png" />
     <Content Include="Content\Art\log.png" />
+    <Content Include="Content\Art\ore.png" />
     <Content Include="Content\Art\Player.png" />
+    <Content Include="Content\Art\rock.png" />
     <Content Include="Content\Art\tree.png" />
     <Content Include="Content\Tilemaps\gfgfg.png" />
     <Content Include="Content\Tilemaps\ggggg.png">

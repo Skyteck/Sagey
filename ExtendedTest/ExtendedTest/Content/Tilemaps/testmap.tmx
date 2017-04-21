@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="64" tileheight="64" nextobjectid="13">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="64" tileheight="64" nextobjectid="24">
  <tileset firstgid="1" name="ggggg" tilewidth="64" tileheight="64" tilecount="3" columns="3">
   <image source="ggggg.png" width="192" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="Test" value="black"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Tile Layer 1" width="25" height="25">
   <data encoding="csv">
@@ -33,15 +38,24 @@
 </data>
  </layer>
  <objectgroup name="Object Layer 1">
-  <object id="1" name="tree1" type="tree" x="411" y="157"/>
-  <object id="2" name="tree1" type="tree" x="484" y="362"/>
+  <object id="1" name="tree1" type="tree" x="416" y="160"/>
+  <object id="2" name="tree1" type="tree" x="480" y="352"/>
   <object id="5" name="tree1" type="tree" x="63" y="442"/>
   <object id="6" name="tree1" type="tree" x="35" y="212"/>
   <object id="7" name="tree1" type="tree" x="99" y="131"/>
-  <object id="8" name="tree1" type="tree" x="722" y="245"/>
+  <object id="8" name="tree1" type="tree" x="736" y="224"/>
   <object id="9" name="tree1" type="tree" x="1333" y="772"/>
   <object id="10" name="tree1" type="tree" x="822" y="1008"/>
   <object id="11" name="tree1" type="tree" x="305" y="1302"/>
   <object id="12" name="tree1" type="tree" x="707" y="1526"/>
+  <object id="13" name="rock1" type="rock" x="1248" y="160"/>
+  <object id="14" name="rock1" type="rock" x="1312" y="160"/>
+  <object id="15" name="rock1" type="rock" x="1376" y="160"/>
+  <object id="16" name="rock1" type="rock" x="1248" y="224"/>
+  <object id="17" name="rock1" type="rock" x="1312" y="224"/>
+  <object id="18" name="rock1" type="rock" x="1376" y="224"/>
+  <object id="19" name="rock1" type="rock" x="1248" y="288"/>
+  <object id="20" name="rock1" type="rock" x="1312" y="288"/>
+  <object id="21" name="rock1" type="rock" x="1376" y="288"/>
  </objectgroup>
 </map>

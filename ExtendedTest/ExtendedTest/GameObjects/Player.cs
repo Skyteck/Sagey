@@ -49,11 +49,20 @@ namespace ExtendedTest
                     currentTarget = (Tree)collidedWith;
 
                 }
+                else if(collidedWith._Tag == SpriteType.kRockType)
+                {
+                    action = CurrentAction.kActionMine;
+                    currentTarget = (Rock)collidedWith;
+                }
 
             }
             if(action == CurrentAction.kActionWC)
             {
                 Chop(currentTarget as Tree);
+            }
+            else if(action == CurrentAction.kActionMine)
+            {
+                Mine(currentTarget as Rock);
             }
             foreach(Item item in inventory)
             {
@@ -210,9 +219,19 @@ namespace ExtendedTest
         private void Chop(Tree tree)
         {
             Item item = tree.getChopped();
-            if(item != null)
+            if (item != null)
             {
                 inventory.Add(item);
+                action = CurrentAction.kActionNone;
+            }
+        }
+        private void Mine(Rock rock)
+        {
+            Item item = rock.getChopped();
+            if (item != null)
+            {
+                inventory.Add(item);
+                action = CurrentAction.kActionNone;
             }
         }
 

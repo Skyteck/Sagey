@@ -46,6 +46,7 @@ namespace ExtendedTest
         {
             kPlayerType,
             kTreeType,
+            kRockType,
             kNoneType
         }
 

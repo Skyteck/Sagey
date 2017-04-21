@@ -17,7 +17,7 @@ namespace ExtendedTest
 
         public enum ItemType
         {
-            ItemLog, ItemNone, ItemError
+            ItemLog, ItemNone, ItemError, ItemOre
         }
 
         public ItemType myType = ItemType.ItemNone;

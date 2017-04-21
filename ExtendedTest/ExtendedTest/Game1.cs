@@ -22,9 +22,13 @@ namespace ExtendedTest
         Sprite inventoryBG;
         TileMap testMap;
         Camera  camera;
-        Texture2D logTex;
         double fps = 0;
         double elapsedTime = 0;
+
+        //item textures
+
+        Texture2D logTex;
+        Texture2D oreTex;
 
         public Game1()
         {
@@ -104,12 +108,23 @@ namespace ExtendedTest
                     anotherTree.parentList = gameObjectList;
                     gameObjectList.Add(anotherTree);
                 }
+                else if (thing.Type.Equals("rock"))
+                {
+                    Rock anotherRock = new Rock(Rock.RockType.kNormalRock);
+                    anotherRock.LoadContent("Art/rock", Content);
+                    anotherRock._Position = new Vector2((int)thing.X, (int)thing.Y);
+                    anotherRock._Tag = Sprite.SpriteType.kRockType;
+                    anotherRock._CurrentState = Sprite.SpriteState.kStateActive;
+                    anotherRock.parentList = gameObjectList;
+                    gameObjectList.Add(anotherRock);
+                }
             }
         }
 
         private void LoadItemTextures()
         {
             logTex = Content.Load<Texture2D>("Art/log");
+            oreTex = Content.Load<Texture2D>("Art/ore");
         }
 
         /// <summary>
@@ -202,9 +217,13 @@ namespace ExtendedTest
             //inventoryBG.Draw(spriteBatch);
             for (int i = 0; i < player.inventory.Count; i++)
             {
-                if(player.inventory[i].myType == Item.ItemType.ItemLog)
+                if (player.inventory[i].myType == Item.ItemType.ItemLog)
                 {
                     player.inventory[i].Draw(spriteBatch, new Vector2(i * 30, -20), logTex);
+                }
+                else if (player.inventory[i].myType == Item.ItemType.ItemOre)
+                {
+                    player.inventory[i].Draw(spriteBatch, new Vector2(i * 30, -20), oreTex);
                 }
             }
             mouseCursor.Draw(spriteBatch);
