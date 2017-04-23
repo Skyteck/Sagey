@@ -70,7 +70,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="TiledSharp">
-      <HintPath>..\packages\TiledSharp\TiledSharp.dll</HintPath>
+      <HintPath>..\..\..\SRSOP\ExtendedTest\packages\TiledSharp\TiledSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +90,12 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="Content\Tilemaps\00.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tilemaps\MapTwo.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Tilemaps\testmap.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

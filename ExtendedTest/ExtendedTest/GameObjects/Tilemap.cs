@@ -11,7 +11,7 @@ namespace ExtendedTest
     {
         public TmxMap map;
         public Texture2D tileset;
-
+        public Vector2 _Postion;
         public int tileWidth;
 
         public int tileHeight;
@@ -22,13 +22,14 @@ namespace ExtendedTest
 
         public List<Tile> backgroundTiles;
 
-        public TileMap(String path, Microsoft.Xna.Framework.Content.ContentManager content)
+        public TileMap(String path, Microsoft.Xna.Framework.Content.ContentManager content, Vector2 pos)
         {
             backgroundTiles = new List<Tile>();
             map = new TmxMap(path);
             string tileSetPath = map.Tilesets[0].Name.ToString();
             tileSetPath = "Tilemaps/" + tileSetPath;
             tileset = content.Load<Texture2D>(tileSetPath);
+            this._Postion = pos;
 
             tileHeight = map.Tilesets[0].TileHeight;
             tileWidth = map.Tilesets[0].TileWidth;
@@ -60,6 +61,8 @@ namespace ExtendedTest
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
 
                     //spriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    x += this._Postion.X;
+                    y += this._Postion.Y;
                     Vector2 tilePos = new Vector2(x, y);
                     if (test == true)
                     {
@@ -77,7 +80,12 @@ namespace ExtendedTest
 
         public TmxList<TmxObject> findObjects()
         {
-            return map.ObjectGroups["Object Layer 1"].Objects;
+            if (map.ObjectGroups.Count >= 1)
+            {
+                return map.ObjectGroups["Object Layer 1"].Objects;
+
+            }
+            else return null;
         }
 
         public void Draw(SpriteBatch spriteBatch)

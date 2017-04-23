@@ -20,10 +20,10 @@ namespace ExtendedTest
         MouseState previousMouseState;
         Sprite mouseCursor;
         Sprite inventoryBG;
-        TileMap testMap;
         Camera  camera;
         double fps = 0;
         double elapsedTime = 0;
+        List<TileMap> mapList;
 
         //item textures
 
@@ -49,6 +49,7 @@ namespace ExtendedTest
             // TODO: Add your initialization logic here
             player = new Player();
             gameObjectList = new List<Sprite>();
+            mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
             base.Initialize();
         }
@@ -64,7 +65,9 @@ namespace ExtendedTest
 
             LoadPlayerContent();
             LoadGUI();
-            LoadMapInfo();
+            mapList.Add(LoadMapInfo("00", new Vector2(-(32 * 64), 0)));
+            mapList.Add(LoadMapInfo("testmap", new Vector2(0,0)));
+            mapList.Add(LoadMapInfo("00", new Vector2((32 * 64), 0)));
             LoadItemTextures();
 
             //List<Sprite> test = new List<Sprite>();
@@ -77,7 +80,7 @@ namespace ExtendedTest
         {
             player._Texture = Content.Load<Texture2D>("Art/Player");
             player.LoadContent("Art/Player", Content);
-            player._Position = new Vector2(150, 150);
+            player._Position = new Vector2(0, 0);
         }
 
         private void LoadGUI()
@@ -90,10 +93,9 @@ namespace ExtendedTest
             mouseCursor.LoadContent("Art/log", Content);
         }
 
-        private void LoadMapInfo()
+        private TileMap LoadMapInfo()
         {
-            testMap = new TileMap("Content/Tilemaps/testmap.tmx", Content);
-
+            TileMap testMap = new TileMap("Content/Tilemaps/testmap.tmx", Content, new Vector2());
             TmxList<TmxObject> ObjectList = testMap.findObjects();
 
             foreach (TmxObject thing in ObjectList)
@@ -119,6 +121,44 @@ namespace ExtendedTest
                     gameObjectList.Add(anotherRock);
                 }
             }
+            return testMap;
+        }
+
+
+        private TileMap LoadMapInfo(String mapname, Vector2 pos)
+        {
+            TileMap testMap = new TileMap("Content/Tilemaps/" + mapname + ".tmx", Content, pos);
+
+            TmxList<TmxObject> ObjectList = testMap.findObjects();
+            if(ObjectList != null)
+            {
+                foreach (TmxObject thing in ObjectList)
+                {
+                    if (thing.Type.Equals("tree"))
+                    {
+                        Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
+                        anotherTree.LoadContent("Art/tree", Content);
+                        anotherTree._Position = new Vector2((int)thing.X, (int)thing.Y);
+                        anotherTree._Tag = Sprite.SpriteType.kTreeType;
+                        anotherTree._CurrentState = Sprite.SpriteState.kStateActive;
+                        anotherTree.parentList = gameObjectList;
+                        gameObjectList.Add(anotherTree);
+                    }
+                    else if (thing.Type.Equals("rock"))
+                    {
+                        Rock anotherRock = new Rock(Rock.RockType.kNormalRock);
+                        anotherRock.LoadContent("Art/rock", Content);
+                        anotherRock._Position = new Vector2((int)thing.X, (int)thing.Y);
+                        anotherRock._Tag = Sprite.SpriteType.kRockType;
+                        anotherRock._CurrentState = Sprite.SpriteState.kStateActive;
+                        anotherRock.parentList = gameObjectList;
+                        gameObjectList.Add(anotherRock);
+                    }
+                }
+            }
+
+            return testMap;
+
         }
 
         private void LoadItemTextures()
@@ -163,13 +203,14 @@ namespace ExtendedTest
                     sprite.Update(gameTime, gameObjectList);
                 }
 
+                
 
                 ProcessCamera(gameTime);
 
-
+                Console.WriteLine(camera.Position);
                 base.Update(gameTime);
                 //Show FPS
-                //Console.WriteLine(1 / gameTime.ElapsedGameTime.TotalSeconds);
+                Console.WriteLine(1 / gameTime.ElapsedGameTime.TotalSeconds);
                 previousMouseState = mouseState;
             }
         }
@@ -207,8 +248,10 @@ namespace ExtendedTest
             GraphicsDevice.Clear(Color.ForestGreen);
             spriteBatch.Begin(camera);
 
-            
-            testMap.Draw(spriteBatch);
+            foreach(TileMap map in mapList)
+            {
+                map.Draw(spriteBatch);
+            }
             player.Draw(spriteBatch);
             foreach (Sprite sprite in gameObjectList)
             {
