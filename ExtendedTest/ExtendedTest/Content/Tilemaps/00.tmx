@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="64" tileheight="64" nextobjectid="1">
+ <properties>
+  <property name="xPos" value="-2096"/>
+ </properties>
  <tileset firstgid="1" name="ggggg" tilewidth="64" tileheight="64" tilecount="3" columns="3">
   <image source="ggggg.png" width="192" height="64"/>
   <tile id="0">
    <properties>
     <property name="Test" value="black"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="rawr" value="blue"/>
    </properties>
   </tile>
  </tileset>
@@ -44,5 +52,9 @@
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
 </data>
  </layer>
- <objectgroup name="Object Layer 1"/>
+ <objectgroup name="Object Layer 1">
+  <properties>
+   <property name="PropName" value="propvalue"/>
+  </properties>
+ </objectgroup>
 </map>

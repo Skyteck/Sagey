@@ -26,6 +26,7 @@ namespace ExtendedTest
         {
             backgroundTiles = new List<Tile>();
             map = new TmxMap(path);
+
             string tileSetPath = map.Tilesets[0].Name.ToString();
             tileSetPath = "Tilemaps/" + tileSetPath;
             tileset = content.Load<Texture2D>(tileSetPath);
@@ -33,13 +34,18 @@ namespace ExtendedTest
 
             tileHeight = map.Tilesets[0].TileHeight;
             tileWidth = map.Tilesets[0].TileWidth;
+            var test2 = map.Tilesets[0].Properties;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
             bool test = true;
             for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
             {
                 int gid = map.Layers[0].Tiles[i].Gid;
-
+                var prop = map.Layers[0].Tiles[i].Properties;
+                if(prop != null)
+                {
+                    Console.WriteLine(prop.Keys);
+                }
                 // Empty tile, do nothing
                 if (gid != 0)
                 {

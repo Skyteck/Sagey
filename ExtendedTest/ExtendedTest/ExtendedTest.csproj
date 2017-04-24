@@ -69,8 +69,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="TiledSharp">
-      <HintPath>..\..\..\SRSOP\ExtendedTest\packages\TiledSharp\TiledSharp.dll</HintPath>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TiledSharp, Version=0.10.5776.22942, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\TiledSharp\TiledSharp-master\TiledSharp\bin\Debug\TiledSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +94,7 @@
     <None Include="app.manifest" />
     <None Include="Content\Tilemaps\00.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Content\Tilemaps\MapTwo.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -66,6 +66,7 @@ namespace ExtendedTest
             LoadPlayerContent();
             LoadGUI();
             mapList.Add(LoadMapInfo("00", new Vector2(-(32 * 64), 0)));
+            //Console.WriteLine(mapList[0].map.Layers["Tile Layer 1"].Tiles[0]);
             mapList.Add(LoadMapInfo("testmap", new Vector2(0,0)));
             mapList.Add(LoadMapInfo("00", new Vector2((32 * 64), 0)));
             LoadItemTextures();
