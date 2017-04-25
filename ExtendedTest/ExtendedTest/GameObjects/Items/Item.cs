@@ -14,6 +14,7 @@ namespace ExtendedTest
         public double _Weight;
         public String _Image;
         public int _SaleValue;
+        public Texture2D itemtexture;
 
         public enum ItemType
         {
@@ -23,9 +24,9 @@ namespace ExtendedTest
         public ItemType myType = ItemType.ItemNone;
         
 
-        public void Draw(SpriteBatch spritebatch, Vector2 Pos, Texture2D tex)
+        public void Draw(SpriteBatch spritebatch, Vector2 Pos)
         {
-            spritebatch.Draw(tex, Pos, Color.White);
+            spritebatch.Draw(itemtexture, Pos, Color.White);
         }
     }
 }

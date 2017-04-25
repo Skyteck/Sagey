@@ -24,11 +24,8 @@ namespace ExtendedTest
         double fps = 0;
         double elapsedTime = 0;
         List<TileMap> mapList;
-
-        //item textures
-
-        Texture2D logTex;
-        Texture2D oreTex;
+        InventoryManager invenManager;
+        
 
         public Game1()
         {
@@ -47,7 +44,8 @@ namespace ExtendedTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player();
+            invenManager = new InventoryManager(Content);
+            player = new Player(invenManager);
             gameObjectList = new List<Sprite>();
             mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
@@ -65,11 +63,15 @@ namespace ExtendedTest
 
             LoadPlayerContent();
             LoadGUI();
-            mapList.Add(LoadMapInfo("00", new Vector2(-(32 * 64), 0)));
-            //Console.WriteLine(mapList[0].map.Layers["Tile Layer 1"].Tiles[0]);
-            mapList.Add(LoadMapInfo("testmap", new Vector2(0,0)));
-            mapList.Add(LoadMapInfo("00", new Vector2((32 * 64), 0)));
-            LoadItemTextures();
+            //mapList.Add(LoadMap("testmap", new Vector2(-(32 * 64), -(32 * 64)))); //top left
+            //mapList.Add(LoadMap("testmap", new Vector2(0, -(32 * 64)))); //top middle
+            ////mapList.Add(LoadMap("testmap", new Vector2((32 * 64), -(32 * 64)))); //top right
+            //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), 0))); //left
+            mapList.Add(LoadMap("testmap", new Vector2(0, 0))); //middle
+            //mapList.Add(LoadMap("00", new Vector2((32 * 64), 0))); //right
+            //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), (32 * 64)))); //bottom left
+            //mapList.Add(LoadMap("testmap", new Vector2(0, (32 * 64)))); // bottom middle
+            //mapList.Add(LoadMap("00", new Vector2((32 * 64), (32 * 64)))); //bottom right
 
             //List<Sprite> test = new List<Sprite>();
             //test = gameObjectList.FindAll(x => x._Tag == Sprite.SpriteType.kTreeType);
@@ -79,7 +81,6 @@ namespace ExtendedTest
 
         private void LoadPlayerContent()
         {
-            player._Texture = Content.Load<Texture2D>("Art/Player");
             player.LoadContent("Art/Player", Content);
             player._Position = new Vector2(0, 0);
         }
@@ -94,39 +95,8 @@ namespace ExtendedTest
             mouseCursor.LoadContent("Art/log", Content);
         }
 
-        private TileMap LoadMapInfo()
-        {
-            TileMap testMap = new TileMap("Content/Tilemaps/testmap.tmx", Content, new Vector2());
-            TmxList<TmxObject> ObjectList = testMap.findObjects();
 
-            foreach (TmxObject thing in ObjectList)
-            {
-                if (thing.Type.Equals("tree"))
-                {
-                    Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
-                    anotherTree.LoadContent("Art/tree", Content);
-                    anotherTree._Position = new Vector2((int)thing.X, (int)thing.Y);
-                    anotherTree._Tag = Sprite.SpriteType.kTreeType;
-                    anotherTree._CurrentState = Sprite.SpriteState.kStateActive;
-                    anotherTree.parentList = gameObjectList;
-                    gameObjectList.Add(anotherTree);
-                }
-                else if (thing.Type.Equals("rock"))
-                {
-                    Rock anotherRock = new Rock(Rock.RockType.kNormalRock);
-                    anotherRock.LoadContent("Art/rock", Content);
-                    anotherRock._Position = new Vector2((int)thing.X, (int)thing.Y);
-                    anotherRock._Tag = Sprite.SpriteType.kRockType;
-                    anotherRock._CurrentState = Sprite.SpriteState.kStateActive;
-                    anotherRock.parentList = gameObjectList;
-                    gameObjectList.Add(anotherRock);
-                }
-            }
-            return testMap;
-        }
-
-
-        private TileMap LoadMapInfo(String mapname, Vector2 pos)
+        private TileMap LoadMap(String mapname, Vector2 pos)
         {
             TileMap testMap = new TileMap("Content/Tilemaps/" + mapname + ".tmx", Content, pos);
 
@@ -139,7 +109,7 @@ namespace ExtendedTest
                     {
                         Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
                         anotherTree.LoadContent("Art/tree", Content);
-                        anotherTree._Position = new Vector2((int)thing.X, (int)thing.Y);
+                        anotherTree._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
                         anotherTree._Tag = Sprite.SpriteType.kTreeType;
                         anotherTree._CurrentState = Sprite.SpriteState.kStateActive;
                         anotherTree.parentList = gameObjectList;
@@ -149,7 +119,7 @@ namespace ExtendedTest
                     {
                         Rock anotherRock = new Rock(Rock.RockType.kNormalRock);
                         anotherRock.LoadContent("Art/rock", Content);
-                        anotherRock._Position = new Vector2((int)thing.X, (int)thing.Y);
+                        anotherRock._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
                         anotherRock._Tag = Sprite.SpriteType.kRockType;
                         anotherRock._CurrentState = Sprite.SpriteState.kStateActive;
                         anotherRock.parentList = gameObjectList;
@@ -160,12 +130,6 @@ namespace ExtendedTest
 
             return testMap;
 
-        }
-
-        private void LoadItemTextures()
-        {
-            logTex = Content.Load<Texture2D>("Art/log");
-            oreTex = Content.Load<Texture2D>("Art/ore");
         }
 
         /// <summary>
@@ -258,17 +222,12 @@ namespace ExtendedTest
             {
                 sprite.Draw(spriteBatch);
             }
-            //inventoryBG.Draw(spriteBatch);
-            for (int i = 0; i < player.inventory.Count; i++)
+
+            int i = 0;
+            foreach(Item item in invenManager.itemList)
             {
-                if (player.inventory[i].myType == Item.ItemType.ItemLog)
-                {
-                    player.inventory[i].Draw(spriteBatch, new Vector2(i * 30, -20), logTex);
-                }
-                else if (player.inventory[i].myType == Item.ItemType.ItemOre)
-                {
-                    player.inventory[i].Draw(spriteBatch, new Vector2(i * 30, -20), oreTex);
-                }
+                item.Draw(spriteBatch, new Vector2(i * 30, -20));
+                i++;
             }
             mouseCursor.Draw(spriteBatch);
             base.Draw(gameTime);

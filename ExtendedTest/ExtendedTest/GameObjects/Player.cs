@@ -15,8 +15,8 @@ namespace ExtendedTest
         bool movingX = false;
         bool movingY = false;
         MouseState previousMouseState;
-        public List<Item> inventory;
         Object currentTarget = null;
+        InventoryManager invenManager;
 
         public enum CurrentAction
         {
@@ -27,9 +27,9 @@ namespace ExtendedTest
 
         private CurrentAction action = CurrentAction.kActionNone;
 
-        public Player()
+        public Player(InventoryManager manager)
         {
-            inventory = new List<Item>();
+            invenManager = manager;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
@@ -63,11 +63,6 @@ namespace ExtendedTest
             else if(action == CurrentAction.kActionMine)
             {
                 Mine(currentTarget as Rock);
-            }
-            foreach(Item item in inventory)
-            {
-                Console.Write(item._Name + " ");
-
             }
             Console.WriteLine("");
             base.Update(gameTime, gameObjectList);
@@ -135,6 +130,7 @@ namespace ExtendedTest
         {
             Destination = dest;
             atDestination = false;
+            action = CurrentAction.kActionNone;
         }
 
         private void findPath()
@@ -221,7 +217,7 @@ namespace ExtendedTest
             Item item = tree.getChopped();
             if (item != null)
             {
-                inventory.Add(item);
+                invenManager.AddItem(item);
                 action = CurrentAction.kActionNone;
             }
         }
@@ -230,7 +226,7 @@ namespace ExtendedTest
             Item item = rock.getChopped();
             if (item != null)
             {
-                inventory.Add(item);
+                invenManager.AddItem(item);
                 action = CurrentAction.kActionNone;
             }
         }

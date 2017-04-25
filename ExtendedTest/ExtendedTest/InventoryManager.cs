@@ -11,17 +11,33 @@ namespace ExtendedTest
 {
     class InventoryManager
     {
-        List<Texture2D> textureList;
-
+        public List<Item> itemList;
+        int capacity = 28;
+        ContentManager _Content;
         public InventoryManager(ContentManager content)
         {
-            Texture2D newLogTex = content.Load<Texture2D>("Art/log");
-            textureList.Add(newLogTex);
+            _Content = content;
+            itemList = new List<Item>();
+            
         }
 
-        //public Texture2D getText(Item.ItemType itemType)
-        //{
+        public Texture2D getTexture(Item item)
+        {
+            Texture2D newTex = _Content.Load<Texture2D>("Art/" + item._Name);
+            if(newTex != null)
+            {
+                return newTex;
+            }
+            return null;
+        }
 
-        //}
+        public void AddItem(Item item)
+        {
+            if(!(this.itemList.Count >= this.capacity))
+            {
+                item.itemtexture = getTexture(item);
+                itemList.Add(item);
+            }
+        }
     }
 }
