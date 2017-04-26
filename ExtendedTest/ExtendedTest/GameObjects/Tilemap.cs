@@ -22,7 +22,7 @@ namespace ExtendedTest
 
         public List<Tile> backgroundTiles;
 
-        bool active = false;
+        public bool active = false;
 
         public TileMap(String path, Microsoft.Xna.Framework.Content.ContentManager content, Vector2 pos)
         {
@@ -86,6 +86,16 @@ namespace ExtendedTest
             if (map.ObjectGroups.Count >= 1)
             {
                 return map.ObjectGroups["Object Layer 1"].Objects;
+
+            }
+            else return null;
+        }
+
+        public TmxList<TmxObject> findNPCs()
+        {
+            if (map.ObjectGroups.Count >= 1)
+            {
+                return map.ObjectGroups["NPC Layer"].Objects;
 
             }
             else return null;

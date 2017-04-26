@@ -100,8 +100,37 @@ namespace ExtendedTest
         {
             TileMap testMap = new TileMap("Content/Tilemaps/" + mapname + ".tmx", Content, pos);
 
+            LoadMapObjects(testMap);
+            LoadMapNPCs(testMap);
+            testMap.active = true;
+            return testMap;
+
+        }
+
+        private void LoadMapNPCs(TileMap testMap)
+        {
+            TmxList<TmxObject> ObjectList = testMap.findNPCs();
+            if (ObjectList != null)
+            {
+                foreach (TmxObject thing in ObjectList)
+                {
+                    Sprite newSprite = new Sprite();
+                    newSprite.LoadContent("Art/Slime", Content);
+                    newSprite._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
+                    newSprite._Position.X += (float)(thing.Width / 2);
+                    newSprite._Position.Y += (float)(thing.Height / 2);
+                    newSprite._Tag = Sprite.SpriteType.kSlimeType;
+                    newSprite._CurrentState = Sprite.SpriteState.kStateActive;
+                    newSprite.parentList = gameObjectList;
+                    gameObjectList.Add(newSprite);
+                }
+            }
+        }
+
+        private void LoadMapObjects(TileMap testMap)
+        {
             TmxList<TmxObject> ObjectList = testMap.findObjects();
-            if(ObjectList != null)
+            if (ObjectList != null)
             {
                 foreach (TmxObject thing in ObjectList)
                 {
@@ -114,6 +143,7 @@ namespace ExtendedTest
                         anotherTree._CurrentState = Sprite.SpriteState.kStateActive;
                         anotherTree.parentList = gameObjectList;
                         gameObjectList.Add(anotherTree);
+
                     }
                     else if (thing.Type.Equals("rock"))
                     {
@@ -127,9 +157,6 @@ namespace ExtendedTest
                     }
                 }
             }
-
-            return testMap;
-
         }
 
         /// <summary>
@@ -159,6 +186,22 @@ namespace ExtendedTest
                 {
                     mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y)); //;
                     player.setDestination(mouseCursor._Position);
+                }
+                if(mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
+                {
+                    camera.Scale += 0.2f;
+                    if (camera.Scale > 2f)
+                    {
+                        camera.Scale = 2f;
+                    }
+                }
+                else if(mouseState.ScrollWheelValue < previousMouseState.ScrollWheelValue)
+                {
+                    camera.Scale -= 0.25f;
+                    if(camera.Scale < 0.6f)
+                    {
+                        camera.Scale = 0.6f;
+                    }
                 }
 
                 player.Update(gameTime, gameObjectList);

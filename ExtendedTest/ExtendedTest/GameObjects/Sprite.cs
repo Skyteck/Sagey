@@ -47,7 +47,8 @@ namespace ExtendedTest
             kPlayerType,
             kTreeType,
             kRockType,
-            kNoneType
+            kNoneType,
+            kSlimeType
         }
 
         public SpriteType _Tag = SpriteType.kNoneType;
