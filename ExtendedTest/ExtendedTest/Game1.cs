@@ -114,9 +114,9 @@ namespace ExtendedTest
             {
                 foreach (TmxObject thing in ObjectList)
                 {
-                    Sprite newSprite = new Sprite();
-                    newSprite.LoadContent("Art/Slime", Content);
+                    Character newSprite = new Character(thing.X, thing.Width, thing.Height, thing.Y);
                     newSprite._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
+                    newSprite.LoadContent("Art/Slime", Content);
                     newSprite._Position.X += (float)(thing.Width / 2);
                     newSprite._Position.Y += (float)(thing.Height / 2);
                     newSprite._Tag = Sprite.SpriteType.kSlimeType;
@@ -208,17 +208,24 @@ namespace ExtendedTest
 
                 foreach (Sprite sprite in gameObjectList)
                 {
+                    if(sprite._Tag == Sprite.SpriteType.kSlimeType)
+                    {
                     sprite.Update(gameTime, gameObjectList);
+
+                    }
                 }
 
                 
 
                 ProcessCamera(gameTime);
-
-                Console.WriteLine(camera.Position);
+                
                 base.Update(gameTime);
                 //Show FPS
-                Console.WriteLine(1 / gameTime.ElapsedGameTime.TotalSeconds);
+                if((1 / gameTime.ElapsedGameTime.TotalSeconds) <= 59)
+                {
+                    Console.WriteLine("BAD FPS!!!!!!!!!!");
+
+                }
                 previousMouseState = mouseState;
             }
         }
