@@ -67,7 +67,7 @@ namespace ExtendedTest
             //mapList.Add(LoadMap("testmap", new Vector2(0, -(32 * 64)))); //top middle
             ////mapList.Add(LoadMap("testmap", new Vector2((32 * 64), -(32 * 64)))); //top right
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), 0))); //left
-            mapList.Add(LoadMap("testmap", new Vector2(0, 0))); //middle
+            mapList.Add(LoadMap("0-0", new Vector2(0,0))); //middle
             //mapList.Add(LoadMap("00", new Vector2((32 * 64), 0))); //right
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), (32 * 64)))); //bottom left
             //mapList.Add(LoadMap("testmap", new Vector2(0, (32 * 64)))); // bottom middle
@@ -211,7 +211,7 @@ namespace ExtendedTest
                 {
                     if(sprite._Tag == Sprite.SpriteType.kSlimeType)
                     {
-                    sprite.Update(gameTime, gameObjectList);
+                        sprite.Update(gameTime, gameObjectList);
 
                     }
                 }

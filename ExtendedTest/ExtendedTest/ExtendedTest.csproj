@@ -94,16 +94,17 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
-    <None Include="Content\Tilemaps\00.tmx">
+    <None Include="Content\Tilemaps\0-1.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
     <None Include="Content\Tilemaps\MapTwo.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Tilemaps\testmap.tmx">
+    <None Include="Content\Tilemaps\0-0.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Tilemaps\testmap.tmx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

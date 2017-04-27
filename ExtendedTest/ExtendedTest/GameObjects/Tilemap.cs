@@ -4,6 +4,7 @@ using System.Text;
 using TiledSharp;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Linq;
 
 namespace ExtendedTest
 {
@@ -24,22 +25,27 @@ namespace ExtendedTest
 
         public bool active = false;
 
+        List<String> nearbyMaps;
+
         public TileMap(String path, Microsoft.Xna.Framework.Content.ContentManager content, Vector2 pos)
         {
             backgroundTiles = new List<Tile>();
+            nearbyMaps = new List<string>();
             map = new TmxMap(path);
+            nearbyMaps = path.Split('-').ToList();
+            //this._Postion = new Vector2(Convert.ToInt32(nearbyMaps[0]) * map.Width, Convert.ToInt32(nearbyMaps[1]) * map.Height);
 
             string tileSetPath = map.Tilesets[0].Name.ToString();
             tileSetPath = "Tilemaps/" + tileSetPath;
             tileset = content.Load<Texture2D>(tileSetPath);
-            this._Postion.X = Convert.ToInt64(map.Properties["X"]);
-            this._Postion.Y = Convert.ToInt64(map.Properties["Y"]);
 
             tileHeight = map.Tilesets[0].TileHeight;
             tileWidth = map.Tilesets[0].TileWidth;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
             bool test = true;
+
+            this._Postion = pos;
             for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
             {
                 int gid = map.Layers[0].Tiles[i].Gid;

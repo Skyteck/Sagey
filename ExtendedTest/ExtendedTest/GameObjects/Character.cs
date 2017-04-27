@@ -47,7 +47,7 @@ namespace ExtendedTest
             currentMoveTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             if(currentMoveTimer <= 0)
             {
-                Random num = new Random();
+                Random num = new Random((int)this._Position.X);
                 
                 float newX = num.Next((int)this.leftBoundary, (int)this.rightBoundary);
                 float newY = num.Next((int)this.topBoundary, (int)this.bottomBoundary);
