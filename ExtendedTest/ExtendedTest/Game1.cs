@@ -116,7 +116,8 @@ namespace ExtendedTest
                 {
                     Character newSprite = new Character(thing.X, thing.Width, thing.Height, thing.Y);
                     newSprite._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
-                    newSprite.LoadContent("Art/Slime", Content);
+                    newSprite.LoadContent("Art/"+thing.Type, Content);
+                    newSprite.Agressive = Convert.ToBoolean(thing.Properties["Agressive"]);
                     newSprite._Position.X += (float)(thing.Width / 2);
                     newSprite._Position.Y += (float)(thing.Height / 2);
                     newSprite._Tag = Sprite.SpriteType.kSlimeType;

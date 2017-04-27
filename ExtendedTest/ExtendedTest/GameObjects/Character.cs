@@ -21,6 +21,8 @@ namespace ExtendedTest
         bool atDestination = true;
         bool movingX = false;
         bool movingY = false;
+
+        public bool Agressive = false;
         public Character(double lX, double rx, double by, double ty)
         {
             leftBoundary = lX;
