@@ -27,13 +27,12 @@ namespace ExtendedTest
 
         List<String> nearbyMaps;
 
-        public TileMap(String path, Microsoft.Xna.Framework.Content.ContentManager content, Vector2 pos)
+        public TileMap(String mapName, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             backgroundTiles = new List<Tile>();
             nearbyMaps = new List<string>();
-            map = new TmxMap(path);
-            nearbyMaps = path.Split('-').ToList();
-            //this._Postion = new Vector2(Convert.ToInt32(nearbyMaps[0]) * map.Width, Convert.ToInt32(nearbyMaps[1]) * map.Height);
+            map = new TmxMap("Content/Tilemaps/" + mapName + ".tmx");
+            nearbyMaps = mapName.Split('-').ToList();
 
             string tileSetPath = map.Tilesets[0].Name.ToString();
             tileSetPath = "Tilemaps/" + tileSetPath;
@@ -43,9 +42,10 @@ namespace ExtendedTest
             tileWidth = map.Tilesets[0].TileWidth;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
-            bool test = true;
 
-            this._Postion = pos;
+            this._Postion = new Vector2(Convert.ToInt32(nearbyMaps[0]) * (map.Width * tileWidth), Convert.ToInt32(nearbyMaps[1]) * (map.Height * tileHeight));
+            bool test = true;
+            
             for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
             {
                 int gid = map.Layers[0].Tiles[i].Gid;
@@ -68,8 +68,7 @@ namespace ExtendedTest
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-
-                    //spriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    
                     x += this._Postion.X;
                     y += this._Postion.Y;
                     Vector2 tilePos = new Vector2(x, y);

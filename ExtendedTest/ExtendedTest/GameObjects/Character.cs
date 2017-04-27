@@ -14,15 +14,17 @@ namespace ExtendedTest
         double rightBoundary;
         double bottomBoundary;
         double topBoundary;
-
-        float moveTimer = 6f; //frames on average before moving
+        
         double currentMoveTimer = 6f;
         Vector2 Destination;
         bool atDestination = true;
         bool movingX = false;
         bool movingY = false;
 
-        public bool Agressive = false;
+        bool Agressive = false;
+        Rectangle huntZone;
+
+        Sprite target;
         public Character(double lX, double rx, double by, double ty)
         {
             leftBoundary = lX;
@@ -44,23 +46,53 @@ namespace ExtendedTest
 
         public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
         {
-            currentMoveTimer -= gameTime.ElapsedGameTime.TotalSeconds;
-            if(currentMoveTimer <= 0)
+            
+            if(this.Agressive && this.target._BoundingBox.Intersects(huntZone))
             {
-                Random num = new Random((int)this._Position.X);
-                
-                float newX = num.Next((int)this.leftBoundary, (int)this.rightBoundary);
-                float newY = num.Next((int)this.topBoundary, (int)this.bottomBoundary);
-                this.setDestination(new Vector2(newX, newY));
-                currentMoveTimer = moveTimer;
+                HuntPlayer();
+            }
+            else
+            {
+                Patrol(gameTime);
             }
 
-            if(!atDestination)
+
+            if (!atDestination)
             {
                 findPath();
-
             }
             base.Update(gameTime, gameObjectList);
+        }
+
+        public void SetTarget(Sprite target)
+        {
+            this.target = target;
+            this.Agressive = true;
+            huntZone = new Rectangle((int)this.leftBoundary, (int)this.topBoundary, (int)(this.rightBoundary-this.leftBoundary), (int)(this.bottomBoundary-this.topBoundary));
+        }
+
+        private void Patrol(GameTime gameTime)
+        {
+            currentMoveTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (currentMoveTimer <= 0)
+            {
+                Random num = new Random((int)this._Position.X);
+                bool move = (num.Next() % 2 == 0) ? true : false;
+                if (move)
+                {
+                    float newX = num.Next((int)this.leftBoundary, (int)this.rightBoundary);
+                    float newY = num.Next((int)this.topBoundary, (int)this.bottomBoundary);
+                    this.setDestination(new Vector2(newX, newY));
+                }
+
+                currentMoveTimer += num.Next(0, 6);
+            }
+
+        }
+
+        private void HuntPlayer()
+        {
+            this.setDestination(this.target._Position);
         }
 
         private void findPath()

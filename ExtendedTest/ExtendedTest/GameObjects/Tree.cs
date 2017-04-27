@@ -43,6 +43,10 @@ namespace ExtendedTest
                     difficulty = 9001;
                     break;
             }
+
+
+            this._Tag = Sprite.SpriteType.kTreeType;
+            this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 
         public Item getChopped()

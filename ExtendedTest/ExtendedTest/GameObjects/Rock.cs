@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TiledSharp;
 
 namespace ExtendedTest
 {
@@ -21,7 +23,7 @@ namespace ExtendedTest
         }
 
         public RockType rockType = RockType.kNormalRock;
-        public Rock(RockType myType)
+        public Rock(RockType myType, TmxObject thing)
         {
             rockType = myType;
             this._HP = 1;
@@ -42,6 +44,9 @@ namespace ExtendedTest
                     difficulty = 9001;
                     break;
             }
+            
+            this._Tag = Sprite.SpriteType.kRockType;
+            this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 
         public Item getChopped()

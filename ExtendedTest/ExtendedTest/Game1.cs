@@ -67,7 +67,8 @@ namespace ExtendedTest
             //mapList.Add(LoadMap("testmap", new Vector2(0, -(32 * 64)))); //top middle
             ////mapList.Add(LoadMap("testmap", new Vector2((32 * 64), -(32 * 64)))); //top right
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), 0))); //left
-            mapList.Add(LoadMap("0-0", new Vector2(0,0))); //middle
+            mapList.Add(LoadMap("0-0")); //middle
+            //mapList.Add(LoadMap("0-1"));
             //mapList.Add(LoadMap("00", new Vector2((32 * 64), 0))); //right
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), (32 * 64)))); //bottom left
             //mapList.Add(LoadMap("testmap", new Vector2(0, (32 * 64)))); // bottom middle
@@ -96,9 +97,9 @@ namespace ExtendedTest
         }
 
 
-        private TileMap LoadMap(String mapname, Vector2 pos)
+        private TileMap LoadMap(String mapname)
         {
-            TileMap testMap = new TileMap("Content/Tilemaps/" + mapname + ".tmx", Content, pos);
+            TileMap testMap = new TileMap(mapname, Content);
 
             LoadMapObjects(testMap);
             LoadMapNPCs(testMap);
@@ -117,7 +118,7 @@ namespace ExtendedTest
                     Character newSprite = new Character(thing.X, thing.Width, thing.Height, thing.Y);
                     newSprite._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
                     newSprite.LoadContent("Art/"+thing.Type, Content);
-                    newSprite.Agressive = Convert.ToBoolean(thing.Properties["Agressive"]);
+                    newSprite.SetTarget(player);
                     newSprite._Position.X += (float)(thing.Width / 2);
                     newSprite._Position.Y += (float)(thing.Height / 2);
                     newSprite._Tag = Sprite.SpriteType.kSlimeType;
@@ -135,24 +136,21 @@ namespace ExtendedTest
             {
                 foreach (TmxObject thing in ObjectList)
                 {
+                    Vector2 newPos = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
                     if (thing.Type.Equals("tree"))
                     {
                         Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
                         anotherTree.LoadContent("Art/tree", Content);
-                        anotherTree._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
-                        anotherTree._Tag = Sprite.SpriteType.kTreeType;
-                        anotherTree._CurrentState = Sprite.SpriteState.kStateActive;
+                        anotherTree._Position = newPos;
                         anotherTree.parentList = gameObjectList;
                         gameObjectList.Add(anotherTree);
 
                     }
                     else if (thing.Type.Equals("rock"))
                     {
-                        Rock anotherRock = new Rock(Rock.RockType.kNormalRock);
+                        Rock anotherRock = new Rock(Rock.RockType.kNormalRock, thing);
                         anotherRock.LoadContent("Art/rock", Content);
-                        anotherRock._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
-                        anotherRock._Tag = Sprite.SpriteType.kRockType;
-                        anotherRock._CurrentState = Sprite.SpriteState.kStateActive;
+                        anotherRock._Position = newPos;
                         anotherRock.parentList = gameObjectList;
                         gameObjectList.Add(anotherRock);
                     }
