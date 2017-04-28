@@ -50,6 +50,10 @@ namespace ExtendedTest
             if(this.Agressive && this.target._BoundingBox.Intersects(huntZone))
             {
                 HuntPlayer();
+                //if(this._BoundingBox.Intersects(target._BoundingBox))
+                //{
+                //    target.ReceiveDamage(1);
+                //}
             }
             else
             {
