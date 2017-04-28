@@ -25,8 +25,6 @@ namespace ExtendedTest
         public Tree(TreeType myType)
         {
             treeType = myType;
-            this._HP = 1;
-            this.startHP = 1;
             switch(treeType)
             {
                 case TreeType.kNormalTree:
@@ -56,7 +54,6 @@ namespace ExtendedTest
             if(randomNumber == 0)
             {
                 Console.WriteLine("Dead Tree");
-                this.ReceiveDamage(1);
                 Log log = new Log();
                 return log;
             }

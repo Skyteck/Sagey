@@ -26,8 +26,6 @@ namespace ExtendedTest
         public Rock(RockType myType, TmxObject thing)
         {
             rockType = myType;
-            this._HP = 1;
-            this.startHP = 1;
             switch(rockType)
             {
                 case RockType.kNormalRock:
@@ -55,7 +53,6 @@ namespace ExtendedTest
             int randomNumber = ran.Next(0, difficulty);
             if(randomNumber == 0)
             {
-                this.ReceiveDamage(1);
                 Ore ore = new Ore();
                 return ore;
             }

@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    class Player : Sprite
+    class Player : Character
     {
         Vector2 Destination = Vector2.Zero;
         bool atDestination = true;
-        bool movingX = false;
-        bool movingY = false;
         MouseState previousMouseState;
         Object currentTarget = null;
         InventoryManager invenManager;

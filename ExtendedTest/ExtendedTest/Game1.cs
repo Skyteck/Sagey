@@ -115,7 +115,7 @@ namespace ExtendedTest
             {
                 foreach (TmxObject thing in ObjectList)
                 {
-                    Character newSprite = new Character(thing.X, thing.Width, thing.Height, thing.Y);
+                    Monster newSprite = new Monster(thing.X, thing.Width, thing.Height, thing.Y);
                     newSprite._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
                     newSprite.LoadContent("Art/"+thing.Type, Content);
                     newSprite.SetTarget(player);

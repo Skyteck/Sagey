@@ -10,93 +10,36 @@ namespace ExtendedTest
 {
     class Character : Sprite
     {
-        double leftBoundary;
-        double rightBoundary;
-        double bottomBoundary;
-        double topBoundary;
-        
-        double currentMoveTimer = 6f;
+
         Vector2 Destination;
         bool atDestination = true;
-        bool movingX = false;
-        bool movingY = false;
+        public bool movingX = false;
+        public bool movingY = false;
 
-        bool Agressive = false;
-        Rectangle huntZone;
 
-        Sprite target;
-        public Character(double lX, double rx, double by, double ty)
+
+        public double attackSpeed = 3.0;
+        public double attackCD = 0;
+        public int startHP = 1;
+        public int _HP;
+
+        public Character()
         {
-            leftBoundary = lX;
-            rightBoundary = rx;
-            bottomBoundary = by;
-            topBoundary = ty;
         }
 
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
-            this.rightBoundary += this._Position.X;
-            this.rightBoundary -= this._Texture.Width;
-            this.bottomBoundary += this._Position.Y;
-            this.bottomBoundary -= this._Texture.Height;
-            this.leftBoundary += this._Texture.Width;
-            this.topBoundary += this._Texture.Height;
         }
 
         public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
         {
-            
-            if(this.Agressive && this.target._BoundingBox.Intersects(huntZone))
-            {
-                HuntPlayer();
-                //if(this._BoundingBox.Intersects(target._BoundingBox))
-                //{
-                //    target.ReceiveDamage(1);
-                //}
-            }
-            else
-            {
-                Patrol(gameTime);
-            }
-
 
             if (!atDestination)
             {
                 findPath();
             }
             base.Update(gameTime, gameObjectList);
-        }
-
-        public void SetTarget(Sprite target)
-        {
-            this.target = target;
-            this.Agressive = true;
-            huntZone = new Rectangle((int)this.leftBoundary, (int)this.topBoundary, (int)(this.rightBoundary-this.leftBoundary), (int)(this.bottomBoundary-this.topBoundary));
-        }
-
-        private void Patrol(GameTime gameTime)
-        {
-            currentMoveTimer -= gameTime.ElapsedGameTime.TotalSeconds;
-            if (currentMoveTimer <= 0)
-            {
-                Random num = new Random((int)this._Position.X);
-                bool move = (num.Next() % 2 == 0) ? true : false;
-                if (move)
-                {
-                    float newX = num.Next((int)this.leftBoundary, (int)this.rightBoundary);
-                    float newY = num.Next((int)this.topBoundary, (int)this.bottomBoundary);
-                    this.setDestination(new Vector2(newX, newY));
-                }
-
-                currentMoveTimer += num.Next(0, 6);
-            }
-
-        }
-
-        private void HuntPlayer()
-        {
-            this.setDestination(this.target._Position);
         }
 
         private void findPath()
@@ -143,6 +86,21 @@ namespace ExtendedTest
         {
             Destination = dest;
             atDestination = false;
+        }
+
+        public virtual void ReceiveDamage(int amt)
+        {
+            _HP -= amt;
+            if (_HP <= 0)
+            {
+                Die();
+            }
+        }
+
+        private void Die()
+        {
+            _CurrentState = SpriteState.kStateInActive;
+            _Draw = false;
         }
     }
 }

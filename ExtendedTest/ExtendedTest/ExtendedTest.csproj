@@ -45,7 +45,9 @@
     <Compile Include="GameObjects\AnimatedSprite.cs" />
     <Compile Include="GameObjects\Character.cs" />
     <Compile Include="GameObjects\Items\Ore.cs" />
+    <Compile Include="GameObjects\Monster.cs" />
     <Compile Include="GameObjects\Rock.cs" />
+    <Compile Include="GameObjects\NPC.cs" />
     <Compile Include="InventoryManager.cs" />
     <Compile Include="GameObjects\Items\Log.cs" />
     <Compile Include="GameObjects\Player.cs" />

@@ -15,10 +15,8 @@ namespace ExtendedTest
         public Texture2D _Texture;
         public Vector2 _Position;
         public bool _Draw = true;
-        public int _HP;
         public bool _LockInScreen = false;
         public float speed = 0f;
-        public int startHP = 1;
         //for inheritance
         public Sprite parent = null;
         public List<Sprite> _ChildrenList;
@@ -135,20 +133,7 @@ namespace ExtendedTest
 
         }
 
-        public virtual void ReceiveDamage(int amt)
-        {
-            _HP -= amt;
-            if (_HP <= 0)
-            {
-                Die();
-            }
-        }
 
-        private void Die()
-        {
-            _CurrentState = SpriteState.kStateInActive;
-            _Draw = false;
-        }
 
         public void AddChild(Sprite child)
         {
@@ -217,7 +202,6 @@ namespace ExtendedTest
 
         public virtual void Activate(Vector2 pos)
         {
-            _HP = startHP;
             _CurrentState = SpriteState.kStateActive;
             _Draw = true;
 
