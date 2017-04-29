@@ -27,6 +27,9 @@ namespace ExtendedTest
 
         List<String> nearbyMaps;
         public Rectangle tileMapRect;
+
+        public Vector2 mapTilePos;
+
         public TileMap(String mapName, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             backgroundTiles = new List<Tile>();
@@ -45,6 +48,7 @@ namespace ExtendedTest
             int mapWidth = map.Width * tileWidth;
             int mapHeight = map.Height * tileHeight;
             this._Postion = new Vector2(Convert.ToInt32(nearbyMaps[0]) * mapWidth, Convert.ToInt32(nearbyMaps[1]) * mapHeight);
+            mapTilePos = new Vector2(Convert.ToInt32(nearbyMaps[0]), Convert.ToInt32(nearbyMaps[1]));
             tileMapRect = new Rectangle((int)this._Postion.X, (int)this._Postion.Y, mapWidth, mapHeight);
 
             bool test = true;
@@ -70,6 +74,8 @@ namespace ExtendedTest
                     float x = (i % map.Width) * map.TileWidth;
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
+                    int tileX = (int)(x / map.TileWidth);
+                    int tileY = (int)(y / map.TileHeight);
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
                     
                     x += this._Postion.X;
@@ -83,7 +89,7 @@ namespace ExtendedTest
                     {
                         test = true;
                     }
-                    Tile newTile = new Tile(tileset, tilePos, tileWidth, tileHeight, column, row, true);
+                    Tile newTile = new Tile(tileset, tilePos, tileWidth, tileHeight, column, row, true, new Vector2(tileX, tileY));
                     backgroundTiles.Add(newTile);
                 }
             }
@@ -134,11 +140,11 @@ namespace ExtendedTest
             }
         }
 
-        public Tile findClickedTile(Rectangle mouseRect)
+        public Tile findClickedTile(Vector2 pos)
         {
             foreach(Tile tile in backgroundTiles)
             {
-                if(tile.destRect.Intersects(mouseRect))
+                if(tile.localPos.X == pos.X && tile.localPos.Y == pos.Y)
                 {
                     return tile;
                 }

@@ -16,7 +16,7 @@ namespace ExtendedTest
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-        List<Sprite> gameObjectList;
+        //List<Sprite> gameObjectList;
         MouseState previousMouseState;
         Sprite mouseCursor;
         Sprite inventoryBG;
@@ -24,7 +24,11 @@ namespace ExtendedTest
         double fps = 0;
         double elapsedTime = 0;
         List<TileMap> mapList;
+
+        //Managers
         InventoryManager invenManager;
+        TilemapManager MapManager;
+        Managers.NpcManager _NPCManager;
         
 
         public Game1()
@@ -45,8 +49,9 @@ namespace ExtendedTest
         {
             // TODO: Add your initialization logic here
             invenManager = new InventoryManager(Content);
+            MapManager = new TilemapManager();
+            _NPCManager = new Managers.NpcManager(MapManager, Content);
             player = new Player(invenManager);
-            gameObjectList = new List<Sprite>();
             mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
             base.Initialize();
@@ -67,7 +72,8 @@ namespace ExtendedTest
             //mapList.Add(LoadMap("testmap", new Vector2(0, -(32 * 64)))); //top middle
             ////mapList.Add(LoadMap("testmap", new Vector2((32 * 64), -(32 * 64)))); //top right
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), 0))); //left
-            mapList.Add(LoadMap("0-0")); //middle
+            //mapList.Add(LoadMap("0-0")); //middle
+            MapManager.AddMap(LoadMap("0-0"));
             //mapList.Add(LoadMap("0-1"));
             //mapList.Add(LoadMap("00", new Vector2((32 * 64), 0))); //right
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), (32 * 64)))); //bottom left
@@ -115,16 +121,9 @@ namespace ExtendedTest
             {
                 foreach (TmxObject thing in ObjectList)
                 {
-                    Monster newSprite = new Monster(thing.X, thing.Width, thing.Height, thing.Y);
-                    newSprite._Position = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
-                    newSprite.LoadContent("Art/"+thing.Type, Content);
-                    newSprite.SetTarget(player);
-                    newSprite._Position.X += (float)(thing.Width / 2);
-                    newSprite._Position.Y += (float)(thing.Height / 2);
-                    newSprite._Tag = Sprite.SpriteType.kSlimeType;
-                    newSprite._CurrentState = Sprite.SpriteState.kStateActive;
-                    newSprite.parentList = gameObjectList;
-                    gameObjectList.Add(newSprite);
+                    int adjustThingX = (int)(thing.X + (testMap._Postion.X + (thing.Width / 2)));
+                    int adjustThingY = (int)(thing.Y + (testMap._Postion.Y + (thing.Height / 2)));
+                    _NPCManager.CreateMonster(enums.NPCenums.MonsterTypes.kMonsterSlime, thing, new Vector2(adjustThingX, adjustThingY), player);
                 }
             }
         }
@@ -183,14 +182,20 @@ namespace ExtendedTest
                 MouseState mouseState = Mouse.GetState();
                 if (mouseState.LeftButton == ButtonState.Pressed )
                 {
-                    mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y)); //;
-                    foreach(TileMap map in mapList)
+                    mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
+                    Tile clickedTile = MapManager.findTile(mouseCursor._Position);
+                    foreach(TileMap map in MapManager.mapList)
                     {
-                        if(mouseCursor._BoundingBox.Intersects(map.tileMapRect))
-                        {
-                            Tile clickedTile = map.findClickedTile(mouseCursor._BoundingBox);
-                            player.setDestination(clickedTile.tileCenter);
-                        }
+                        //if(mouseCursor._BoundingBox.Intersects(map.tileMapRect))
+                        //{
+                        //    Tile clickedTile = map.findClickedTile(mouseCursor._Position);
+                        //    player.setDestination(clickedTile.tileCenter);
+                        //}
+                    }
+                    if(clickedTile != null)
+                    {
+
+                        player.setDestination(clickedTile.tileCenter);
                     }
                 }
                 if(mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
@@ -269,7 +274,7 @@ namespace ExtendedTest
             GraphicsDevice.Clear(Color.ForestGreen);
             spriteBatch.Begin(camera);
 
-            foreach(TileMap map in mapList)
+            foreach(TileMap map in MapManager.mapList)
             {
                 map.Draw(spriteBatch);
             }

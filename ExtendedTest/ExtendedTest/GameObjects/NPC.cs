@@ -18,6 +18,7 @@ namespace ExtendedTest
         public double rightBoundary { get; private set; }
         public double bottomBoundary { get; private set; }
         public double topBoundary { get; private set; }
+
         public NPC(double lX, double rx, double by, double ty)
         {
             leftBoundary = lX;
