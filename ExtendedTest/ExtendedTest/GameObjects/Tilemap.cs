@@ -26,7 +26,7 @@ namespace ExtendedTest
         public bool active = false;
 
         List<String> nearbyMaps;
-
+        public Rectangle tileMapRect;
         public TileMap(String mapName, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             backgroundTiles = new List<Tile>();
@@ -42,8 +42,11 @@ namespace ExtendedTest
             tileWidth = map.Tilesets[0].TileWidth;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
+            int mapWidth = map.Width * tileWidth;
+            int mapHeight = map.Height * tileHeight;
+            this._Postion = new Vector2(Convert.ToInt32(nearbyMaps[0]) * mapWidth, Convert.ToInt32(nearbyMaps[1]) * mapHeight);
+            tileMapRect = new Rectangle((int)this._Postion.X, (int)this._Postion.Y, mapWidth, mapHeight);
 
-            this._Postion = new Vector2(Convert.ToInt32(nearbyMaps[0]) * (map.Width * tileWidth), Convert.ToInt32(nearbyMaps[1]) * (map.Height * tileHeight));
             bool test = true;
             
             for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
@@ -129,7 +132,18 @@ namespace ExtendedTest
                     tile.Draw(spriteBatch);
                 }
             }
+        }
 
+        public Tile findClickedTile(Rectangle mouseRect)
+        {
+            foreach(Tile tile in backgroundTiles)
+            {
+                if(tile.destRect.Intersects(mouseRect))
+                {
+                    return tile;
+                }
+            }
+            return null;
         }
     }
 }

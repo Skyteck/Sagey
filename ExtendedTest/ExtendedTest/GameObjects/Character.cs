@@ -8,6 +8,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest
 {
+    /// <summary>
+    /// A character is any object in the game world that can move around using its own logic. FindPath is provided to get the character where it's going.
+    /// For example the player's destination is set by clicking on the world. NPCs use their logic to determien their destination
+    /// findPath gets things where they need to be.
+    /// </summary>
     class Character : Sprite
     {
 
@@ -42,7 +47,7 @@ namespace ExtendedTest
             base.Update(gameTime, gameObjectList);
         }
 
-        private void findPath()
+        public void findPath()
         {
             float maxSpeed = 5f;
             if (Math.Abs(Destination.X - _Position.X) > maxSpeed)
@@ -82,7 +87,7 @@ namespace ExtendedTest
             }
         }
 
-        public void setDestination(Vector2 dest)
+        public virtual void setDestination(Vector2 dest)
         {
             Destination = dest;
             atDestination = false;

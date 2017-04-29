@@ -20,6 +20,9 @@ namespace ExtendedTest
         int _Row;
         public bool visible = false;
         public bool active = false;
+        public Rectangle destRect;
+
+        public Vector2 tileCenter;
 
         public Tile(Texture2D texture, Vector2 Pos, int width, int height, int col, int row, bool draw)
         {
@@ -31,6 +34,10 @@ namespace ExtendedTest
             _Row = row;
             visible = draw;
             _SourceRec = new Rectangle(_TileWidth * _Col, _TileHeight * _Row, _TileWidth, _TileHeight);
+            destRect = new Rectangle((int)_Position.X, (int)_Position.Y, _TileWidth, _TileHeight);
+
+            tileCenter.X = this._Position.X + this._TileWidth / 2;
+            tileCenter.Y = this._Position.Y + this._TileHeight / 2;
         }
 
         public void Update(GameTime gameTime)
@@ -40,7 +47,6 @@ namespace ExtendedTest
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle destRect = new Rectangle((int)_Position.X, (int)_Position.Y, _TileWidth, _TileHeight);
             spriteBatch.Draw(_Texture, destRect, _SourceRec, Color.White);
         }
     }

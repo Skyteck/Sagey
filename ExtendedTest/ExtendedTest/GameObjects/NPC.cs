@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest
 {
+    /// <summary>
+    /// An NPC is any character that has the ability to "patrol" a set area determined by their boundaries.
+    /// </summary>
     class NPC : Character
     {
         double currentMoveTimer = 6f;

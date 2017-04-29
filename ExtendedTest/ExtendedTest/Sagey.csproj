@@ -48,13 +48,14 @@
     <Compile Include="GameObjects\Monster.cs" />
     <Compile Include="GameObjects\Rock.cs" />
     <Compile Include="GameObjects\NPC.cs" />
-    <Compile Include="InventoryManager.cs" />
+    <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="GameObjects\Items\Log.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="GameObjects\Tilemap.cs" />
     <Compile Include="GameObjects\Tree.cs" />
     <Compile Include="GameObjects\Items\Item.cs" />
+    <Compile Include="Managers\TilemapManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Sprite.cs" />

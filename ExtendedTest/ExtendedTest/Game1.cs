@@ -184,7 +184,14 @@ namespace ExtendedTest
                 if (mouseState.LeftButton == ButtonState.Pressed )
                 {
                     mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y)); //;
-                    player.setDestination(mouseCursor._Position);
+                    foreach(TileMap map in mapList)
+                    {
+                        if(mouseCursor._BoundingBox.Intersects(map.tileMapRect))
+                        {
+                            Tile clickedTile = map.findClickedTile(mouseCursor._BoundingBox);
+                            player.setDestination(clickedTile.tileCenter);
+                        }
+                    }
                 }
                 if(mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
                 {

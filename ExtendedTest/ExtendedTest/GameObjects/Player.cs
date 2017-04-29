@@ -27,6 +27,8 @@ namespace ExtendedTest
 
         public Player(InventoryManager manager)
         {
+            this.startHP = 10;
+            _HP = 10;
             invenManager = manager;
         }
 
@@ -69,19 +71,10 @@ namespace ExtendedTest
         private void handleInput(GameTime gameTime)
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            MouseState mouseState = Mouse.GetState();
-
-
-            //if(mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed)
-            //{
-            //    Destination = new Vector2(mouseState.Position.X, mouseState.Position.Y);
-            //    atDestination = false;
-            //    action = CurrentAction.kActionNone;
-            //}
 
             if(!atDestination)
             {
-                findPath();
+                base.findPath();
             }
 
             #region Keyboard State
@@ -120,55 +113,13 @@ namespace ExtendedTest
             */
             #endregion
 
-            previousMouseState = mouseState;
             //LockInBounds();
         }
 
-        public void setDestination(Vector2 dest)
+        public override void setDestination(Vector2 dest)
         {
-            Destination = dest;
-            atDestination = false;
+            base.setDestination(dest);
             action = CurrentAction.kActionNone;
-        }
-
-        private void findPath()
-        {
-            float maxSpeed = 5f;
-            if (Math.Abs(Destination.X - _Position.X) > 5)
-            {
-                if (Destination.X > _Position.X)
-                {
-                    _Position.X += maxSpeed;
-                    movingX = true;
-                }
-                else if (Destination.X < _Position.X)
-                {
-                    _Position.X -= maxSpeed;
-                    movingX = true;
-                }
-
-            }
-
-            if (Math.Abs(Destination.Y - _Position.Y) > 5)
-            {
-                if (Destination.Y > _Position.Y)
-                {
-                    _Position.Y += maxSpeed;
-                    movingY = true;
-                }
-                else if (Destination.Y < _Position.Y)
-                {
-                    _Position.Y -= maxSpeed;
-                    movingY = true;
-                }
-            }
-
-
-            if (Vector2.Distance(Destination, _Position) <= 5)
-            {
-                //_Position = Destination;
-                atDestination = true;
-            }
         }
 
         private Sprite collisionCheck(List<Sprite> gameObjectList)

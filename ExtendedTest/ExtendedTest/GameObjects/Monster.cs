@@ -25,7 +25,7 @@ namespace ExtendedTest
                 HuntTarget();
                 if (this._BoundingBox.Intersects(target._BoundingBox))
                 {
-                    if (this.attackSpeed <= 0)
+                    if (this.attackCD <= 0)
                     {
                         target.ReceiveDamage(1);
                         attackCD = attackSpeed;
@@ -40,7 +40,7 @@ namespace ExtendedTest
 
             if (attackCD > 0)
             {
-                attackSpeed -= gameTime.ElapsedGameTime.TotalSeconds;
+                attackCD -= gameTime.ElapsedGameTime.TotalSeconds;
             }
             base.Update(gameTime, gameObjectList);
         }
