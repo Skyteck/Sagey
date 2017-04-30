@@ -29,6 +29,7 @@ namespace ExtendedTest
         InventoryManager invenManager;
         TilemapManager MapManager;
         Managers.NpcManager _NPCManager;
+        Managers.GameObjectManager _GameObjectManager;
         
 
         public Game1()
@@ -49,9 +50,10 @@ namespace ExtendedTest
         {
             // TODO: Add your initialization logic here
             invenManager = new InventoryManager(Content);
-            MapManager = new TilemapManager();
-            _NPCManager = new Managers.NpcManager(MapManager, Content);
             player = new Player(invenManager);
+            MapManager = new TilemapManager();
+            _NPCManager = new Managers.NpcManager(MapManager, Content, player);
+            _GameObjectManager = new Managers.GameObjectManager(MapManager, invenManager, Content, player);
             mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
             base.Initialize();
@@ -74,6 +76,7 @@ namespace ExtendedTest
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), 0))); //left
             //mapList.Add(LoadMap("0-0")); //middle
             MapManager.AddMap(LoadMap("0-0"));
+            MapManager.AddMap(LoadMap("0-1"));
             //mapList.Add(LoadMap("0-1"));
             //mapList.Add(LoadMap("00", new Vector2((32 * 64), 0))); //right
             //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), (32 * 64)))); //bottom left
@@ -123,7 +126,7 @@ namespace ExtendedTest
                 {
                     int adjustThingX = (int)(thing.X + (testMap._Postion.X + (thing.Width / 2)));
                     int adjustThingY = (int)(thing.Y + (testMap._Postion.Y + (thing.Height / 2)));
-                    _NPCManager.CreateMonster(enums.NPCenums.MonsterTypes.kMonsterSlime, thing, new Vector2(adjustThingX, adjustThingY), player);
+                    _NPCManager.CreateMonster(thing, new Vector2(adjustThingX, adjustThingY));
                 }
             }
         }
@@ -136,23 +139,7 @@ namespace ExtendedTest
                 foreach (TmxObject thing in ObjectList)
                 {
                     Vector2 newPos = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
-                    if (thing.Type.Equals("tree"))
-                    {
-                        Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
-                        anotherTree.LoadContent("Art/tree", Content);
-                        anotherTree._Position = newPos;
-                        anotherTree.parentList = gameObjectList;
-                        gameObjectList.Add(anotherTree);
-
-                    }
-                    else if (thing.Type.Equals("rock"))
-                    {
-                        Rock anotherRock = new Rock(Rock.RockType.kNormalRock, thing);
-                        anotherRock.LoadContent("Art/rock", Content);
-                        anotherRock._Position = newPos;
-                        anotherRock.parentList = gameObjectList;
-                        gameObjectList.Add(anotherRock);
-                    }
+                    _GameObjectManager.CreateObject(thing, newPos);
                 }
             }
         }
@@ -183,19 +170,22 @@ namespace ExtendedTest
                 if (mouseState.LeftButton == ButtonState.Pressed )
                 {
                     mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
-                    Tile clickedTile = MapManager.findTile(mouseCursor._Position);
-                    foreach(TileMap map in MapManager.mapList)
+                    if(mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
                     {
-                        //if(mouseCursor._BoundingBox.Intersects(map.tileMapRect))
-                        //{
-                        //    Tile clickedTile = map.findClickedTile(mouseCursor._Position);
-                        //    player.setDestination(clickedTile.tileCenter);
-                        //}
-                    }
-                    if(clickedTile != null)
-                    {
+                        Tile clickedTile = MapManager.findTile(mouseCursor._Position);
+                        foreach (TileMap map in MapManager.mapList)
+                        {
+                            //if(mouseCursor._BoundingBox.Intersects(map.tileMapRect))
+                            //{
+                            //    Tile clickedTile = map.findClickedTile(mouseCursor._Position);
+                            //    player.setDestination(clickedTile.tileCenter);
+                            //}
+                        }
+                        if (clickedTile != null)
+                        {
 
-                        player.setDestination(clickedTile.tileCenter);
+                            player.setDestination(clickedTile.tileCenter);
+                        }
                     }
                 }
                 if(mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
@@ -215,16 +205,9 @@ namespace ExtendedTest
                     }
                 }
 
-                player.Update(gameTime, gameObjectList);
-
-                foreach (Sprite sprite in gameObjectList)
-                {
-                    if(sprite._Tag == Sprite.SpriteType.kSlimeType)
-                    {
-                        sprite.Update(gameTime, gameObjectList);
-
-                    }
-                }
+                player.Update(gameTime, _NPCManager._SpriteList);
+                _NPCManager.UpdateNPCs(gameTime);
+                _GameObjectManager.Update(gameTime, _NPCManager._SpriteList);
 
                 
 
@@ -279,11 +262,8 @@ namespace ExtendedTest
                 map.Draw(spriteBatch);
             }
             player.Draw(spriteBatch);
-            foreach (Sprite sprite in gameObjectList)
-            {
-                sprite.Draw(spriteBatch);
-            }
-
+            _NPCManager.DrawNPCs(spriteBatch);
+            _GameObjectManager.Draw(spriteBatch);
             int i = 0;
             foreach(Item item in invenManager.itemList)
             {

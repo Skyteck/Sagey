@@ -23,7 +23,7 @@ namespace ExtendedTest
         }
 
         public RockType rockType = RockType.kNormalRock;
-        public Rock(RockType myType, TmxObject thing)
+        public Rock(RockType myType)
         {
             rockType = myType;
             switch(rockType)

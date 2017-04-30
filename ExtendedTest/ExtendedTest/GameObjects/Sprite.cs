@@ -63,7 +63,7 @@ namespace ExtendedTest
         {
             get
             {
-                return new Rectangle((int)_Position.X, (int)_Position.Y, frameWidth, frameHeight);
+                return new Rectangle((int)_Position.X , (int)_Position.Y - this._Texture.Height / 2, frameWidth, frameHeight);
             }
         }
 

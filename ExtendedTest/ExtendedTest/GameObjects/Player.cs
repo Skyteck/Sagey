@@ -64,7 +64,6 @@ namespace ExtendedTest
             {
                 Mine(currentTarget as Rock);
             }
-            Console.WriteLine("");
             base.Update(gameTime, gameObjectList);
         }
 

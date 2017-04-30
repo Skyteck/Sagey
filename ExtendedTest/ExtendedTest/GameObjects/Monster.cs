@@ -10,9 +10,10 @@ namespace ExtendedTest
     class Monster : NPC
     {
         bool Agressive = false;
+        List<Character> targetList;
         Character target;
         Rectangle huntZone;
-        public Monster(double lx, double rx, double by, double ty) : base(lx, rx, by, ty)
+        public Monster(double lx, double rx, double by, double ty, Managers.NpcManager manager) : base(lx, rx, by, ty, manager)
         {
 
         }

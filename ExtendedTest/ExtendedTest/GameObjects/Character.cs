@@ -22,7 +22,6 @@ namespace ExtendedTest
         public bool movingY = false;
 
 
-
         public double attackSpeed = 3.0;
         public double attackCD = 0;
         public int startHP = 1;
@@ -80,9 +79,9 @@ namespace ExtendedTest
             }
 
 
-            if (Vector2.Distance(Destination, _Position) <= maxSpeed)
+            if (Vector2.Distance(Destination, _Position) <= maxSpeed + 1)
             {
-                //_Position = Destination;
+                _Position = Destination;
                 atDestination = true;
             }
         }

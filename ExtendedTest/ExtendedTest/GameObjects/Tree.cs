@@ -53,7 +53,6 @@ namespace ExtendedTest
             int randomNumber = ran.Next(0, difficulty);
             if(randomNumber == 0)
             {
-                Console.WriteLine("Dead Tree");
                 Log log = new Log();
                 return log;
             }

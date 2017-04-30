@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,30 +12,52 @@ namespace ExtendedTest.Managers
 {
     class NpcManager
     {
-        List<Sprite> _SpriteList;
+        public List<Sprite> _SpriteList;
         TilemapManager _TilemapManager;
         ContentManager _Content;
+        Player thePlayer;
 
-        public NpcManager(TilemapManager tMapManager, ContentManager content)
+        public NpcManager(TilemapManager tMapManager, ContentManager content, Player player)
         {
             _SpriteList = new List<Sprite>();
             _TilemapManager = tMapManager;
             _Content = content;
+            thePlayer = player;
         }
 
-        public void CreateMonster(enums.NPCenums.MonsterTypes monsterType, TmxObject thing, Vector2 pos, Character target)
+        public void CreateMonster(TmxObject thing, Vector2 pos)
         {
-            if(monsterType == enums.NPCenums.MonsterTypes.kMonsterSlime)
+            if(thing.Type.Equals("Slime"))
             {
-                Monster newSprite = new Monster(thing.X, thing.Width, thing.Height, thing.Y);
+                Monster newSprite = new Monster(thing.X, thing.Width, thing.Height, thing.Y, this);
                 newSprite._Position = pos;
                 newSprite.LoadContent("Art/" + thing.Type, _Content);
-                newSprite.SetTarget(target);
+                if(Convert.ToBoolean(thing.Properties["Agressive"]))
+                {
+                    newSprite.SetTarget(thePlayer);
+                }
                 newSprite._Tag = Sprite.SpriteType.kSlimeType;
                 newSprite._CurrentState = Sprite.SpriteState.kStateActive;
                 newSprite.parentList = _SpriteList;
                 _SpriteList.Add(newSprite);
             }
+        }
+
+        public void UpdateNPCs(GameTime gameTime)
+        {
+            foreach(Sprite sprite in _SpriteList)
+            {
+                sprite.Update(gameTime, this._SpriteList);
+            }
+        }
+
+        public void DrawNPCs(SpriteBatch spriteBatch)
+        {
+            foreach (Sprite sprite in _SpriteList)
+            {
+                sprite.Draw(spriteBatch);
+            }
+
         }
     }
 }

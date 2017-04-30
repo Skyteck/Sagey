@@ -99,20 +99,26 @@ namespace ExtendedTest
         {
             if (map.ObjectGroups.Count >= 1)
             {
-                return map.ObjectGroups["Object Layer 1"].Objects;
+                if (map.ObjectGroups.Contains("Object Layer 1"))
+                {
+                    return map.ObjectGroups["Object Layer 1"].Objects;
+                }
 
             }
-            else return null;
+            return null;
         }
 
         public TmxList<TmxObject> findNPCs()
         {
             if (map.ObjectGroups.Count >= 1)
             {
-                return map.ObjectGroups["NPC Layer"].Objects;
+                if(map.ObjectGroups.Contains("NPC Layer"))
+                {
+                    return map.ObjectGroups["NPC Layer"].Objects;
+                }
 
             }
-            else return null;
+            return null;
         }
 
         public void Update(GameTime gameTime)

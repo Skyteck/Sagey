@@ -18,25 +18,27 @@ namespace ExtendedTest
         public double rightBoundary { get; private set; }
         public double bottomBoundary { get; private set; }
         public double topBoundary { get; private set; }
+        Managers.NpcManager ParentManager;
 
-        public NPC(double lX, double rx, double by, double ty)
+        public NPC(double lX, double rx, double by, double ty, Managers.NpcManager manager) 
         {
             leftBoundary = lX;
-            rightBoundary = rx;
-            bottomBoundary = by;
+            rightBoundary = rx + lX;
             topBoundary = ty;
+            bottomBoundary = by + ty;
+            ParentManager = manager;
         }
 
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
 
-            this.rightBoundary += this._Position.X;
-            this.rightBoundary -= this._Texture.Width;
-            this.bottomBoundary += this._Position.Y;
-            this.bottomBoundary -= this._Texture.Height;
-            this.leftBoundary += this._Texture.Width;
-            this.topBoundary += this._Texture.Height;
+            //this.rightBoundary += this._Position.X;
+            //this.bottomBoundary += this._Position.Y;
+            //this.leftBoundary += this._Texture.Width;
+            //this.topBoundary += this._Texture.Height;
+
+            Console.WriteLine(leftBoundary + " " + rightBoundary);
         }
 
         public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
@@ -55,8 +57,8 @@ namespace ExtendedTest
                 bool move = (num.Next() % 2 == 0) ? true : false;
                 if (move)
                 {
-                    float newX = num.Next((int)this.leftBoundary, (int)this.rightBoundary);
-                    float newY = num.Next((int)this.topBoundary, (int)this.bottomBoundary);
+                    float newX = num.Next((int)this.leftBoundary + this._Texture.Width / 2, (int)this.rightBoundary - this._Texture.Width / 2);
+                    float newY = num.Next((int)this.topBoundary + this._Texture.Height / 2, (int)this.bottomBoundary - this._Texture.Height / 2);
                     this.setDestination(new Vector2(newX, newY));
                 }
 
