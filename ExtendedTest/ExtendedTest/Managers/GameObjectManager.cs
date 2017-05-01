@@ -17,14 +17,14 @@ namespace ExtendedTest.Managers
         ContentManager Content;
         TilemapManager tMapManager;
 
-        Player thePlayter;
+        readonly Player thePlayer;
 
         public GameObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player)
         {
             objectList = new List<Sprite>();
             _InventoryManager = invenManager;
             Content = content;
-            thePlayter = player;
+            thePlayer = player;
             tMapManager = mapManager;
         }
 

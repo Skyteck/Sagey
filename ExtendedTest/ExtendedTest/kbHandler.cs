@@ -9,29 +9,56 @@ namespace ExtendedTest
 {
     public class KbHandler
     {
-        private Keys[] lastPressedKeys;
+        private List<Keys> lastPressedKeys;
+        List<Keys> badKeys;
         public bool typingMode = false;
+        private bool shiftHeld = false;
+
         public String Input = "";
+
+        List<Keys> GoodKeys = new List<Keys>
+        {
+            Keys.A, Keys.B, Keys.C, Keys.D, Keys.E, Keys.F, Keys.G, Keys.H, Keys.I, Keys.J,
+            Keys.K, Keys.L, Keys.M, Keys.N, Keys.O, Keys.P, Keys.Q, Keys.R, Keys.S, Keys.T,
+            Keys.U, Keys.V, Keys.W, Keys.X, Keys.Y, Keys.Z, Keys.D0, Keys.D1, Keys.D2, Keys.D3,
+            Keys.D4, Keys.D5, Keys.D6, Keys.D7, Keys.D8, Keys.D9, Keys.Space, Keys.NumPad0, Keys.NumPad1, Keys.NumPad2,
+            Keys.NumPad3, Keys.NumPad4, Keys.NumPad5, Keys.NumPad6, Keys.NumPad7, Keys.NumPad8, Keys.NumPad9, Keys.Enter,
+            Keys.OemQuestion
+        };
+
         public KbHandler()
         {
-            lastPressedKeys = new Keys[0];
+            lastPressedKeys = new List<Keys>();
         }
 
         public void Update()
         {
             KeyboardState kbState = Keyboard.GetState();
-            Keys[] pressedKeys = kbState.GetPressedKeys();
+            List<Keys> pressedKeys = kbState.GetPressedKeys().ToList<Keys>();
 
             if(!typingMode)
             {
-                if(pressedKeys.Contains(Keys.OemTilde) && !lastPressedKeys.Contains(Keys.OemTilde))
+                if(kbState.IsKeyDown(Keys.Enter) && !lastPressedKeys.Contains(Keys.Enter))
                 {
                     typingMode = true;
                 }
             }
             else if(typingMode)
             {
+                if(pressedKeys.Count>=1)
+                {
+                    pressedKeys = pressedKeys.Intersect(GoodKeys).ToList();
+                }
                 //check if any of the previous update's keys are no longer pressed
+                if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                {
+                    shiftHeld = true;
+                }
+                else
+                {
+                    shiftHeld = false;
+                }
+
                 foreach (Keys key in lastPressedKeys)
                 {
                     if (!pressedKeys.Contains(key))
@@ -53,12 +80,12 @@ namespace ExtendedTest
 
         private void OnKeyDown(Keys key)
         {
-            if(key == Keys.OemTilde)
+
+            if(key == Keys.Enter)
             {
                 if(typingMode)
                 {
                     typingMode = false;
-                    Input = "";
                 }
             }
             else
@@ -69,43 +96,113 @@ namespace ExtendedTest
                 }
                 else if (key == Keys.D0)
                 {
-                    Input += "0";
+                    if(shiftHeld)
+                    {
+                        Input += ")";
+                    }
+                    else
+                    {
+                        Input += "0";
+                    }
                 }
                 else if (key == Keys.D1)
                 {
-                    Input += "1";
+                    if (shiftHeld)
+                    {
+                        Input += "!";
+                    }
+                    else
+                    {
+                        Input += "1";
+                    }
                 }
                 else if (key == Keys.D2)
                 {
-                    Input += "2";
+                    if (shiftHeld)
+                    {
+                        Input += "@";
+                    }
+                    else
+                    {
+                        Input += "2";
+                    }
                 }
                 else if (key == Keys.D3)
                 {
-                    Input += "3";
+                    if (shiftHeld)
+                    {
+                        Input += "#";
+                    }
+                    else
+                    {
+                        Input += "3";
+                    }
                 }
                 else if (key == Keys.D4)
                 {
-                    Input += "4";
+                    if (shiftHeld)
+                    {
+                        Input += "$";
+                    }
+                    else
+                    {
+                        Input += "4";
+                    }
                 }
                 else if (key == Keys.D5)
                 {
-                    Input += "5";
+                    if (shiftHeld)
+                    {
+                        Input += "%";
+                    }
+                    else
+                    {
+                        Input += "5";
+                    }
                 }
                 else if (key == Keys.D6)
                 {
-                    Input += "6";
+                    if (shiftHeld)
+                    {
+                        Input += "^";
+                    }
+                    else
+                    {
+                        Input += "6";
+                    }
                 }
                 else if (key == Keys.D7)
                 {
-                    Input += "7";
+                    if (shiftHeld)
+                    {
+                        Input += "&";
+                    }
+                    else
+                    {
+                        Input += "7";
+                    }
                 }
                 else if (key == Keys.D8)
                 {
-                    Input += "8";
+                    if (shiftHeld)
+                    {
+                        Input += "*";
+                    }
+                    else
+                    {
+                        Input += "8";
+                    }
                 }
                 else if (key == Keys.D9)
                 {
-                    Input += "9";
+                    if (shiftHeld)
+                    {
+                        Input += "(";
+                    }
+                    else
+                    {
+                        Input += "9";
+                    }
                 }
                 else if(key==Keys.Back)
                 {
@@ -115,14 +212,20 @@ namespace ExtendedTest
 
                     }
                 }
-                else if(key==Keys.Enter)
+                else if(key==Keys.OemQuestion)
                 {
-                    Input = " ";
+                    if(shiftHeld)
+                    {
+                        Input += "?";
+                    }
+                    else
+                    {
+                        Input += "/";
+                    }
                 }
                 else
                 {
                     Input += key.ToString();
-
                 }
             }
             //do stuff

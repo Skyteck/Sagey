@@ -27,10 +27,10 @@ namespace ExtendedTest
         List<TileMap> mapList;
 
         SpriteFont font;
-        //String currentInput = " ";
-        //bool typingMode = false;
-        //KbHandler kbHandler;
-
+        String currentInput = " ";
+        bool typingMode = false;
+        KbHandler kbHandler;
+        TextProcessor processor;
         //Managers
         InventoryManager invenManager;
         TilemapManager MapManager;
@@ -62,7 +62,8 @@ namespace ExtendedTest
             _GameObjectManager = new Managers.GameObjectManager(MapManager, invenManager, Content, player);
             mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
-            //kbHandler = new KbHandler();
+            kbHandler = new KbHandler();
+            processor = new TextProcessor(player);
             base.Initialize();
         }
 
@@ -91,6 +92,7 @@ namespace ExtendedTest
         {
             player.LoadContent("Art/Player", Content);
             player._Position = new Vector2(0, 0);
+            invenManager.AddItem(new Log());
         }
 
         private void LoadGUI()
@@ -163,7 +165,6 @@ namespace ExtendedTest
                 // TODO: Add your update logic here
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
-
                 MouseState mouseState = Mouse.GetState();
                 if (mouseState.LeftButton == ButtonState.Pressed )
                 {
@@ -171,17 +172,8 @@ namespace ExtendedTest
                     if(mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
                     {
                         Tile clickedTile = MapManager.findTile(mouseCursor._Position);
-                        foreach (TileMap map in MapManager.mapList)
-                        {
-                            //if(mouseCursor._BoundingBox.Intersects(map.tileMapRect))
-                            //{
-                            //    Tile clickedTile = map.findClickedTile(mouseCursor._Position);
-                            //    player.setDestination(clickedTile.tileCenter);
-                            //}
-                        }
                         if (clickedTile != null)
                         {
-
                             player.setDestination(clickedTile.tileCenter);
                         }
                     }
@@ -205,18 +197,22 @@ namespace ExtendedTest
                     }
                 }
 
-                //kbHandler.Update();
-
+                kbHandler.Update();
+                if(typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
+                {
+                    processor.Parsetext(kbHandler.Input);
+                    kbHandler.Input = string.Empty;
+                }
                 player.Update(gameTime, _NPCManager._SpriteList);
                 _NPCManager.UpdateNPCs(gameTime);
                 _GameObjectManager.Update(gameTime, _NPCManager._SpriteList);
 
                 
-                //if(!kbHandler.typingMode)
-                //{
+                if(!kbHandler.typingMode)
+                {
                     ProcessCamera(gameTime);
 
-                //}
+                }
                 
                 base.Update(gameTime);
                 //Show FPS
@@ -226,6 +222,7 @@ namespace ExtendedTest
 
                 }
                 previousMouseState = mouseState;
+                typingMode = kbHandler.typingMode;
             }
         }
 
@@ -262,22 +259,19 @@ namespace ExtendedTest
             GraphicsDevice.Clear(Color.ForestGreen);
             spriteBatch.Begin(camera);
 
-            foreach(TileMap map in MapManager.mapList)
-            {
-                map.Draw(spriteBatch);
-            }
+            MapManager.Draw(spriteBatch);
+
             player.Draw(spriteBatch);
+
             _NPCManager.DrawNPCs(spriteBatch);
+
             _GameObjectManager.Draw(spriteBatch);
-            int i = 0;
-            foreach(Item item in invenManager.itemList)
-            {
-                item.Draw(spriteBatch, new Vector2(i * 30, -20));
-                i++;
-            }
+            
+            invenManager.Draw(spriteBatch, camera.ToWorld(new Vector2(20, 20)));
+
             mouseCursor.Draw(spriteBatch);
 
-            //spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
+            spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
 
             base.Draw(gameTime);
             spriteBatch.End();

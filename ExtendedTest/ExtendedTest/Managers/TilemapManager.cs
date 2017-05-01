@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,14 @@ namespace ExtendedTest
             int clickMapX = (int)pos.X / 64;
             int clickMapY = (int)pos.Y / 64;
             return new Vector2(clickMapX, clickMapY);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach(TileMap map in mapList)
+            {
+                map.Draw(spriteBatch);
+            }
         }
     }
 }
