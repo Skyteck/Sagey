@@ -49,6 +49,7 @@
     <Compile Include="GameObjects\Monster.cs" />
     <Compile Include="GameObjects\Rock.cs" />
     <Compile Include="GameObjects\NPC.cs" />
+    <Compile Include="kbHandler.cs" />
     <Compile Include="Managers\GameObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="GameObjects\Items\Log.cs" />
@@ -100,6 +101,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="Content\Fonts\Fipps.spritefont" />
     <None Include="Content\Tilemaps\0-1.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -113,7 +115,6 @@
     <None Include="Content\Tilemaps\testmap.tmx" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

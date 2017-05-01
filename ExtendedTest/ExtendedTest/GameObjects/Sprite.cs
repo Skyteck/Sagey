@@ -31,6 +31,7 @@ namespace ExtendedTest
         public Color _MyColor = Color.White;
         public float _Rotation = 0.0f;
         public List<Sprite> parentList;
+        public string Name;
 
         public enum SpriteState
         {

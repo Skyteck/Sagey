@@ -36,6 +36,7 @@ namespace ExtendedTest.Managers
                 anotherTree.LoadContent("Art/tree", Content);
                 anotherTree._Position = pos;
                 anotherTree.parentList = objectList;
+                anotherTree.Name = thing.Name;
                 objectList.Add(anotherTree);
 
             }
@@ -45,6 +46,7 @@ namespace ExtendedTest.Managers
                 anotherRock.LoadContent("Art/" + thing.Type, Content);
                 anotherRock._Position = pos;
                 anotherRock.parentList = objectList;
+                anotherRock.Name = thing.Name;
                 objectList.Add(anotherRock);
             }
         }

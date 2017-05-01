@@ -18,12 +18,18 @@ namespace ExtendedTest
         Player player;
         //List<Sprite> gameObjectList;
         MouseState previousMouseState;
+        KeyboardState previousKBState;
         Sprite mouseCursor;
         Sprite inventoryBG;
         Camera  camera;
         double fps = 0;
         double elapsedTime = 0;
         List<TileMap> mapList;
+
+        SpriteFont font;
+        //String currentInput = " ";
+        //bool typingMode = false;
+        //KbHandler kbHandler;
 
         //Managers
         InventoryManager invenManager;
@@ -56,6 +62,7 @@ namespace ExtendedTest
             _GameObjectManager = new Managers.GameObjectManager(MapManager, invenManager, Content, player);
             mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
+            //kbHandler = new KbHandler();
             base.Initialize();
         }
 
@@ -70,19 +77,10 @@ namespace ExtendedTest
 
             LoadPlayerContent();
             LoadGUI();
-            //mapList.Add(LoadMap("testmap", new Vector2(-(32 * 64), -(32 * 64)))); //top left
-            //mapList.Add(LoadMap("testmap", new Vector2(0, -(32 * 64)))); //top middle
-            ////mapList.Add(LoadMap("testmap", new Vector2((32 * 64), -(32 * 64)))); //top right
-            //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), 0))); //left
-            //mapList.Add(LoadMap("0-0")); //middle
+
             MapManager.AddMap(LoadMap("0-0"));
             MapManager.AddMap(LoadMap("0-1"));
-            //mapList.Add(LoadMap("0-1"));
-            //mapList.Add(LoadMap("00", new Vector2((32 * 64), 0))); //right
-            //mapList.Add(LoadMap("00", new Vector2(-(32 * 64), (32 * 64)))); //bottom left
-            //mapList.Add(LoadMap("testmap", new Vector2(0, (32 * 64)))); // bottom middle
-            //mapList.Add(LoadMap("00", new Vector2((32 * 64), (32 * 64)))); //bottom right
-
+            font = Content.Load<SpriteFont>("Fonts/Fipps");
             //List<Sprite> test = new List<Sprite>();
             //test = gameObjectList.FindAll(x => x._Tag == Sprite.SpriteType.kTreeType);
 
@@ -188,6 +186,8 @@ namespace ExtendedTest
                         }
                     }
                 }
+
+
                 if(mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
                 {
                     camera.Scale += 0.2f;
@@ -205,13 +205,18 @@ namespace ExtendedTest
                     }
                 }
 
+                //kbHandler.Update();
+
                 player.Update(gameTime, _NPCManager._SpriteList);
                 _NPCManager.UpdateNPCs(gameTime);
                 _GameObjectManager.Update(gameTime, _NPCManager._SpriteList);
 
                 
+                //if(!kbHandler.typingMode)
+                //{
+                    ProcessCamera(gameTime);
 
-                ProcessCamera(gameTime);
+                //}
                 
                 base.Update(gameTime);
                 //Show FPS
@@ -271,6 +276,9 @@ namespace ExtendedTest
                 i++;
             }
             mouseCursor.Draw(spriteBatch);
+
+            //spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
+
             base.Draw(gameTime);
             spriteBatch.End();
         }

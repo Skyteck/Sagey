@@ -37,6 +37,7 @@ namespace ExtendedTest.Managers
                     newSprite.SetTarget(thePlayer);
                 }
                 newSprite._Tag = Sprite.SpriteType.kSlimeType;
+                newSprite.Name = thing.Name;
                 newSprite._CurrentState = Sprite.SpriteState.kStateActive;
                 newSprite.parentList = _SpriteList;
                 _SpriteList.Add(newSprite);
