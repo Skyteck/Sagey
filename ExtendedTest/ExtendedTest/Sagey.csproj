@@ -51,6 +51,7 @@
     <Compile Include="GameObjects\Rock.cs" />
     <Compile Include="GameObjects\NPC.cs" />
     <Compile Include="kbHandler.cs" />
+    <Compile Include="Managers\CombatManager.cs" />
     <Compile Include="Managers\GameObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="GameObjects\Items\Log.cs" />

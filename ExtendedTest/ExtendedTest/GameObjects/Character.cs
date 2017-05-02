@@ -21,11 +21,13 @@ namespace ExtendedTest
         public bool movingX = false;
         public bool movingY = false;
 
-
+        //Combat values
         public double attackSpeed = 3.0;
         public double attackCD = 0;
         public int startHP = 1;
         public int _HP;
+        public int defense;
+        public int attack;
 
         public Character()
         {
