@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ExtendedTest
 {
-    class Item
+    public class Item
     {
         public  String _Name;
         public double _Weight;

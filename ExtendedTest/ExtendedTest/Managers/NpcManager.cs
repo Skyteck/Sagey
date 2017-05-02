@@ -37,7 +37,7 @@ namespace ExtendedTest.Managers
                     newSprite.SetTarget(thePlayer);
                 }
                 newSprite._Tag = Sprite.SpriteType.kSlimeType;
-                newSprite.Name = thing.Name;
+                newSprite.Name = thing.Name.ToUpper();
                 newSprite._CurrentState = Sprite.SpriteState.kStateActive;
                 newSprite.parentList = _SpriteList;
                 _SpriteList.Add(newSprite);
@@ -59,6 +59,11 @@ namespace ExtendedTest.Managers
                 sprite.Draw(spriteBatch);
             }
 
+        }
+
+        public Character findNPC(String sprite)
+        {
+            return (NPC)_SpriteList.Find(x => x.Name == sprite);
         }
     }
 }

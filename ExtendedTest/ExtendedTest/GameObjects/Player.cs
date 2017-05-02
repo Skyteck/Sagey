@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    class Player : Character
+    public class Player : Character
     {
         Vector2 Destination = Vector2.Zero;
         bool atDestination = true;

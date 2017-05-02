@@ -15,13 +15,13 @@ namespace ExtendedTest
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player;
+        public Player player;
         //List<Sprite> gameObjectList;
         MouseState previousMouseState;
         KeyboardState previousKBState;
         Sprite mouseCursor;
         Sprite inventoryBG;
-        Camera  camera;
+        public Camera  camera;
         double fps = 0;
         double elapsedTime = 0;
         List<TileMap> mapList;
@@ -29,7 +29,7 @@ namespace ExtendedTest
         SpriteFont font;
         String currentInput = " ";
         bool typingMode = false;
-        KbHandler kbHandler;
+        public KbHandler kbHandler;
         Commander processor;
         //Managers
         InventoryManager invenManager;
@@ -201,7 +201,8 @@ namespace ExtendedTest
                 if(typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
                 {
                     processor.Parsetext(kbHandler.Input);
-                    kbHandler.Input = string.Empty;
+                    if(processor.currentError!= string.Empty) kbHandler.Input = processor.currentError;
+                    //kbHandler.Input = string.Empty;
                 }
                 player.Update(gameTime, _NPCManager._SpriteList);
                 _NPCManager.UpdateNPCs(gameTime);
@@ -210,6 +211,7 @@ namespace ExtendedTest
                 
                 if(!kbHandler.typingMode)
                 {
+                    processor.currentError = string.Empty;
                     ProcessCamera(gameTime);
 
                 }
