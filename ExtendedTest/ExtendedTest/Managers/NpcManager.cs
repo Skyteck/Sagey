@@ -10,7 +10,7 @@ using TiledSharp;
 
 namespace ExtendedTest.Managers
 {
-    class NpcManager
+    public class NpcManager
     {
         public List<Sprite> _SpriteList;
         TilemapManager _TilemapManager;

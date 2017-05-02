@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    class TextProcessor
+    class Commander
     {
         readonly Player _player;
-        public TextProcessor(Player player)
+        Game1 _Game;
+
+        public Commander(Game1 tehGame)
         {
-            _player = player;
+            _Game = tehGame;
         }
 
         public void Parsetext(String text)
@@ -26,6 +28,10 @@ namespace ExtendedTest
                 {
                     Vector2 newPos = new Vector2(Convert.ToInt32(parsedtext[2]), Convert.ToInt32(parsedtext[3]));
                     _player.setDestination(newPos);
+                }
+                else
+                {
+                    var obj = _Game._NPCManager.findNPC(parsedtext[1]);
                 }
             }
         }

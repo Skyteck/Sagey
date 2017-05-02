@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    class TilemapManager
+    public class TilemapManager
     {
-        public List<TileMap> mapList;
+        List<TileMap> mapList;
 
         public TilemapManager()
         {

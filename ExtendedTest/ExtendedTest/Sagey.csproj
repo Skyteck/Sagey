@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commander.cs" />
     <Compile Include="enums\NPCenums.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\AnimatedSprite.cs" />

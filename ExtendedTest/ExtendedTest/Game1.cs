@@ -30,11 +30,11 @@ namespace ExtendedTest
         String currentInput = " ";
         bool typingMode = false;
         KbHandler kbHandler;
-        TextProcessor processor;
+        Commander processor;
         //Managers
         InventoryManager invenManager;
         TilemapManager MapManager;
-        Managers.NpcManager _NPCManager;
+        public Managers.NpcManager _NPCManager;
         Managers.GameObjectManager _GameObjectManager;
         
 
@@ -63,7 +63,7 @@ namespace ExtendedTest
             mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
-            processor = new TextProcessor(player);
+            processor = new Commander(this);
             base.Initialize();
         }
 
