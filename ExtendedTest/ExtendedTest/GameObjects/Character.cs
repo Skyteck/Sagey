@@ -13,7 +13,7 @@ namespace ExtendedTest
     /// For example the player's destination is set by clicking on the world. NPCs use their logic to determien their destination
     /// findPath gets things where they need to be.
     /// </summary>
-    class Character : Sprite
+    public class Character : Sprite
     {
 
         Vector2 Destination;

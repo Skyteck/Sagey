@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest
 {
-    class InventoryManager
+    public class InventoryManager
     {
-        public List<Item> itemList;
+        List<Item> itemList;
         int capacity = 28;
         ContentManager _Content;
         public InventoryManager(ContentManager content)

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace ExtendedTest
 {
-    class TileMap
+    public class TileMap
     {
         public TmxMap map;
         public Texture2D tileset;

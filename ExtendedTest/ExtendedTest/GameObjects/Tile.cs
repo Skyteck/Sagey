@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest
 {
-    class Tile
+    public class Tile
     {
         public Texture2D _Texture;
         public Vector2 _Position;
