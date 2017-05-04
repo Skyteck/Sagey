@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    class Tree : Sprite
+    class Tree : WorldObject
     {
-        bool cut = false;
         int difficulty = 300;
-        Texture2D treeTop;
         int hits = 0;
 
         public enum TreeType
@@ -35,8 +33,7 @@ namespace ExtendedTest
                     break;
                 case TreeType.kCedarTree:
                     difficulty = 1800;
-                    break;
-                    
+                    break;                    
                 default:
                     difficulty = 9001;
                     break;

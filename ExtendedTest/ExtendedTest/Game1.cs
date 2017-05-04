@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using TiledSharp;
 
 namespace ExtendedTest
@@ -22,21 +26,19 @@ namespace ExtendedTest
         Sprite mouseCursor;
         Sprite inventoryBG;
         public Camera  camera;
-        double fps = 0;
-        double elapsedTime = 0;
+        
         List<TileMap> mapList;
 
         SpriteFont font;
-        String currentInput = " ";
         bool typingMode = false;
         public KbHandler kbHandler;
         Commander processor;
         //Managers
         InventoryManager invenManager;
         TilemapManager MapManager;
-        public Managers.NpcManager _NPCManager;
-        Managers.GameObjectManager _GameObjectManager;
-        
+        public NpcManager _NPCManager;
+        WorldObjectManager _GameObjectManager;
+        CombatManager _CBManager;
 
         public Game1()
         {
@@ -58,8 +60,8 @@ namespace ExtendedTest
             invenManager = new InventoryManager(Content);
             player = new Player(invenManager);
             MapManager = new TilemapManager();
-            _NPCManager = new Managers.NpcManager(MapManager, Content, player);
-            _GameObjectManager = new Managers.GameObjectManager(MapManager, invenManager, Content, player);
+            _NPCManager = new NpcManager(MapManager, _CBManager,  Content, player);
+            _GameObjectManager = new WorldObjectManager(MapManager, invenManager, Content, player);
             mapList = new List<TileMap>();
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
@@ -82,6 +84,24 @@ namespace ExtendedTest
             MapManager.AddMap(LoadMap("0-0"));
             MapManager.AddMap(LoadMap("0-1"));
             font = Content.Load<SpriteFont>("Fonts/Fipps");
+
+            //XDocument xmlTest = XDocument.Load("Content/Items.xml");
+            //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
+            //IEnumerable<XElement> LogList = itemList.Elements("Logs");
+            //foreach(XElement item in LogList.Elements("Item"))
+            //{
+            //    String test = item.Element("Name").Value;
+            //    String test2 = item.Element("SaleValue").Value;
+            //    String test3 = item.Element("Weight").Value;
+            //}
+            //IEnumerable<XElement> oreList = itemList.Elements("Ores");
+            //foreach (XElement item in oreList.Elements("Item"))
+            //{
+            //    String test = item.Element("Name").Value;
+            //    String test2 = item.Element("SaleValue").Value;
+            //    String test3 = item.Element("Weight").Value;
+            //}
+
             //List<Sprite> test = new List<Sprite>();
             //test = gameObjectList.FindAll(x => x._Tag == Sprite.SpriteType.kTreeType);
 
@@ -204,9 +224,9 @@ namespace ExtendedTest
                     if(processor.currentError!= string.Empty) kbHandler.Input = processor.currentError;
                     //kbHandler.Input = string.Empty;
                 }
-                player.Update(gameTime, _NPCManager._SpriteList);
+                player.UpdateActive(gameTime);
                 _NPCManager.UpdateNPCs(gameTime);
-                _GameObjectManager.Update(gameTime, _NPCManager._SpriteList);
+                _GameObjectManager.Update(gameTime);
 
                 
                 if(!kbHandler.typingMode)

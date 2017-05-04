@@ -23,12 +23,16 @@ namespace ExtendedTest
 
         public Texture2D getTexture(Item item)
         {
-            Texture2D newTex = _Content.Load<Texture2D>("Art/" + item._Name);
-            if(newTex == null)
+            Texture2D newTex;
+            try
+            {
+                newTex = _Content.Load<Texture2D>("Art/" + item._Name);
+            }
+            catch
             {
                 Console.WriteLine("Failed loading texture for item: " + item._Name);
                 //item texture wasn't found. Load default texture
-                newTex = _Content.Load<Texture2D>("Art/nullTexture");
+                newTex = _Content.Load<Texture2D>("Art/Nulltexture");
             }
             return newTex;
         }

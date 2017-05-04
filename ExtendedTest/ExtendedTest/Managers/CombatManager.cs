@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Managers
+namespace ExtendedTest
 {
-    class CombatManager
+    public class CombatManager
     {
 
         public CombatManager()
@@ -16,9 +16,9 @@ namespace ExtendedTest.Managers
 
         public void PerformAttack(Character attacker, Character receiver)
         {
-            int amt = receiver.defense - attacker.attack;
+            int amt = attacker.attack - receiver.defense;
             //attacker attack higher than defense
-            if(amt<= 0)
+            if(amt>= 0)
             {
                 receiver.ReceiveDamage(amt);
                 attacker.attackCD = attacker.attackSpeed;

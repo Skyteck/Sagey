@@ -9,10 +9,9 @@ using TiledSharp;
 
 namespace ExtendedTest
 {
-    class Rock : Sprite
+    class Rock : WorldObject
     {
         int difficulty = 300;
-        Texture2D treeTop;
         int hits = 0;
 
         public enum RockType

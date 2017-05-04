@@ -30,7 +30,6 @@ namespace ExtendedTest
         public float _Scale = 1.0f;
         public Color _MyColor = Color.White;
         public float _Rotation = 0.0f;
-        public List<Sprite> parentList;
         public string Name;
 
         public enum SpriteState
@@ -39,7 +38,7 @@ namespace ExtendedTest
             kStateInActive
         }
 
-        public SpriteState _CurrentState = SpriteState.kStateInActive;
+        public SpriteState _CurrentState = SpriteState.kStateActive;
 
         public enum SpriteType
         {
@@ -75,7 +74,7 @@ namespace ExtendedTest
             frameWidth = _Texture.Width;
         }
 
-        public virtual void Update(GameTime gameTime, List<Sprite> gameObjectList)
+        public virtual void UpdateActive(GameTime gameTime)
         {
             if (_CurrentState == SpriteState.kStateActive)
             {
@@ -85,7 +84,7 @@ namespace ExtendedTest
                     {
                         foreach (Sprite child in _ChildrenList)
                         {
-                            child.Update(gameTime, gameObjectList);
+                            child.UpdateActive(gameTime);
                         }
                     }
                 }
@@ -95,6 +94,11 @@ namespace ExtendedTest
                     LockInBounds();
                 }
             }
+        }
+
+        public virtual void UpdateDead(GameTime gameTime)
+        {
+
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

@@ -38,9 +38,9 @@ namespace ExtendedTest
             animLooping = looping;
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
+        public override void UpdateActive(GameTime gameTime)
         {
-            base.Update(gameTime, gameObjectList);
+            base.UpdateActive(gameTime);
             timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
             Animate(animStateNum);
         }

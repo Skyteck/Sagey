@@ -18,14 +18,12 @@ namespace ExtendedTest
         public double rightBoundary { get; private set; }
         public double bottomBoundary { get; private set; }
         public double topBoundary { get; private set; }
-        Managers.NpcManager ParentManager;
 
-        public NPC(double lX, double rx, double by, double ty, Managers.NpcManager manager) 
+        NpcManager ParentManager;
+        public List<Character> parentList;
+
+        public NPC(NpcManager manager) 
         {
-            leftBoundary = lX;
-            rightBoundary = rx + lX;
-            topBoundary = ty;
-            bottomBoundary = by + ty;
             ParentManager = manager;
         }
 
@@ -41,10 +39,10 @@ namespace ExtendedTest
             Console.WriteLine(leftBoundary + " " + rightBoundary);
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
+        public override void UpdateActive(GameTime gameTime)
         {
 
-            base.Update(gameTime, gameObjectList);
+            base.UpdateActive(gameTime);
         }
 
 
@@ -64,6 +62,14 @@ namespace ExtendedTest
 
                 currentMoveTimer += num.Next(0, 3);
             }
+        }
+
+        public virtual void SetBoundaries(double lX, double rx, double by, double ty)
+        {
+            leftBoundary = lX;
+            rightBoundary = rx + lX;
+            topBoundary = ty;
+            bottomBoundary = by + ty;
         }
     }
 }

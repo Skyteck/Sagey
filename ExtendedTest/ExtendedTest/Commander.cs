@@ -10,7 +10,6 @@ namespace ExtendedTest
 {
     class Commander
     {
-        readonly Player _player;
         Game1 _Game;
         public String currentError = string.Empty;
 
@@ -33,11 +32,11 @@ namespace ExtendedTest
             Camera cam =_Game.camera;
             if (target.Equals("PLAYER"))
             {
-                commandTarget = (Player)_Game.player;
+                commandTarget = _Game.player;
             }
             else
             {
-                commandTarget = _Game._NPCManager.findNPC(target);
+                commandTarget = _Game._NPCManager.findNPCByName(target);
                 if (commandTarget == null)
                 {
                     _Game.kbHandler.Input = "NPC not found.";
@@ -80,13 +79,7 @@ namespace ExtendedTest
                 }
                 else
                 {
-                    var obj = _Game._NPCManager.findNPC(parsedtext[1]);
-                    if (obj == null)
-                    {
-                        _Game.kbHandler.Input = "NPC not found.";
-                        return;
-                    }
-                    obj._Position=newPos;
+                    commandTarget._Position = newPos;
                 }
             }
             else

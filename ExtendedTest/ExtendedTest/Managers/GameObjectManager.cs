@@ -8,20 +8,20 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 
-namespace ExtendedTest.Managers
+namespace ExtendedTest
 {
-    class GameObjectManager
+    class WorldObjectManager
     {
-        List<Sprite> objectList;
+        List<WorldObject> objectList;
         InventoryManager _InventoryManager;
         ContentManager Content;
         TilemapManager tMapManager;
 
         readonly Player thePlayer;
 
-        public GameObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player)
+        public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player)
         {
-            objectList = new List<Sprite>();
+            objectList = new List<WorldObject>();
             _InventoryManager = invenManager;
             Content = content;
             thePlayer = player;
@@ -51,11 +51,11 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public void Update(GameTime gameTime, List<Sprite> spriteList)
+        public void Update(GameTime gameTime)
         {
             foreach(Sprite sprite in objectList)
             {
-                sprite.Update(gameTime, spriteList);
+                sprite.UpdateActive(gameTime);
             }
         }
 

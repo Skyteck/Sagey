@@ -47,9 +47,10 @@
     <Compile Include="GameObjects\AnimatedSprite.cs" />
     <Compile Include="GameObjects\Character.cs" />
     <Compile Include="GameObjects\Items\Ore.cs" />
-    <Compile Include="GameObjects\Monster.cs" />
-    <Compile Include="GameObjects\Rock.cs" />
-    <Compile Include="GameObjects\NPC.cs" />
+    <Compile Include="GameObjects\NPCs\Monsters\Monster.cs" />
+    <Compile Include="GameObjects\Objects\Rock.cs" />
+    <Compile Include="GameObjects\NPCs\NPC.cs" />
+    <Compile Include="GameObjects\Objects\WorldObject.cs" />
     <Compile Include="kbHandler.cs" />
     <Compile Include="Managers\CombatManager.cs" />
     <Compile Include="Managers\GameObjectManager.cs" />
@@ -58,7 +59,7 @@
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="GameObjects\Tilemap.cs" />
-    <Compile Include="GameObjects\Tree.cs" />
+    <Compile Include="GameObjects\Objects\Tree.cs" />
     <Compile Include="GameObjects\Items\Item.cs" />
     <Compile Include="Managers\NpcManager.cs" />
     <Compile Include="Managers\TilemapManager.cs" />
@@ -89,11 +90,15 @@
     <Content Include="Content\Art\inventoryBG.png" />
     <Content Include="Content\Art\inventoryBG2.png" />
     <Content Include="Content\Art\log.png" />
+    <Content Include="Content\Art\Nulltexture.png" />
     <Content Include="Content\Art\ore.png" />
     <Content Include="Content\Art\Player.png" />
     <Content Include="Content\Art\rock.png" />
     <Content Include="Content\Art\Slime.png" />
     <Content Include="Content\Art\tree.png" />
+    <Content Include="Content\Items.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Tilemaps\gfgfg.png" />
     <Content Include="Content\Tilemaps\ggggg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -28,6 +28,7 @@ namespace ExtendedTest
         public int _HP;
         public int defense;
         public int attack;
+        public float attackRange = 64f; // tileWidth
 
         public Character()
         {
@@ -38,14 +39,14 @@ namespace ExtendedTest
             base.LoadContent(path, content);
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
+        public override void UpdateActive(GameTime gameTime)
         {
 
             if (!atDestination)
             {
                 findPath();
             }
-            base.Update(gameTime, gameObjectList);
+            base.UpdateActive(gameTime);
         }
 
         public void findPath()

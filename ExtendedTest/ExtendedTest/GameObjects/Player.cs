@@ -12,10 +12,8 @@ namespace ExtendedTest
     {
         Vector2 Destination = Vector2.Zero;
         bool atDestination = true;
-        MouseState previousMouseState;
-        Object currentTarget = null;
         InventoryManager invenManager;
-
+        
         public enum CurrentAction
         {
             kActionWC,
@@ -30,41 +28,19 @@ namespace ExtendedTest
             this.startHP = 10;
             _HP = 10;
             invenManager = manager;
+            defense = 5;
+            attack = 6;
+            attackCD = 2;
+            attackSpeed = 2;
         }
 
-        public override void Update(GameTime gameTime, List<Sprite> gameObjectList)
+        public override void UpdateActive(GameTime gameTime)
         {
             Vector2 originalPos = _Position;
             movingX = false;
             movingY = false;
             handleInput(gameTime);
-            var collidedWith = collisionCheck(gameObjectList);
-            if (collidedWith != null)
-            {
-                _Position = originalPos;
-                atDestination = true;
-                if(collidedWith._Tag == SpriteType.kTreeType)
-                {
-                    action = CurrentAction.kActionWC;
-                    currentTarget = (Tree)collidedWith;
-
-                }
-                else if(collidedWith._Tag == SpriteType.kRockType)
-                {
-                    action = CurrentAction.kActionMine;
-                    currentTarget = (Rock)collidedWith;
-                }
-
-            }
-            if(action == CurrentAction.kActionWC)
-            {
-                Chop(currentTarget as Tree);
-            }
-            else if(action == CurrentAction.kActionMine)
-            {
-                Mine(currentTarget as Rock);
-            }
-            base.Update(gameTime, gameObjectList);
+            base.UpdateActive(gameTime);
         }
 
         private void handleInput(GameTime gameTime)
@@ -121,9 +97,9 @@ namespace ExtendedTest
             action = CurrentAction.kActionNone;
         }
 
-        private Sprite collisionCheck(List<Sprite> gameObjectList)
+        private Sprite collisionCheck(List<Character> gameObjectList)
         {
-            foreach (Sprite sprite in gameObjectList)
+            foreach (Character sprite in gameObjectList)
             {
                 if (sprite._CurrentState == SpriteState.kStateActive)
                 {

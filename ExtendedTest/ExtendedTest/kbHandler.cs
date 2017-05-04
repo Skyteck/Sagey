@@ -10,7 +10,6 @@ namespace ExtendedTest
     public class KbHandler
     {
         private List<Keys> lastPressedKeys;
-        List<Keys> badKeys;
         public bool typingMode = false;
         private bool shiftHeld = false;
 
