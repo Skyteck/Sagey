@@ -14,36 +14,44 @@ namespace ExtendedTest
 
         Rectangle huntZone;
 
-        CombatManager _CBManager;
+        Projectile myShot;
         public Monster(NpcManager manager, CombatManager cbManager) : base(manager)
         {
             _TargetList = new List<Character>();
             _CBManager = cbManager;
             attack = 6;
             defense = 5;
+            //manager.CreateMonster()
+            myShot = new Projectile(this);
+            attackRange = 256;
         }
 
         public override void UpdateActive(GameTime gameTime)
         {
-            if(this.Agressive)
+            bool targetFound = false;
+            if (this.Agressive)
             {
                 foreach(Character target in _TargetList)
                 {
                     if (target._BoundingBox.Intersects(huntZone))
                     {
+                        targetFound = true;
                         HuntTarget(target);
-                        if(Vector2.Distance(this._Center, target._Center) <= attackRange)
+                        if(Vector2.Distance(this._Position, target._Position) <= attackRange)
                         {
                             if (this.attackCD <= 0)
                             {
+                                myShot.SetTarget(target);
                                 _CBManager.PerformAttack(this, target);
                                 attackCD = attackSpeed;
                             }
                         }
                     }
-                }                
+                    if (targetFound) break;
+                } 
+
             }
-            else
+            if (!targetFound)
             {
                 Roam(gameTime);
             }

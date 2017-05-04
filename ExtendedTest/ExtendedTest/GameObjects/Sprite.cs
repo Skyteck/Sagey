@@ -16,11 +16,9 @@ namespace ExtendedTest
         public Vector2 _Position;
         public bool _Draw = true;
         public bool _LockInScreen = false;
-        public float speed = 0f;
         //for inheritance
         public Sprite parent = null;
         public List<Sprite> _ChildrenList;
-        public bool enemy = false;
         //for animation
         public int frameWidth;
         public int frameHeight;
@@ -30,6 +28,7 @@ namespace ExtendedTest
         public float _Scale = 1.0f;
         public Color _MyColor = Color.White;
         public float _Rotation = 0.0f;
+        public float _Opacity = 1.0f;
         public string Name;
 
         public enum SpriteState
@@ -109,19 +108,19 @@ namespace ExtendedTest
                 Rectangle sr = new Rectangle(0, 0, frameWidth, frameHeight);
                 if (!_FlipX && !_FlipY)
                 {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, _Rotation, _Center, _Scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, _Scale, SpriteEffects.None, 0f);
                 }
                 else if (_FlipX)
                 {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, _Rotation, _Center, _Scale, SpriteEffects.FlipHorizontally, 0f);
+                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, _Scale, SpriteEffects.FlipHorizontally, 0f);
                 }
                 else if (_FlipY)
                 {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, _Rotation, _Center, _Scale, SpriteEffects.FlipVertically, 0f);
+                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, _Scale, SpriteEffects.FlipVertically, 0f);
                 }
                 else if (_FlipX && _FlipY)
                 {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, (_Rotation + (float)Math.PI), _Center, _Scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), (_Rotation + (float)Math.PI), _Center, _Scale, SpriteEffects.None, 0f);
                 }
 
                 if (_ChildrenList != null)
@@ -190,7 +189,6 @@ namespace ExtendedTest
             }
             _MyColor = Color.White;
             parent = null;
-            speed = 0f;
             Setup();
         }
 

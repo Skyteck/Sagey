@@ -56,7 +56,7 @@ namespace ExtendedTest
                 sprite.UpdateActive(gameTime);
             }
             List<Character> combinedList = new List<Character>();
-            combinedList.AddRange(_SpriteListDead);
+            combinedList.AddRange(_SpriteListActive);
             combinedList.AddRange(_SpriteListDead);
             _SpriteListActive = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateActive);
             _SpriteListDead = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateInActive);

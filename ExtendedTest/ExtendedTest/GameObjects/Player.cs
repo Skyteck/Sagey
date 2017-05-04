@@ -32,6 +32,7 @@ namespace ExtendedTest
             attack = 6;
             attackCD = 2;
             attackSpeed = 2;
+            _Opacity = 0.5f;
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -40,6 +41,7 @@ namespace ExtendedTest
             movingX = false;
             movingY = false;
             handleInput(gameTime);
+            Console.WriteLine(this._Position);
             base.UpdateActive(gameTime);
         }
 

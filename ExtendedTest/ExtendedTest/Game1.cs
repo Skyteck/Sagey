@@ -60,6 +60,7 @@ namespace ExtendedTest
             invenManager = new InventoryManager(Content);
             player = new Player(invenManager);
             MapManager = new TilemapManager();
+            _CBManager = new CombatManager();
             _NPCManager = new NpcManager(MapManager, _CBManager,  Content, player);
             _GameObjectManager = new WorldObjectManager(MapManager, invenManager, Content, player);
             mapList = new List<TileMap>();
@@ -294,6 +295,7 @@ namespace ExtendedTest
             mouseCursor.Draw(spriteBatch);
 
             spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
+            spriteBatch.DrawString(font, player._HP.ToString(), camera.ToWorld(new Vector2(200, 200)), Color.White);
 
             base.Draw(gameTime);
             spriteBatch.End();

@@ -48,6 +48,7 @@
     <Compile Include="GameObjects\Character.cs" />
     <Compile Include="GameObjects\Items\Ore.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Monster.cs" />
+    <Compile Include="GameObjects\NPCs\Monsters\Projectiles\Projectile.cs" />
     <Compile Include="GameObjects\Objects\Rock.cs" />
     <Compile Include="GameObjects\NPCs\NPC.cs" />
     <Compile Include="GameObjects\Objects\WorldObject.cs" />
@@ -95,6 +96,7 @@
     <Content Include="Content\Art\Player.png" />
     <Content Include="Content\Art\rock.png" />
     <Content Include="Content\Art\Slime.png" />
+    <Content Include="Content\Art\SlimeShot.png" />
     <Content Include="Content\Art\tree.png" />
     <Content Include="Content\Items.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -22,6 +22,7 @@ namespace ExtendedTest
         public bool movingY = false;
 
         //Combat values
+        public CombatManager _CBManager;
         public double attackSpeed = 3.0;
         public double attackCD = 0;
         public int startHP = 1;
