@@ -15,7 +15,8 @@ namespace ExtendedTest
         public String _Image;
         public int _SaleValue;
         public Texture2D itemtexture;
-
+        public int ID;
+        public bool _Stackable = false;
         public enum ItemType
         {
             ItemLog, ItemNone, ItemError, ItemOre

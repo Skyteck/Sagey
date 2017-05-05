@@ -11,13 +11,13 @@ namespace ExtendedTest
 {
     public class InventoryManager
     {
-        List<Item> itemList;
+        List<InventorySlot> itemList;
         int capacity = 28;
         ContentManager _Content;
         public InventoryManager(ContentManager content)
         {
             _Content = content;
-            itemList = new List<Item>();
+            itemList = new List<InventorySlot>();
             
         }
 
@@ -37,16 +37,31 @@ namespace ExtendedTest
             return newTex;
         }
 
-        public void AddItem(Item item)
+        public void AddItem(Item item, int amount = 1)
         {
-            if(!(this.itemList.Count >= this.capacity))
+            //find if the item already exists in a slot
+            InventorySlot itemSlot = itemList.Find(x => x.itemInSlot.ID == item.ID);
+            if (item._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
-                Texture2D itemTex = getTexture(item);
-                if(itemTex != null)
+                itemSlot.amount++;
+            }
+            else //item not stackable or item not found, create a new slot
+            {
+                if(itemList.Count < this.capacity) //Bad can only be so full...
                 {
-                    item.itemtexture = getTexture(item);
+                    // create new slot for the item
+                    itemSlot = new InventorySlot();
+                    //create the item
+                    Texture2D itemTex = getTexture(item);
+                    //put item in slot
+                    itemSlot.itemInSlot = item;
+                    itemSlot.amount = amount;
+                    itemList.Add(itemSlot);
                 }
-                itemList.Add(item);
+                else
+                {
+                    //error adding item message;
+                }
             }
         }
 
@@ -58,6 +73,16 @@ namespace ExtendedTest
                 Vector2 Pos = new Vector2(StartPos.X+(i * 32), StartPos.Y);
                 item.Draw(spriteBatch, Pos);
             }
+        }
+    }
+
+    public class InventorySlot
+    {
+        public Item itemInSlot;
+        public int amount;
+        public InventorySlot()
+        {
+
         }
     }
 }
