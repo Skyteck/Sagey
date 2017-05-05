@@ -22,6 +22,14 @@ namespace ExtendedTest
         NpcManager ParentManager;
         public List<Character> parentList;
 
+        public enum AttackStyle
+        {
+            kMeleeStyle,
+            kRangeStyle,
+            kMagicStyle
+        }
+
+        public AttackStyle _AttackStyle = AttackStyle.kMeleeStyle;
         public NPC(NpcManager manager) 
         {
             ParentManager = manager;

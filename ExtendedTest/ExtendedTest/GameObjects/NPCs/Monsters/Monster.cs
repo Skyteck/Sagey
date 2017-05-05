@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest
 {
@@ -14,17 +15,13 @@ namespace ExtendedTest
 
         Rectangle huntZone;
 
-        Projectile myShot;
+        public Projectile myShot;
         public Monster(NpcManager manager, CombatManager cbManager) : base(manager)
         {
             _TargetList = new List<Character>();
             _CBManager = cbManager;
-            attack = 6;
-            defense = 5;
-            //manager.CreateMonster()
-            myShot = new Projectile(this);
-            attackRange = 256;
         }
+
 
         public override void UpdateActive(GameTime gameTime)
         {
@@ -36,13 +33,23 @@ namespace ExtendedTest
                     if (target._BoundingBox.Intersects(huntZone))
                     {
                         targetFound = true;
-                        HuntTarget(target);
-                        if(Vector2.Distance(this._Position, target._Position) <= attackRange)
+                        if(this._AttackStyle==AttackStyle.kMeleeStyle)
+                        {
+                            HuntTarget(target);
+
+                        }
+                        if (Vector2.Distance(this._Position, target._Position) <= attackRange)
                         {
                             if (this.attackCD <= 0)
                             {
-                                myShot.SetTarget(target);
-                                _CBManager.PerformAttack(this, target);
+                                if(this._AttackStyle==AttackStyle.kMeleeStyle)
+                                {
+                                    _CBManager.PerformAttack(this, target);
+                                }
+                                else
+                                {
+                                    myShot.SetTarget(target);
+                                }
                                 attackCD = attackSpeed;
                             }
                         }

@@ -31,6 +31,8 @@ namespace ExtendedTest
         public int attack;
         public float attackRange = 64f; // tileWidth
 
+        public float _Speed = 5f;
+
         public Character()
         {
         }
@@ -52,38 +54,37 @@ namespace ExtendedTest
 
         public void findPath()
         {
-            float maxSpeed = 5f;
-            if (Math.Abs(Destination.X - _Position.X) > maxSpeed)
+            if (Math.Abs(Destination.X - _Position.X) > _Speed)
             {
                 if (Destination.X > _Position.X)
                 {
-                    _Position.X += maxSpeed;
+                    _Position.X += _Speed;
                     movingX = true;
                 }
                 else if (Destination.X < _Position.X)
                 {
-                    _Position.X -= maxSpeed;
+                    _Position.X -= _Speed;
                     movingX = true;
                 }
 
             }
 
-            if (Math.Abs(Destination.Y - _Position.Y) > maxSpeed)
+            if (Math.Abs(Destination.Y - _Position.Y) > _Speed)
             {
                 if (Destination.Y > _Position.Y)
                 {
-                    _Position.Y += maxSpeed;
+                    _Position.Y += _Speed;
                     movingY = true;
                 }
                 else if (Destination.Y < _Position.Y)
                 {
-                    _Position.Y -= maxSpeed;
+                    _Position.Y -= _Speed;
                     movingY = true;
                 }
             }
 
 
-            if (Vector2.Distance(Destination, _Position) <= maxSpeed + 1)
+            if (Vector2.Distance(Destination, _Position) <= _Speed + 1)
             {
                 _Position = Destination;
                 atDestination = true;

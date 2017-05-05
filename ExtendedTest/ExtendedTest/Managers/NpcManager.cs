@@ -18,11 +18,13 @@ namespace ExtendedTest
         ContentManager _Content;
         CombatManager _CBmanager;
         Player thePlayer;
+        List<Projectile> _ProjectileList;
 
         public NpcManager(TilemapManager tMapManager, CombatManager cbManager ,ContentManager content, Player player)
         {
             _SpriteListActive = new List<Character>();
             _SpriteListDead = new List<Character>();
+            _ProjectileList = new List<Projectile>();
             _TilemapManager = tMapManager;
             _Content = content;
             _CBmanager = cbManager;
@@ -33,7 +35,7 @@ namespace ExtendedTest
         {
             if(thing.Type.Equals("Slime"))
             {
-                Monster newSprite = new Monster(this, _CBmanager);
+                GameObjects.NPCs.Monsters.Slime newSprite = new GameObjects.NPCs.Monsters.Slime(this, _CBmanager);
                 newSprite._Position = pos;
                 newSprite.LoadContent("Art/" + thing.Type, _Content);
                 newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);

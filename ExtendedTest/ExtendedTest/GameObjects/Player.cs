@@ -41,7 +41,7 @@ namespace ExtendedTest
             movingX = false;
             movingY = false;
             handleInput(gameTime);
-            Console.WriteLine(this._Position);
+            _Opacity = (float)_HP / 10;
             base.UpdateActive(gameTime);
         }
 

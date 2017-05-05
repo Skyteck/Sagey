@@ -66,6 +66,11 @@ namespace ExtendedTest
             }
         }
 
+        public Sprite()
+        {
+            _ChildrenList = new List<Sprite>();
+        }
+
         public virtual void LoadContent(string path, ContentManager content)
         {
             _Texture = content.Load<Texture2D>(path);

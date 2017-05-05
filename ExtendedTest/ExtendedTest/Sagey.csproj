@@ -49,6 +49,7 @@
     <Compile Include="GameObjects\Items\Ore.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Monster.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Projectiles\Projectile.cs" />
+    <Compile Include="GameObjects\NPCs\Monsters\Slime.cs" />
     <Compile Include="GameObjects\Objects\Rock.cs" />
     <Compile Include="GameObjects\NPCs\NPC.cs" />
     <Compile Include="GameObjects\Objects\WorldObject.cs" />
