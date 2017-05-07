@@ -65,7 +65,8 @@ namespace ExtendedTest
                 {
                     float newX = num.Next((int)this.leftBoundary + this._Texture.Width / 2, (int)this.rightBoundary - this._Texture.Width / 2);
                     float newY = num.Next((int)this.topBoundary + this._Texture.Height / 2, (int)this.bottomBoundary - this._Texture.Height / 2);
-                    this.setDestination(new Vector2(newX, newY));
+                    Tile tileGoal = ParentManager._TilemapManager.findTile(new Vector2(newX, newY));
+                    this.setDestination(tileGoal.tileCenter);
                 }
 
                 currentMoveTimer += num.Next(0, 3);

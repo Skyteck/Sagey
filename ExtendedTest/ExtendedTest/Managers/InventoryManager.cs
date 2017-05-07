@@ -43,7 +43,7 @@ namespace ExtendedTest
             InventorySlot itemSlot = itemList.Find(x => x.itemInSlot.ID == item.ID);
             if (item._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
-                itemSlot.amount++;
+                itemSlot.amount += amount;
             }
             else //item not stackable or item not found, create a new slot
             {
@@ -54,8 +54,9 @@ namespace ExtendedTest
                     //create the item
                     Texture2D itemTex = getTexture(item);
                     //put item in slot
+                    item.itemtexture = itemTex;
                     itemSlot.itemInSlot = item;
-                    itemSlot.amount = amount;
+                    itemSlot.amount = 1;
                     itemList.Add(itemSlot);
                 }
                 else
@@ -68,10 +69,10 @@ namespace ExtendedTest
         public void Draw(SpriteBatch spriteBatch, Vector2 StartPos)
         {
             int i = 0;
-            foreach(Item item in itemList)
+            foreach(InventorySlot item in itemList)
             {
                 Vector2 Pos = new Vector2(StartPos.X+(i * 32), StartPos.Y);
-                item.Draw(spriteBatch, Pos);
+                item.itemInSlot.Draw(spriteBatch, Pos);
             }
         }
     }

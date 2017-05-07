@@ -10,22 +10,24 @@ using TiledSharp;
 
 namespace ExtendedTest
 {
-    class WorldObjectManager
+    public class WorldObjectManager
     {
         List<WorldObject> objectList;
         InventoryManager _InventoryManager;
         ContentManager Content;
-        TilemapManager tMapManager;
+        TilemapManager _TilemapManager;
 
         readonly Player thePlayer;
 
+        internal List<WorldObject> ObjectList { get => objectList; set => objectList = value; }
+
         public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player)
         {
-            objectList = new List<WorldObject>();
+            ObjectList = new List<WorldObject>();
             _InventoryManager = invenManager;
             Content = content;
             thePlayer = player;
-            tMapManager = mapManager;
+            _TilemapManager = mapManager;
         }
 
         public void CreateObject(TmxObject thing, Vector2 pos)
@@ -34,26 +36,27 @@ namespace ExtendedTest
             {
                 Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
                 anotherTree.LoadContent("Art/tree", Content);
-                anotherTree._Position = pos;
-                anotherTree.parentList = objectList;
+                anotherTree._Position =
+                anotherTree._Position = _TilemapManager.findTile(pos).tileCenter;
+                anotherTree.parentList = ObjectList;
                 anotherTree.Name = thing.Name;
-                objectList.Add(anotherTree);
+                ObjectList.Add(anotherTree);
 
             }
             else if (thing.Type.Equals("rock"))
             {
                 Rock anotherRock = new Rock(Rock.RockType.kNormalRock);
                 anotherRock.LoadContent("Art/" + thing.Type, Content);
-                anotherRock._Position = pos;
-                anotherRock.parentList = objectList;
+                anotherRock._Position = _TilemapManager.findTile(pos).tileCenter;
+                anotherRock.parentList = ObjectList;
                 anotherRock.Name = thing.Name;
-                objectList.Add(anotherRock);
+                ObjectList.Add(anotherRock);
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach(Sprite sprite in objectList)
+            foreach(Sprite sprite in ObjectList)
             {
                 sprite.UpdateActive(gameTime);
             }
@@ -61,7 +64,7 @@ namespace ExtendedTest
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach(Sprite sprite in objectList)
+            foreach(Sprite sprite in ObjectList)
             {
                 sprite.Draw(spriteBatch);
             }

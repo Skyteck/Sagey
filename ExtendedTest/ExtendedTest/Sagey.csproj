@@ -55,7 +55,7 @@
     <Compile Include="GameObjects\Objects\WorldObject.cs" />
     <Compile Include="kbHandler.cs" />
     <Compile Include="Managers\CombatManager.cs" />
-    <Compile Include="Managers\GameObjectManager.cs" />
+    <Compile Include="Managers\WorldObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="GameObjects\Items\Log.cs" />
     <Compile Include="GameObjects\Player.cs" />

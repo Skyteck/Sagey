@@ -58,9 +58,9 @@ namespace ExtendedTest
         {
             // TODO: Add your initialization logic here
             invenManager = new InventoryManager(Content);
-            player = new Player(invenManager);
-            MapManager = new TilemapManager();
             _CBManager = new CombatManager();
+            player = new Player(invenManager);
+            MapManager = new TilemapManager(_NPCManager, _GameObjectManager);
             _NPCManager = new NpcManager(MapManager, _CBManager,  Content, player);
             _GameObjectManager = new WorldObjectManager(MapManager, invenManager, Content, player);
             mapList = new List<TileMap>();
@@ -82,8 +82,10 @@ namespace ExtendedTest
             LoadPlayerContent();
             LoadGUI();
 
-            MapManager.AddMap(LoadMap("0-0"));
-            MapManager.AddMap(LoadMap("0-1"));
+            MapManager.LoadMap("0-0", Content);
+            LoadMapNPCs(MapManager.findMapByName("0-0"));
+            LoadMapObjects(MapManager.findMapByName("0-0"));
+            MapManager.LoadMap("0-1", Content);
             font = Content.Load<SpriteFont>("Fonts/Fipps");
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
@@ -126,19 +128,7 @@ namespace ExtendedTest
             mouseCursor.LoadContent("Art/log", Content);
         }
 
-
-        private TileMap LoadMap(String mapname)
-        {
-            TileMap testMap = new TileMap(mapname, Content);
-
-            LoadMapObjects(testMap);
-            LoadMapNPCs(testMap);
-            testMap.active = true;
-            return testMap;
-
-        }
-
-        private void LoadMapNPCs(TileMap testMap)
+        public void LoadMapNPCs(TileMap testMap)
         {
             TmxList<TmxObject> ObjectList = testMap.findNPCs();
             if (ObjectList != null)
@@ -152,7 +142,7 @@ namespace ExtendedTest
             }
         }
 
-        private void LoadMapObjects(TileMap testMap)
+        public void LoadMapObjects(TileMap testMap)
         {
             TmxList<TmxObject> ObjectList = testMap.findObjects();
             if (ObjectList != null)
@@ -164,6 +154,7 @@ namespace ExtendedTest
                 }
             }
         }
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -187,17 +178,40 @@ namespace ExtendedTest
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
                 MouseState mouseState = Mouse.GetState();
-                if (mouseState.LeftButton == ButtonState.Pressed )
+                if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
                 {
+                    List<Sprite> gameObjects = new List<Sprite>();
+                    gameObjects.AddRange(_NPCManager._SpriteListActive);
+                    gameObjects.AddRange(_GameObjectManager.ObjectList);
+
                     mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
-                    if(mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
+                    bool targetFound = false;
+                    Sprite clickedSprite = new Sprite();
+                    foreach(Sprite sprite in gameObjects)
                     {
-                        Tile clickedTile = MapManager.findTile(mouseCursor._Position);
-                        if (clickedTile != null)
+                        if(sprite._BoundingBox.Intersects(mouseCursor._BoundingBox))
                         {
-                            player.setDestination(clickedTile.tileCenter);
+                            clickedSprite = sprite;
+                            targetFound = true;
                         }
                     }
+                    if(!targetFound)
+                    {
+                        if (mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
+                        {
+                            Tile clickedTile = MapManager.findTile(mouseCursor._Position);
+                            if (clickedTile != null)
+                            {
+                                player.setDestination(clickedTile.tileCenter);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Tile closestTile = MapManager.findClosestTile(clickedSprite._Position, player._Position);
+                        player.setDestination(closestTile.tileCenter);
+                    }
+
                 }
 
 

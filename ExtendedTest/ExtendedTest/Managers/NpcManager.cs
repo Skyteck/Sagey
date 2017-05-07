@@ -14,7 +14,7 @@ namespace ExtendedTest
     {
         public List<Character> _SpriteListActive;
         public List<Character> _SpriteListDead;
-        TilemapManager _TilemapManager;
+        public TilemapManager _TilemapManager;
         ContentManager _Content;
         CombatManager _CBmanager;
         Player thePlayer;
@@ -36,7 +36,7 @@ namespace ExtendedTest
             if(thing.Type.Equals("Slime"))
             {
                 GameObjects.NPCs.Monsters.Slime newSprite = new GameObjects.NPCs.Monsters.Slime(this, _CBmanager);
-                newSprite._Position = pos;
+                newSprite._Position = _TilemapManager.findTile(pos).tileCenter;
                 newSprite.LoadContent("Art/" + thing.Type, _Content);
                 newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);
                 if (Convert.ToBoolean(thing.Properties["Agressive"]))

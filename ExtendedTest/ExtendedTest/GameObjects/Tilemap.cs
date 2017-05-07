@@ -30,8 +30,11 @@ namespace ExtendedTest
 
         public Vector2 mapTilePos;
 
+        public String name;
+
         public TileMap(String mapName, Microsoft.Xna.Framework.Content.ContentManager content)
         {
+            name = mapName;
             backgroundTiles = new List<Tile>();
             nearbyMaps = new List<string>();
             map = new TmxMap("Content/Tilemaps/" + mapName + ".tmx");
