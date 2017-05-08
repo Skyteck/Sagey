@@ -47,14 +47,13 @@ namespace ExtendedTest
             }
             else //item not stackable or item not found, create a new slot
             {
-                if(itemList.Count < this.capacity) //Bad can only be so full...
+                if(itemList.Count < this.capacity) //Bag can only be so full...
                 {
                     // create new slot for the item
                     itemSlot = new InventorySlot();
                     //create the item
-                    Texture2D itemTex = getTexture(item);
                     //put item in slot
-                    item.itemtexture = itemTex;
+                    item.itemtexture = getTexture(item); 
                     itemSlot.itemInSlot = item;
                     itemSlot.amount = 1;
                     itemList.Add(itemSlot);
@@ -73,6 +72,7 @@ namespace ExtendedTest
             {
                 Vector2 Pos = new Vector2(StartPos.X+(i * 32), StartPos.Y);
                 item.itemInSlot.Draw(spriteBatch, Pos);
+                i++;
             }
         }
     }

@@ -19,7 +19,7 @@ namespace ExtendedTest.GameObjects.NPCs.Monsters
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
-            myShot = new Projectile(this);
+            myShot = new Projectile(this, _CBManager);
             myShot.LoadContent(path + "Shot", content);
             AddChild(myShot);
         }

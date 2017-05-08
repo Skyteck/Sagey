@@ -16,7 +16,7 @@ namespace ExtendedTest
         Rectangle huntZone;
 
         public Projectile myShot;
-        public Monster(NpcManager manager, CombatManager cbManager) : base(manager)
+        public Monster(NpcManager manager, CombatManager cbManager) : base(manager, cbManager)
         {
             _TargetList = new List<Character>();
             _CBManager = cbManager;

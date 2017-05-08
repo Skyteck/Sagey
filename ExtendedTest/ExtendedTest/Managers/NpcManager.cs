@@ -43,7 +43,7 @@ namespace ExtendedTest
                 {
                     newSprite.AddTarget(thePlayer);
                 }
-                newSprite._Tag = Sprite.SpriteType.kSlimeType;
+                newSprite._Tag = Sprite.SpriteType.kMonsterType;
                 newSprite.Name = thing.Name.ToUpper();
                 newSprite._CurrentState = Sprite.SpriteState.kStateActive;
                 newSprite.parentList = _SpriteListActive;
@@ -53,15 +53,22 @@ namespace ExtendedTest
 
         public void UpdateNPCs(GameTime gameTime)
         {
-            foreach(Sprite sprite in _SpriteListActive)
-            {
-                sprite.UpdateActive(gameTime);
-            }
+
             List<Character> combinedList = new List<Character>();
             combinedList.AddRange(_SpriteListActive);
             combinedList.AddRange(_SpriteListDead);
             _SpriteListActive = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateActive);
             _SpriteListDead = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateInActive);
+
+            foreach (NPC sprite in _SpriteListActive)
+            {
+                sprite.UpdateActive(gameTime);
+            }
+
+            foreach (NPC sprite in _SpriteListDead)
+            {
+                sprite.UpdateDead(gameTime);
+            }
         }
 
         public void DrawNPCs(SpriteBatch spriteBatch)

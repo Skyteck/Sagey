@@ -13,6 +13,7 @@ namespace ExtendedTest
     public class WorldObjectManager
     {
         List<WorldObject> objectList;
+        List<WorldObject> objectListInactive;
         InventoryManager _InventoryManager;
         ContentManager Content;
         TilemapManager _TilemapManager;
@@ -24,6 +25,7 @@ namespace ExtendedTest
         public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player)
         {
             ObjectList = new List<WorldObject>();
+            objectListInactive = new List<WorldObject>();
             _InventoryManager = invenManager;
             Content = content;
             thePlayer = player;
@@ -56,9 +58,20 @@ namespace ExtendedTest
 
         public void Update(GameTime gameTime)
         {
-            foreach(Sprite sprite in ObjectList)
+            List<WorldObject> combinedList = new List<WorldObject>();
+            combinedList.AddRange(objectList);
+            combinedList.AddRange(objectListInactive);
+            objectList = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateActive);
+            objectListInactive = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateInActive);
+
+            foreach (WorldObject sprite in ObjectList)
             {
                 sprite.UpdateActive(gameTime);
+            }
+
+            foreach(WorldObject sprite in objectListInactive)
+            {
+                sprite.UpdateDead(gameTime);
             }
         }
 

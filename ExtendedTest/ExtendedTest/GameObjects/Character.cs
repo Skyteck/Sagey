@@ -17,7 +17,7 @@ namespace ExtendedTest
     {
 
         Vector2 Destination;
-        bool atDestination = true;
+        public bool atDestination = true;
         public bool movingX = false;
         public bool movingY = false;
 
@@ -33,8 +33,9 @@ namespace ExtendedTest
 
         public float _Speed = 5f;
 
-        public Character()
+        public Character(CombatManager cbManager)
         {
+            _CBManager = cbManager;
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -83,8 +84,8 @@ namespace ExtendedTest
                 }
             }
 
-
-            if (Vector2.Distance(Destination, _Position) <= _Speed + 1)
+            float distance = Vector2.Distance(Destination, _Position);
+            if (distance <= _Speed + 1)
             {
                 _Position = Destination;
                 atDestination = true;

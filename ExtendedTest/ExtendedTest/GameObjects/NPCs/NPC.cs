@@ -22,6 +22,10 @@ namespace ExtendedTest
         NpcManager ParentManager;
         public List<Character> parentList;
 
+
+        public double respawnTimerStart = 15d;
+        public double timeDead = 0d;
+
         public enum AttackStyle
         {
             kMeleeStyle,
@@ -30,7 +34,7 @@ namespace ExtendedTest
         }
 
         public AttackStyle _AttackStyle = AttackStyle.kMeleeStyle;
-        public NPC(NpcManager manager) 
+        public NPC(NpcManager manager, CombatManager cbManager) :base(cbManager)
         {
             ParentManager = manager;
         }
@@ -53,6 +57,21 @@ namespace ExtendedTest
             base.UpdateActive(gameTime);
         }
 
+        public override void UpdateDead(GameTime gameTime)
+        {
+            if (_CurrentState == SpriteState.kStateInActive)
+            {
+                timeDead += gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            if (timeDead >= respawnTimerStart)
+            {
+                this._CurrentState = SpriteState.kStateActive;
+                this._Draw = true;
+                timeDead = 0;
+            }
+            base.UpdateDead(gameTime);
+        }
 
         public virtual void Roam(GameTime gameTime)
         {

@@ -51,6 +51,8 @@ namespace ExtendedTest
             if(randomNumber == 0)
             {
                 Log log = new Log();
+                this._CurrentState = SpriteState.kStateInActive;
+                this._Draw = false;
                 return log;
             }
             else

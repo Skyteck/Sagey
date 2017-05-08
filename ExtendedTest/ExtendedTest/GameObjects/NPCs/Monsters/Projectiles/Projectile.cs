@@ -12,10 +12,10 @@ namespace ExtendedTest
         public int _Attack;
         public Character _Target;
         public CombatManager _CBmanager;
-        public Projectile(Character parent)
+        public Projectile(Character parent, CombatManager cbManager) : base(cbManager)
         {
             this.attack = parent.attack;
-            this._CBmanager = parent._CBManager;
+            this._CBmanager = cbManager;
             _Speed = 7f;
         }
 

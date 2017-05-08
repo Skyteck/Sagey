@@ -11,8 +11,8 @@ namespace ExtendedTest
     public class Player : Character
     {
         Vector2 Destination = Vector2.Zero;
-        bool atDestination = true;
         InventoryManager invenManager;
+        Sprite _Target;
         
         public enum CurrentAction
         {
@@ -23,7 +23,7 @@ namespace ExtendedTest
 
         private CurrentAction action = CurrentAction.kActionNone;
 
-        public Player(InventoryManager manager)
+        public Player(InventoryManager manager, CombatManager cbManager) : base(cbManager)
         {
             this.startHP = 10;
             _HP = 10;
@@ -32,7 +32,6 @@ namespace ExtendedTest
             attack = 6;
             attackCD = 2;
             attackSpeed = 2;
-            _Opacity = 0.5f;
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -41,7 +40,32 @@ namespace ExtendedTest
             movingX = false;
             movingY = false;
             handleInput(gameTime);
-            _Opacity = (float)_HP / 10;
+
+            if(_Target != null)
+            {
+
+                if(_Target._Tag == SpriteType.kMonsterType)
+                {
+                    this.Destination = _Target._Position;
+                    if(Vector2.Distance(_Target._Position, this._Position) <= attackRange)
+                    {
+                        _CBManager.PerformAttack(this, _Target as Character);
+                        atDestination = true;
+                    }
+                }
+                if(atDestination)
+                {
+                    if (_Target._Tag == SpriteType.kTreeType)
+                    {
+                        Chop(_Target as Tree);
+                    }
+                    else if (_Target._Tag == SpriteType.kRockType)
+                    {
+                        Mine(_Target as Rock);
+                    }
+                }
+            }
+
             base.UpdateActive(gameTime);
         }
 
@@ -96,47 +120,48 @@ namespace ExtendedTest
         public override void setDestination(Vector2 dest)
         {
             base.setDestination(dest);
+            _Target = null;
             action = CurrentAction.kActionNone;
         }
 
-        private Sprite collisionCheck(List<Character> gameObjectList)
-        {
-            foreach (Character sprite in gameObjectList)
-            {
-                if (sprite._CurrentState == SpriteState.kStateActive)
-                {
-                    if (_BoundingBox.Intersects(sprite._BoundingBox))
-                    {
-                        if(movingX)
-                        {
-                            if((_BoundingBox.Right > sprite._BoundingBox.Left) && (_BoundingBox.Left < sprite._BoundingBox.Left))
-                            {
-                                Console.WriteLine("On player right?");
-                            }
-                            else if ((_BoundingBox.Left < sprite._BoundingBox.Right) && (_BoundingBox.Right > sprite._BoundingBox.Right))
-                            {
-                                Console.WriteLine("On player left?");
-                            }
-                        }
+        //private Sprite collisionCheck(List<Character> gameObjectList)
+        //{
+        //    foreach (Character sprite in gameObjectList)
+        //    {
+        //        if (sprite._CurrentState == SpriteState.kStateActive)
+        //        {
+        //            if (_BoundingBox.Intersects(sprite._BoundingBox))
+        //            {
+        //                if(movingX)
+        //                {
+        //                    if((_BoundingBox.Right > sprite._BoundingBox.Left) && (_BoundingBox.Left < sprite._BoundingBox.Left))
+        //                    {
+        //                        Console.WriteLine("On player right?");
+        //                    }
+        //                    else if ((_BoundingBox.Left < sprite._BoundingBox.Right) && (_BoundingBox.Right > sprite._BoundingBox.Right))
+        //                    {
+        //                        Console.WriteLine("On player left?");
+        //                    }
+        //                }
 
-                        if(movingY)
-                        {
-                            if ((_BoundingBox.Bottom > sprite._BoundingBox.Top) && (_BoundingBox.Top < sprite._BoundingBox.Top))
-                            {
-                                Console.WriteLine("On player bottom?");
-                            }
-                            else if ((_BoundingBox.Top < sprite._BoundingBox.Bottom) && (_BoundingBox.Bottom > sprite._BoundingBox.Bottom))
-                            {
-                                Console.WriteLine("On player top?");
-                            }
-                        }
+        //                if(movingY)
+        //                {
+        //                    if ((_BoundingBox.Bottom > sprite._BoundingBox.Top) && (_BoundingBox.Top < sprite._BoundingBox.Top))
+        //                    {
+        //                        Console.WriteLine("On player bottom?");
+        //                    }
+        //                    else if ((_BoundingBox.Top < sprite._BoundingBox.Bottom) && (_BoundingBox.Bottom > sprite._BoundingBox.Bottom))
+        //                    {
+        //                        Console.WriteLine("On player top?");
+        //                    }
+        //                }
 
-                        return sprite;
-                    }
-                }
-            }
-            return null;
-        }
+        //                return sprite;
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
 
         private void Chop(Tree tree)
         {
@@ -145,6 +170,10 @@ namespace ExtendedTest
             {
                 invenManager.AddItem(item);
                 action = CurrentAction.kActionNone;
+                if(this._Target._CurrentState == SpriteState.kStateInActive)
+                {
+                    this._Target = null;
+                }
             }
         }
         private void Mine(Rock rock)
@@ -154,12 +183,21 @@ namespace ExtendedTest
             {
                 invenManager.AddItem(item);
                 action = CurrentAction.kActionNone;
+                if (this._Target._CurrentState == SpriteState.kStateInActive)
+                {
+                    this._Target = null;
+                }
             }
         }
 
         public void stopAction()
         {
             action = CurrentAction.kActionNone;
+        }
+
+        public void SetTarget(Sprite target)
+        {
+            this._Target = target;
         }
     }
 }

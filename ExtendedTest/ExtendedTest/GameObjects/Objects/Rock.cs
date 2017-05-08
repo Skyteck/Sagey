@@ -53,6 +53,8 @@ namespace ExtendedTest
             if(randomNumber == 0)
             {
                 Ore ore = new Ore();
+                this._CurrentState = SpriteState.kStateInActive;
+                this._Draw = false;
                 return ore;
             }
             else
