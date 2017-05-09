@@ -190,7 +190,7 @@ namespace ExtendedTest
                 //    //kbHandler.Input = string.Empty;
                 //}
                 player.UpdateActive(gameTime);
-                //_NPCManager.UpdateNPCs(gameTime);
+                _NPCManager.UpdateNPCs(gameTime);
                 _GameObjectManager.Update(gameTime);
 
                 
@@ -302,7 +302,7 @@ namespace ExtendedTest
         protected override void Draw(GameTime gameTime)
         {
             // TODO: Add your drawing code here
-            GraphicsDevice.Clear(Color.ForestGreen);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(camera);
 
             MapManager.Draw(spriteBatch);

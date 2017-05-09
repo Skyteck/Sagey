@@ -32,6 +32,7 @@ namespace ExtendedTest
             attack = 6;
             attackCD = 2;
             attackSpeed = 2;
+            _Speed = 1f;
         }
 
         public override void UpdateActive(GameTime gameTime)

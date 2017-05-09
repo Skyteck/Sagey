@@ -39,7 +39,7 @@ namespace ExtendedTest
             nearbyMaps = new List<string>();
             map = new TmxMap("Content/Tilemaps/" + mapName + ".tmx");
             nearbyMaps = mapName.Split('-').ToList();
-
+            string test2 = map.Tilesets[0].Tiles[0].Properties["Test"];
             string tileSetPath = map.Tilesets[0].Name.ToString();
             tileSetPath = "Tilemaps/" + tileSetPath;
             tileset = content.Load<Texture2D>(tileSetPath);
