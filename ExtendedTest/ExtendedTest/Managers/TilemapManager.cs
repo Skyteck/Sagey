@@ -65,45 +65,32 @@ namespace ExtendedTest
             return null;
         }
 
-        public Tile findClosestTile(Vector2 targetPos, Vector2 playerPos)
+        public Tile findClosestTile(Vector2 targetPos, Vector2 playerPos, bool allowDiagonal = true)
         {
             Tile targetTile = findTile(targetPos);
             Tile playerTile = findTile(playerPos);
             Tile ClosestTile = targetTile;
             //get distance for tiles surrounding targettile
             float distance = Vector2.Distance(targetTile.tileCenter, playerTile.tileCenter);
+            float newDistance;
 
-            //get top left tile
-            Tile topleft = findTile(new Vector2(targetTile.tileCenter.X - 64, targetTile.tileCenter.Y - 64));
-            float newDistance = Vector2.Distance(topleft.tileCenter, playerTile.tileCenter);
-            if(newDistance < distance)
-            {
-                distance = newDistance;
-                ClosestTile = topleft;
-            }
+
 
             //get top center tile
             Tile topCenter = findTile(new Vector2(targetTile.tileCenter.X, targetTile.tileCenter.Y - 64));
             newDistance = Vector2.Distance(topCenter.tileCenter, playerTile.tileCenter);
-            if (newDistance < distance)
+            if (newDistance < distance && topCenter.walkable)
             {
                 distance = newDistance;
                 ClosestTile = topCenter;
             }
 
-            //get top right tile
-            Tile topRight = findTile(new Vector2(targetTile.tileCenter.X + 64, targetTile.tileCenter.Y - 64));
-            newDistance = Vector2.Distance(topRight.tileCenter, playerTile.tileCenter);
-            if (newDistance < distance)
-            {
-                distance = newDistance;
-                ClosestTile = topRight;
-            }
+
 
             //get left tile
             Tile LeftTile = findTile(new Vector2(targetTile.tileCenter.X - 64, targetTile.tileCenter.Y));
             newDistance = Vector2.Distance(LeftTile.tileCenter, playerTile.tileCenter);
-            if (newDistance < distance)
+            if (newDistance < distance && LeftTile.walkable)
             {
                 distance = newDistance;
                 ClosestTile = LeftTile;
@@ -112,40 +99,93 @@ namespace ExtendedTest
             //get right tile
             Tile rightTIle = findTile(new Vector2(targetTile.tileCenter.X + 64, targetTile.tileCenter.Y ));
             newDistance = Vector2.Distance(rightTIle.tileCenter, playerTile.tileCenter);
-            if (newDistance < distance)
+            if (newDistance < distance && rightTIle.walkable)
             {
                 distance = newDistance;
                 ClosestTile = rightTIle;
             }
 
-            //get bottom left tile
-            Tile bottomLeft = findTile(new Vector2(targetTile.tileCenter.X - 64, targetTile.tileCenter.Y + 64));
-            newDistance = Vector2.Distance(bottomLeft.tileCenter, playerTile.tileCenter);
-            if (newDistance < distance)
-            {
-                distance = newDistance;
-                ClosestTile = bottomLeft;
-            }
-
             //get bottom center tile
-            Tile bottomCenter = findTile(new Vector2(targetTile.tileCenter.X , targetTile.tileCenter.Y + 64));
+            Tile bottomCenter = findTile(new Vector2(targetTile.tileCenter.X, targetTile.tileCenter.Y + 64));
             newDistance = Vector2.Distance(bottomCenter.tileCenter, playerTile.tileCenter);
-            if (newDistance < distance)
+            if (newDistance < distance && bottomCenter.walkable)
             {
                 distance = newDistance;
                 ClosestTile = bottomCenter;
             }
 
-            //get top right tile
-            Tile bottomRight = findTile(new Vector2(targetTile.tileCenter.X + 64, targetTile.tileCenter.Y + 64));
-            newDistance = Vector2.Distance(bottomRight.tileCenter, playerTile.tileCenter);
-            if (newDistance < distance)
+            if(allowDiagonal)
             {
-                distance = newDistance;
-                ClosestTile = bottomRight;
+                //get top left tile
+                Tile topleft = findTile(new Vector2(targetTile.tileCenter.X - 64, targetTile.tileCenter.Y - 64));
+                newDistance = Vector2.Distance(topleft.tileCenter, playerTile.tileCenter);
+                if (newDistance < distance && topleft.walkable)
+                {
+                    distance = newDistance;
+                    ClosestTile = topleft;
+                }
+
+                //get top right tile
+                Tile topRight = findTile(new Vector2(targetTile.tileCenter.X + 64, targetTile.tileCenter.Y - 64));
+                newDistance = Vector2.Distance(topRight.tileCenter, playerTile.tileCenter);
+                if (newDistance < distance && topRight.walkable)
+                {
+                    distance = newDistance;
+                    ClosestTile = topRight;
+                }
+
+                //get bottom left tile
+                Tile bottomLeft = findTile(new Vector2(targetTile.tileCenter.X - 64, targetTile.tileCenter.Y + 64));
+                newDistance = Vector2.Distance(bottomLeft.tileCenter, playerTile.tileCenter);
+                if (newDistance < distance && bottomLeft.walkable)
+                {
+                    distance = newDistance;
+                    ClosestTile = bottomLeft;
+                }
+
+
+                //get top right tile
+                Tile bottomRight = findTile(new Vector2(targetTile.tileCenter.X + 64, targetTile.tileCenter.Y + 64));
+                newDistance = Vector2.Distance(bottomRight.tileCenter, playerTile.tileCenter);
+                if (newDistance < distance && bottomRight.walkable)
+                {
+                    distance = newDistance;
+                    ClosestTile = bottomRight;
+                }
             }
 
+
+
             return ClosestTile;
+        }
+
+        public List<Tile> CalculatePath(Vector2 pos1, Vector2 pos2, bool toAdjacent = false, bool allowDiagonal = true)
+        {
+            Tile targetTile = findTile(pos1);
+            Tile currentTile = findTile(pos2);
+            bool pathFound = false;
+            int stepCount = 15;
+            List<Tile> path = new List<Tile>();
+            path.Add(targetTile);
+            Tile lastTile = targetTile;
+
+            while(!pathFound && stepCount > 0)
+            {
+                Tile newTile = findClosestTile(lastTile.tileCenter, currentTile.tileCenter);
+                if(newTile == currentTile)
+                {
+                    pathFound = true;
+                }
+                else
+                {
+                    stepCount--;
+                    path.Add(newTile);
+                    lastTile = newTile;
+                }
+
+            }
+            path.Reverse();
+            return path;
         }
 
         private Vector2 PosToWorldTilePos(Vector2 pos)

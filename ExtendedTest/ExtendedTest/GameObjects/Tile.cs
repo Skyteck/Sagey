@@ -20,13 +20,15 @@ namespace ExtendedTest
         int _Row;
         public bool visible = false;
         public bool active = false;
+        public bool walkable = true;
+
         public Rectangle destRect;
 
         public Vector2 tileCenter;
 
         public Vector2 localPos;
 
-        public Tile(Texture2D texture, Vector2 Pos, int width, int height, int col, int row, bool draw, Vector2 tilemapPos)
+        public Tile(Texture2D texture, Vector2 Pos, int width, int height, int col, int row, bool draw, Vector2 tilemapPos, bool walkOn)
         {
             _Texture = texture;
             _Position = Pos;
@@ -41,6 +43,8 @@ namespace ExtendedTest
 
             tileCenter.X = this._Position.X + this._TileWidth / 2;
             tileCenter.Y = this._Position.Y + this._TileHeight / 2;
+
+            walkable = walkOn;
         }
 
         public void Update(GameTime gameTime)

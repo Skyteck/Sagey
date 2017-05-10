@@ -39,7 +39,8 @@ namespace ExtendedTest
             nearbyMaps = new List<string>();
             map = new TmxMap("Content/Tilemaps/" + mapName + ".tmx");
             nearbyMaps = mapName.Split('-').ToList();
-            string test2 = map.Tilesets[0].Tiles[0].Properties["Test"];
+
+            List<int> UnwalkableTileGids = FindUnwalkableTiles(map);
             string tileSetPath = map.Tilesets[0].Name.ToString();
             tileSetPath = "Tilemaps/" + tileSetPath;
             tileset = content.Load<Texture2D>(tileSetPath);
@@ -92,7 +93,14 @@ namespace ExtendedTest
                     {
                         test = true;
                     }
-                    Tile newTile = new Tile(tileset, tilePos, tileWidth, tileHeight, column, row, true, new Vector2(tileX, tileY));
+
+                    bool walkable = true;
+                    if(UnwalkableTileGids.Contains(gid))
+                    {
+                        walkable = false;
+                    }
+
+                    Tile newTile = new Tile(tileset, tilePos, tileWidth, tileHeight, column, row, true, new Vector2(tileX, tileY), walkable);
                     backgroundTiles.Add(newTile);
                 }
             }
@@ -122,6 +130,22 @@ namespace ExtendedTest
 
             }
             return null;
+        }
+
+        private List<int> FindUnwalkableTiles(TmxMap map)
+        {
+            List<int> notWalkableTiles = new List<int>();
+            for(int i = 0; i < map.Tilesets[0].Tiles.Count; i++)
+            {
+                if(map.Tilesets[0].Tiles[i].Properties.ContainsKey("Walkable"))
+                {
+                    if(Convert.ToBoolean(map.Tilesets[0].Tiles[i].Properties["Walkable"]) == false)
+                    {
+                        notWalkableTiles.Add(i);
+                    }
+                }
+            }
+            return notWalkableTiles;
         }
 
         public void Update(GameTime gameTime)

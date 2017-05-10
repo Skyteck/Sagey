@@ -236,17 +236,23 @@ namespace ExtendedTest
                     if (mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
                     {
                         Tile clickedTile = MapManager.findTile(mouseCursor._Position);
+                        List<Tile> test = MapManager.CalculatePath(clickedTile.tileCenter, player._Position);
                         if (clickedTile != null)
                         {
-                            player.setDestination(clickedTile.tileCenter);
+                            // player.setDestination(clickedTile.tileCenter);
+                            player.SetPath(test);
                         }
                     }
                 }
                 else
                 {
                     Tile closestTile = MapManager.findClosestTile(clickedSprite._Position, player._Position);
-                    player.setDestination(closestTile.tileCenter);
-                    player.SetTarget(clickedSprite);
+                    List<Tile> test = MapManager.CalculatePath(clickedSprite._Position, player._Position, true);
+                    if(closestTile.walkable)
+                    {
+                        player.setDestination(closestTile.tileCenter);
+                        player.SetTarget(clickedSprite);
+                    }
                 }
 
             }

@@ -33,6 +33,8 @@ namespace ExtendedTest
 
         public float _Speed = 5f;
 
+        List<Tile> myPath;
+
         public Character(CombatManager cbManager)
         {
             _CBManager = cbManager;
@@ -51,6 +53,12 @@ namespace ExtendedTest
                 findPath();
             }
             base.UpdateActive(gameTime);
+        }
+
+        public void SetPath(List<Tile> path)
+        {
+            myPath = path;
+            setDestination(myPath[0].tileCenter);
         }
 
         public void findPath()
@@ -89,6 +97,15 @@ namespace ExtendedTest
             {
                 _Position = Destination;
                 atDestination = true;
+                if(myPath!= null)
+                {
+                    if (myPath.Count > 0)
+                    {
+                        setDestination(myPath[0].tileCenter);
+                        myPath.RemoveAt(0);
+                    }
+                }
+
             }
         }
 
