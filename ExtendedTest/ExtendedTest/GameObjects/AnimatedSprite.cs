@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace ExtendedTest
 {
-    class AnimatedSprite : Sprite
+    public class AnimatedSprite : Sprite
     {
         bool animLooping = false;
         private int frameNum = 0;
@@ -17,6 +17,7 @@ namespace ExtendedTest
         int Frames = 1;
         int animStateNum = 0;
         private float timeElapsed = 0;
+        bool animationDone = false;
 
         public AnimatedSprite()
         {
@@ -25,7 +26,6 @@ namespace ExtendedTest
 
         public override void LoadContent(string path, ContentManager content)
         {
-            SetupAnimation(1, 1, 1, false);
             base.LoadContent(path, content);
         }
 
@@ -42,10 +42,10 @@ namespace ExtendedTest
         {
             base.UpdateActive(gameTime);
             timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Animate(animStateNum);
+            Animate();
         }
 
-        public void Animate(int stateNum)
+        public void Animate()
         {
             float TPF = 1.0f / FPS;
             if (timeElapsed >= TPF)
@@ -57,12 +57,16 @@ namespace ExtendedTest
                 }
                 else
                 {
-
+                    animationDone = true;
                 }
                 frameNum %= Frames;
                 timeElapsed -= TPF;
             }
-            animStateNum = stateNum;
+        }
+
+        public void ChangeAnimation(int animNum)
+        {
+            animStateNum = animNum;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

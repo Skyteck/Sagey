@@ -32,7 +32,7 @@ namespace ExtendedTest
         SpriteFont font;
         bool typingMode = false;
         public KbHandler kbHandler;
-        //Commander processor;
+        Commander processor;
         //Managers
         InventoryManager invenManager;
         TilemapManager MapManager;
@@ -40,6 +40,10 @@ namespace ExtendedTest
         WorldObjectManager _GameObjectManager;
         CombatManager _CBManager;
 
+        //UI
+        List<Sprite> UIElements;
+        Sprite UIClicked;
+        Vector2 mouseClickPos;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -64,9 +68,10 @@ namespace ExtendedTest
             _NPCManager = new NpcManager(MapManager, _CBManager,  Content, player);
             _GameObjectManager = new WorldObjectManager(MapManager, invenManager, Content, player);
             mapList = new List<TileMap>();
+            UIElements = new List<Sprite>();
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
-            //processor = new Commander(this);
+            processor = new Commander(this);
             base.Initialize();
         }
 
@@ -123,9 +128,12 @@ namespace ExtendedTest
             inventoryBG = new Sprite();
             inventoryBG.LoadContent("Art/inventoryBG", Content);
             inventoryBG._Position = new Vector2(450, 450);
+            inventoryBG.Name = "InventoryBG";
+            UIElements.Add(inventoryBG);
 
             mouseCursor = new Sprite();
             mouseCursor.LoadContent("Art/log", Content);
+            mouseCursor.Name = "Cursor";
         }
 
         public void LoadMapNPCs(TileMap testMap)
@@ -183,24 +191,31 @@ namespace ExtendedTest
 
 
                 kbHandler.Update();
-                //if(typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
-                //{
-                //    processor.Parsetext(kbHandler.Input);
-                //    if(processor.currentError!= string.Empty) kbHandler.Input = processor.currentError;
-                //    //kbHandler.Input = string.Empty;
-                //}
+                if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
+                {
+                    processor.Parsetext(kbHandler.Input);
+                    if (processor.currentError != string.Empty) kbHandler.Input = processor.currentError;
+                    //kbHandler.Input = string.Empty;
+                }
                 player.UpdateActive(gameTime);
                 _NPCManager.UpdateNPCs(gameTime);
                 _GameObjectManager.Update(gameTime);
 
-                
-                //if(!kbHandler.typingMode)
-                //{
+                if(!kbHandler.typingMode)
+                {
                     //processor.currentError = string.Empty;
                     ProcessCamera(gameTime);
 
-                //}
-                
+                }
+
+                foreach(Sprite sprite in UIElements)
+                {
+                    if(sprite.Name == "InventoryBG")
+                    {
+                        sprite._Position = camera.ToWorld(new Vector2(400, 400));
+                    }
+                }
+
                 base.Update(gameTime);
                 //Show FPS
                 if((1 / gameTime.ElapsedGameTime.TotalSeconds) <= 59)
@@ -214,48 +229,86 @@ namespace ExtendedTest
         private void ProcessMouse(GameTime gameTime)
         {
             MouseState mouseState = Mouse.GetState();
-            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+            if(UIClicked == null)
             {
-                List<Sprite> gameObjects = new List<Sprite>();
-                gameObjects.AddRange(_NPCManager._SpriteListActive);
-                gameObjects.AddRange(_GameObjectManager.ObjectList);
-
-                mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
-                bool targetFound = false;
-                Sprite clickedSprite = new Sprite();
-                foreach (Sprite sprite in gameObjects)
+                if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
                 {
-                    if (sprite._BoundingBox.Intersects(mouseCursor._BoundingBox))
+                    mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
+                    //check if UI clicked first
+                    foreach (Sprite sprite in UIElements)
                     {
-                        clickedSprite = sprite;
-                        targetFound = true;
-                    }
-                }
-                if (!targetFound)
-                {
-                    if (mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
-                    {
-                        Tile clickedTile = MapManager.findTile(mouseCursor._Position);
-                        List<Tile> test = MapManager.CalculatePath(clickedTile.tileCenter, player._Position);
-                        if (clickedTile != null)
+                        if(sprite._BoundingBox.Contains(camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y))))
                         {
-                            // player.setDestination(clickedTile.tileCenter);
-                            player.SetPath(test);
+                            UIClicked = sprite;
+                            mouseClickPos = mouseCursor._Position;
+                        }
+                    }
+                    if(UIClicked == null)
+                    {
+                        List<Sprite> gameObjects = new List<Sprite>();
+                        gameObjects.AddRange(_NPCManager._SpriteListActive);
+                        gameObjects.AddRange(_GameObjectManager.ObjectList);
+
+                        bool targetFound = false;
+                        Sprite clickedSprite = new Sprite();
+                        foreach (Sprite sprite in gameObjects)
+                        {
+                            if (sprite._BoundingBox.Intersects(mouseCursor._BoundingBox))
+                            {
+                                clickedSprite = sprite;
+                                targetFound = true;
+                            }
+                        }
+                        if (!targetFound)
+                        {
+                            if (mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
+                            {
+                                Tile clickedTile = MapManager.findTile(mouseCursor._Position);
+                                List<Tile> test = MapManager.CalculatePath(clickedTile.tileCenter, player._Position);
+                                if (clickedTile != null)
+                                {
+                                    // player.setDestination(clickedTile.tileCenter);
+                                    player.SetPath(test);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Tile closestTile = MapManager.findClosestTile(clickedSprite._Position, player._Position);
+                            List<Tile> test = MapManager.CalculatePath(clickedSprite._Position, player._Position, true);
+                            if (closestTile.walkable)
+                            {
+                                player.setDestination(closestTile.tileCenter);
+                                player.SetTarget(clickedSprite);
+                            }
                         }
                     }
                 }
-                else
-                {
-                    Tile closestTile = MapManager.findClosestTile(clickedSprite._Position, player._Position);
-                    List<Tile> test = MapManager.CalculatePath(clickedSprite._Position, player._Position, true);
-                    if(closestTile.walkable)
-                    {
-                        player.setDestination(closestTile.tileCenter);
-                        player.SetTarget(clickedSprite);
-                    }
-                }
-
             }
+            else if(UIClicked != null)
+            {
+                Vector2 stateToworld = camera.ToWorld(mouseState.X, mouseState.Y);
+                float clickPosX = mouseClickPos.X;
+                float letGoPosX = stateToworld.X;
+                float differenceX = letGoPosX - clickPosX;
+                mouseClickPos.X = stateToworld.X;
+                differenceX /= 100f;
+                UIClicked._Scale.X += differenceX;
+
+                float clickPosY = mouseClickPos.Y;
+                float letGoPosY = stateToworld.Y;
+                float differenceY = letGoPosY - clickPosY;
+                mouseClickPos.Y = stateToworld.Y;
+                differenceY /= 100f;
+                UIClicked._Scale.Y -= differenceY;
+
+
+                if (mouseState.LeftButton == ButtonState.Released)
+                {
+                    UIClicked = null;
+                }
+            }
+
 
             if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
             {
@@ -298,6 +351,33 @@ namespace ExtendedTest
                 this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y + 5);
             }
 
+
+            if(state.IsKeyDown(Keys.I))
+            {
+                if(inventoryBG._Scale.Y <= 0f)
+                {
+                    inventoryBG._Scale.Y += 0.05f;
+                }
+                inventoryBG._Scale.Y -= 0.05f;
+            }
+            else if (state.IsKeyDown(Keys.K))
+            {
+                inventoryBG._Scale.Y += 0.05f;
+            }
+
+            if (state.IsKeyDown(Keys.J))
+            {
+                if (inventoryBG._Scale.X <= 0f)
+                {
+                    inventoryBG._Scale.X += 0.05f;
+                }
+                inventoryBG._Scale.X -= 0.05f;
+            }
+            else if (state.IsKeyDown(Keys.L))
+            {
+                inventoryBG._Scale.X += 0.05f;
+            }
+
             camera.Update(gameTime);
         }
 
@@ -320,6 +400,8 @@ namespace ExtendedTest
             _GameObjectManager.Draw(spriteBatch);
             
             invenManager.Draw(spriteBatch, camera.ToWorld(new Vector2(20, 20)));
+
+            inventoryBG.Draw(spriteBatch);
 
             mouseCursor.Draw(spriteBatch);
 

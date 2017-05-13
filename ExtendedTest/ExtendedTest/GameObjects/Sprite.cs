@@ -25,7 +25,7 @@ namespace ExtendedTest
         public bool _FlipX = false;
         public bool _FlipY = false;
         public float _zOrder;
-        public float _Scale = 1.0f;
+        public Vector2 _Scale = new Vector2(1,1);
         public Color _MyColor = Color.White;
         public float _Rotation = 0.0f;
         public float _Opacity = 1.0f;
@@ -139,7 +139,6 @@ namespace ExtendedTest
                     }
                 }
             }
-
         }
 
 
@@ -184,7 +183,7 @@ namespace ExtendedTest
             _CurrentState = SpriteState.kStateActive;
             _Tag = SpriteType.kNoneType;
             _Rotation = 0.0f;
-            _Scale = 1.0f;
+            _Scale = new Vector2(1, 1);
             _FlipX = false;
             _FlipY = false;
             _LockInScreen = false;

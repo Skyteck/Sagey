@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest
 {
@@ -14,14 +15,20 @@ namespace ExtendedTest
         InventoryManager invenManager;
         Sprite _Target;
         
-        public enum CurrentAction
+        public enum CurrentState
         {
-            kActionWC,
-            kActionMine,
-            kActionNone
+            kStateIdle = 0,
+            kStateWalk,
+            kStateRun,
+            kStateWC,
+            kStateFish,
+            kStateMine,
+            kStateAttack,
+            kStateDefend
         }
 
-        private CurrentAction action = CurrentAction.kActionNone;
+        private CurrentState action = CurrentState.kStateIdle;
+        
 
         public Player(InventoryManager manager, CombatManager cbManager) : base(cbManager)
         {
@@ -35,12 +42,26 @@ namespace ExtendedTest
             _Speed = 1f;
         }
 
+        public override void LoadContent(string path, ContentManager content)
+        {
+            base.LoadContent(path, content);
+            SetupAnimation(2, 30, 2, true);
+        }
+
         public override void UpdateActive(GameTime gameTime)
         {
             Vector2 originalPos = _Position;
             movingX = false;
             movingY = false;
             handleInput(gameTime);
+            if (atDestination)
+            {
+                this.ChangeState(CurrentState.kStateIdle);
+            }
+            else
+            {
+                this.ChangeState(CurrentState.kStateWalk);
+            }
 
             if(_Target != null)
             {
@@ -56,6 +77,7 @@ namespace ExtendedTest
                 }
                 if(atDestination)
                 {
+                    this.ChangeState(CurrentState.kStateIdle);
                     if (_Target._Tag == SpriteType.kTreeType)
                     {
                         Chop(_Target as Tree);
@@ -122,7 +144,7 @@ namespace ExtendedTest
         {
             base.setDestination(dest);
             _Target = null;
-            action = CurrentAction.kActionNone;
+            this.ChangeState(CurrentState.kStateWalk);
         }
 
         //private Sprite collisionCheck(List<Character> gameObjectList)
@@ -170,8 +192,8 @@ namespace ExtendedTest
             if (item != null)
             {
                 invenManager.AddItem(item);
-                action = CurrentAction.kActionNone;
-                if(this._Target._CurrentState == SpriteState.kStateInActive)
+                this.ChangeState(CurrentState.kStateIdle);
+                if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
                     this._Target = null;
                 }
@@ -183,7 +205,7 @@ namespace ExtendedTest
             if (item != null)
             {
                 invenManager.AddItem(item);
-                action = CurrentAction.kActionNone;
+                this.ChangeState(CurrentState.kStateIdle);
                 if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
                     this._Target = null;
@@ -193,12 +215,21 @@ namespace ExtendedTest
 
         public void stopAction()
         {
-            action = CurrentAction.kActionNone;
+            this.ChangeState(CurrentState.kStateIdle);
         }
 
         public void SetTarget(Sprite target)
         {
             this._Target = target;
+        }
+
+        public void ChangeState(CurrentState action)
+        {
+            if(this.action != action)
+            {
+                this.action = action;
+                ChangeAnimation((int)this.action);
+            }
         }
     }
 }
