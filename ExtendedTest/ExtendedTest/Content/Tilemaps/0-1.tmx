@@ -7,12 +7,17 @@
   <image source="ggggg.png" width="192" height="64"/>
   <tile id="0">
    <properties>
-    <property name="Test" value="black"/>
+    <property name="Walkable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Walkable" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
-    <property name="rawr" value="blue"/>
+    <property name="Walkable" type="bool" value="false"/>
    </properties>
   </tile>
  </tileset>

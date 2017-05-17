@@ -77,13 +77,5 @@ namespace ExtendedTest
         }
     }
 
-    public class InventorySlot
-    {
-        public Item itemInSlot;
-        public int amount;
-        public InventorySlot()
-        {
 
-        }
-    }
 }

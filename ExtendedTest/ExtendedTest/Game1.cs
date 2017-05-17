@@ -24,7 +24,6 @@ namespace ExtendedTest
         MouseState previousMouseState;
         KeyboardState previousKBState;
         Sprite mouseCursor;
-        Sprite inventoryBG;
         public Camera  camera;
         
         List<TileMap> mapList;
@@ -32,18 +31,20 @@ namespace ExtendedTest
         SpriteFont font;
         bool typingMode = false;
         public KbHandler kbHandler;
-        Commander processor;
+
         //Managers
-        InventoryManager invenManager;
-        TilemapManager MapManager;
+        InventoryManager _InvenManager;
+        TilemapManager _MapManager;
         public NpcManager _NPCManager;
         WorldObjectManager _GameObjectManager;
         CombatManager _CBManager;
+        UIManager _UIManager;
 
         //UI
-        List<Sprite> UIElements;
-        Sprite UIClicked;
+        
+        UIElement UIClicked;
         Vector2 mouseClickPos;
+        UIElement inventoryBG;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -61,17 +62,16 @@ namespace ExtendedTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            invenManager = new InventoryManager(Content);
+            _InvenManager = new InventoryManager(Content);
             _CBManager = new CombatManager();
-            player = new Player(invenManager, _CBManager);
-            MapManager = new TilemapManager(_NPCManager, _GameObjectManager);
-            _NPCManager = new NpcManager(MapManager, _CBManager,  Content, player);
-            _GameObjectManager = new WorldObjectManager(MapManager, invenManager, Content, player);
+            player = new Player(_InvenManager, _CBManager);
+            _MapManager = new TilemapManager(_NPCManager, _GameObjectManager);
+            _NPCManager = new NpcManager(_MapManager, _CBManager,  Content, player);
+            _GameObjectManager = new WorldObjectManager(_MapManager, _InvenManager, Content, player);
+            _UIManager = new UIManager();
             mapList = new List<TileMap>();
-            UIElements = new List<Sprite>();
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
-            processor = new Commander(this);
             base.Initialize();
         }
 
@@ -87,10 +87,10 @@ namespace ExtendedTest
             LoadPlayerContent();
             LoadGUI();
 
-            MapManager.LoadMap("0-0", Content);
-            LoadMapNPCs(MapManager.findMapByName("0-0"));
-            LoadMapObjects(MapManager.findMapByName("0-0"));
-            MapManager.LoadMap("0-1", Content);
+            _MapManager.LoadMap("0-0", Content);
+            LoadMapNPCs(_MapManager.findMapByName("0-0"));
+            LoadMapObjects(_MapManager.findMapByName("0-0"));
+            _MapManager.LoadMap("0-1", Content);
             font = Content.Load<SpriteFont>("Fonts/Fipps");
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
@@ -120,16 +120,16 @@ namespace ExtendedTest
         {
             player.LoadContent("Art/Player", Content);
             player._Position = new Vector2(0, 0);
-            invenManager.AddItem(new Log());
+            _InvenManager.AddItem(new Log());
         }
 
         private void LoadGUI()
         {
-            inventoryBG = new Sprite();
+            UIElement inventoryBG = new UIElement();
             inventoryBG.LoadContent("Art/inventoryBG", Content);
             inventoryBG._Position = new Vector2(450, 450);
             inventoryBG.Name = "InventoryBG";
-            UIElements.Add(inventoryBG);
+            _UIManager.UIElements.Add(inventoryBG);
 
             mouseCursor = new Sprite();
             mouseCursor.LoadContent("Art/log", Content);
@@ -191,12 +191,12 @@ namespace ExtendedTest
 
 
                 kbHandler.Update();
-                if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
-                {
-                    processor.Parsetext(kbHandler.Input);
-                    if (processor.currentError != string.Empty) kbHandler.Input = processor.currentError;
-                    //kbHandler.Input = string.Empty;
-                }
+                //if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
+                //{
+                //    processor.Parsetext(kbHandler.Input);
+                //    if (processor.currentError != string.Empty) kbHandler.Input = processor.currentError;
+                //    //kbHandler.Input = string.Empty;
+                //}
                 player.UpdateActive(gameTime);
                 _NPCManager.UpdateNPCs(gameTime);
                 _GameObjectManager.Update(gameTime);
@@ -208,12 +208,13 @@ namespace ExtendedTest
 
                 }
 
-                foreach(Sprite sprite in UIElements)
+                foreach(UIElement element in _UIManager.UIElements)
                 {
-                    if(sprite.Name == "InventoryBG")
+                    if(element.Name == "InventoryBG")
                     {
-                        sprite._Position = camera.ToWorld(new Vector2(400, 400));
+                        element._Position = camera.ToWorld(new Vector2(400, 400));
                     }
+                    element.UpdateActive(gameTime);
                 }
 
                 base.Update(gameTime);
@@ -235,9 +236,10 @@ namespace ExtendedTest
                 {
                     mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
                     //check if UI clicked first
-                    foreach (Sprite sprite in UIElements)
+                    foreach (UIElement sprite in _UIManager.UIElements)
                     {
-                        if(sprite._BoundingBox.Contains(camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y))))
+                        Vector2 test1 = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
+                        if (sprite._BoundingBox.Contains(test1))
                         {
                             UIClicked = sprite;
                             mouseClickPos = mouseCursor._Position;
@@ -263,8 +265,8 @@ namespace ExtendedTest
                         {
                             if (mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
                             {
-                                Tile clickedTile = MapManager.findTile(mouseCursor._Position);
-                                List<Tile> test = MapManager.CalculatePath(clickedTile.tileCenter, player._Position);
+                                Tile clickedTile = _MapManager.findTile(mouseCursor._Position);
+                                List<Tile> test = _MapManager.CalculatePath(clickedTile.tileCenter, player._Position);
                                 if (clickedTile != null)
                                 {
                                     // player.setDestination(clickedTile.tileCenter);
@@ -274,8 +276,8 @@ namespace ExtendedTest
                         }
                         else
                         {
-                            Tile closestTile = MapManager.findClosestTile(clickedSprite._Position, player._Position);
-                            List<Tile> test = MapManager.CalculatePath(clickedSprite._Position, player._Position, true);
+                            Tile closestTile = _MapManager.findClosestTile(clickedSprite._Position, player._Position);
+                            List<Tile> test = _MapManager.CalculatePath(clickedSprite._Position, player._Position, true);
                             if (closestTile.walkable)
                             {
                                 player.setDestination(closestTile.tileCenter);
@@ -301,6 +303,8 @@ namespace ExtendedTest
                 mouseClickPos.Y = stateToworld.Y;
                 differenceY /= 100f;
                 UIClicked._Scale.Y -= differenceY;
+
+                UIClicked.Resize(new Vector2(differenceX, differenceY));
 
 
                 if (mouseState.LeftButton == ButtonState.Released)
@@ -391,17 +395,17 @@ namespace ExtendedTest
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(camera);
 
-            MapManager.Draw(spriteBatch);
+            _MapManager.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
 
             _NPCManager.DrawNPCs(spriteBatch);
 
             _GameObjectManager.Draw(spriteBatch);
-            
-            invenManager.Draw(spriteBatch, camera.ToWorld(new Vector2(20, 20)));
 
-            inventoryBG.Draw(spriteBatch);
+            _UIManager.Draw(spriteBatch);
+            Vector2 invenBgpos = camera.ToWorld(new Vector2(20,20));
+            _InvenManager.Draw(spriteBatch, invenBgpos);
 
             mouseCursor.Draw(spriteBatch);
 
