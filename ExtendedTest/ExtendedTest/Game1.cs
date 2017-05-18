@@ -23,10 +23,7 @@ namespace ExtendedTest
         //List<Sprite> gameObjectList;
         MouseState previousMouseState;
         KeyboardState previousKBState;
-        Sprite mouseCursor;
         public Camera  camera;
-        
-        List<TileMap> mapList;
 
         SpriteFont font;
         bool typingMode = false;
@@ -42,9 +39,8 @@ namespace ExtendedTest
 
         //UI
         
-        UIElement UIClicked;
         Vector2 mouseClickPos;
-        UIElement inventoryBG;
+        Sprite mouseCursor;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -68,8 +64,7 @@ namespace ExtendedTest
             _MapManager = new TilemapManager(_NPCManager, _GameObjectManager);
             _NPCManager = new NpcManager(_MapManager, _CBManager,  Content, player);
             _GameObjectManager = new WorldObjectManager(_MapManager, _InvenManager, Content, player);
-            _UIManager = new UIManager();
-            mapList = new List<TileMap>();
+            _UIManager = new UIManager(_InvenManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();
@@ -119,8 +114,11 @@ namespace ExtendedTest
         private void LoadPlayerContent()
         {
             player.LoadContent("Art/Player", Content);
-            player._Position = new Vector2(0, 0);
-            _InvenManager.AddItem(new Log());
+            player._Position = new Vector2(400, 400);
+            for(int i = 0; i < 5; i++)
+            {
+                _InvenManager.AddItem(new Log());
+            }
         }
 
         private void LoadGUI()
@@ -128,7 +126,8 @@ namespace ExtendedTest
             UIElement inventoryBG = new UIElement();
             inventoryBG.LoadContent("Art/inventoryBG", Content);
             inventoryBG._Position = new Vector2(450, 450);
-            inventoryBG.Name = "InventoryBG";
+            inventoryBG.Name = "Inventory";
+            inventoryBG._Opacity = 0.6f;
             _UIManager.UIElements.Add(inventoryBG);
 
             mouseCursor = new Sprite();
@@ -188,7 +187,7 @@ namespace ExtendedTest
 
 
                 ProcessMouse(gameTime);
-
+                ProcessKeyboard(gameTime);
 
                 kbHandler.Update();
                 //if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
@@ -208,12 +207,10 @@ namespace ExtendedTest
 
                 }
 
+                _UIManager.getUIElement("Inventory")._Position = camera.ToWorld(400, 400);
+
                 foreach(UIElement element in _UIManager.UIElements)
                 {
-                    if(element.Name == "InventoryBG")
-                    {
-                        element._Position = camera.ToWorld(new Vector2(400, 400));
-                    }
                     element.UpdateActive(gameTime);
                 }
 
@@ -227,91 +224,45 @@ namespace ExtendedTest
             }
         }
 
+        private void ProcessKeyboard(GameTime gameTime)
+        {
+            KeyboardState kbState = Keyboard.GetState();
+            //get player tile.
+
+            Tile playerTile = _MapManager.findTile(player._Position);
+            Vector2 newPos = player._Position;
+            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+            {
+                //player._Position.X -= player._Speed;
+                newPos.X -= 64;
+            }
+            else if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+            {
+                //player._Position.X += player._Speed;
+                newPos.X += 64;
+            }
+            if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
+            {
+                //player._Position.Y -= player._Speed;
+                newPos.Y -= 64;
+            }
+            else if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
+            {
+                //player._Position.Y += player._Speed;
+                newPos.Y += 64;
+            }
+            Tile newDest = _MapManager.findWalkableTile(newPos);
+            if(newDest!= null)
+            {
+                    player.setDestination(newDest.tileCenter);
+
+            }
+            Console.WriteLine(playerTile.tileCenter);
+        }
+
         private void ProcessMouse(GameTime gameTime)
         {
             MouseState mouseState = Mouse.GetState();
-            if(UIClicked == null)
-            {
-                if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
-                {
-                    mouseCursor._Position = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
-                    //check if UI clicked first
-                    foreach (UIElement sprite in _UIManager.UIElements)
-                    {
-                        Vector2 test1 = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
-                        if (sprite._BoundingBox.Contains(test1))
-                        {
-                            UIClicked = sprite;
-                            mouseClickPos = mouseCursor._Position;
-                        }
-                    }
-                    if(UIClicked == null)
-                    {
-                        List<Sprite> gameObjects = new List<Sprite>();
-                        gameObjects.AddRange(_NPCManager._SpriteListActive);
-                        gameObjects.AddRange(_GameObjectManager.ObjectList);
-
-                        bool targetFound = false;
-                        Sprite clickedSprite = new Sprite();
-                        foreach (Sprite sprite in gameObjects)
-                        {
-                            if (sprite._BoundingBox.Intersects(mouseCursor._BoundingBox))
-                            {
-                                clickedSprite = sprite;
-                                targetFound = true;
-                            }
-                        }
-                        if (!targetFound)
-                        {
-                            if (mouseCursor._Position.X >= 0 && mouseCursor._Position.Y > 0)
-                            {
-                                Tile clickedTile = _MapManager.findTile(mouseCursor._Position);
-                                List<Tile> test = _MapManager.CalculatePath(clickedTile.tileCenter, player._Position);
-                                if (clickedTile != null)
-                                {
-                                    // player.setDestination(clickedTile.tileCenter);
-                                    player.SetPath(test);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Tile closestTile = _MapManager.findClosestTile(clickedSprite._Position, player._Position);
-                            List<Tile> test = _MapManager.CalculatePath(clickedSprite._Position, player._Position, true);
-                            if (closestTile.walkable)
-                            {
-                                player.setDestination(closestTile.tileCenter);
-                                player.SetTarget(clickedSprite);
-                            }
-                        }
-                    }
-                }
-            }
-            else if(UIClicked != null)
-            {
-                Vector2 stateToworld = camera.ToWorld(mouseState.X, mouseState.Y);
-                float clickPosX = mouseClickPos.X;
-                float letGoPosX = stateToworld.X;
-                float differenceX = letGoPosX - clickPosX;
-                mouseClickPos.X = stateToworld.X;
-                differenceX /= 100f;
-                UIClicked._Scale.X += differenceX;
-
-                float clickPosY = mouseClickPos.Y;
-                float letGoPosY = stateToworld.Y;
-                float differenceY = letGoPosY - clickPosY;
-                mouseClickPos.Y = stateToworld.Y;
-                differenceY /= 100f;
-                UIClicked._Scale.Y -= differenceY;
-
-                UIClicked.Resize(new Vector2(differenceX, differenceY));
-
-
-                if (mouseState.LeftButton == ButtonState.Released)
-                {
-                    UIClicked = null;
-                }
-            }
 
 
             if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
@@ -337,50 +288,25 @@ namespace ExtendedTest
 
         private void ProcessCamera(GameTime gameTime)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
-            {
-                this.camera.Position = new Vector2(this.camera.Position.X - 5, this.camera.Position.Y);
-            }
-            else if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
-            {
-                this.camera.Position = new Vector2(this.camera.Position.X + 5, this.camera.Position.Y);
-            }
-            if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
-            {
-                this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y - 5);
-            }
-            else if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
-            {
-                this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y + 5);
-            }
+            //KeyboardState state = Keyboard.GetState();
+            //if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
+            //{
+            //    this.camera.Position = new Vector2(this.camera.Position.X - 5, this.camera.Position.Y);
+            //}
+            //else if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
+            //{
+            //    this.camera.Position = new Vector2(this.camera.Position.X + 5, this.camera.Position.Y);
+            //}
+            //if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
+            //{
+            //    this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y - 5);
+            //}
+            //else if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
+            //{
+            //    this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y + 5);
+            //}
 
-
-            if(state.IsKeyDown(Keys.I))
-            {
-                if(inventoryBG._Scale.Y <= 0f)
-                {
-                    inventoryBG._Scale.Y += 0.05f;
-                }
-                inventoryBG._Scale.Y -= 0.05f;
-            }
-            else if (state.IsKeyDown(Keys.K))
-            {
-                inventoryBG._Scale.Y += 0.05f;
-            }
-
-            if (state.IsKeyDown(Keys.J))
-            {
-                if (inventoryBG._Scale.X <= 0f)
-                {
-                    inventoryBG._Scale.X += 0.05f;
-                }
-                inventoryBG._Scale.X -= 0.05f;
-            }
-            else if (state.IsKeyDown(Keys.L))
-            {
-                inventoryBG._Scale.X += 0.05f;
-            }
+            this.camera.Position = player._Position;
 
             camera.Update(gameTime);
         }
@@ -404,7 +330,8 @@ namespace ExtendedTest
             _GameObjectManager.Draw(spriteBatch);
 
             _UIManager.Draw(spriteBatch);
-            Vector2 invenBgpos = camera.ToWorld(new Vector2(20,20));
+
+            Vector2 invenBgpos = _UIManager.getUIElement("Inventory")._TopLeft;
             _InvenManager.Draw(spriteBatch, invenBgpos);
 
             mouseCursor.Draw(spriteBatch);

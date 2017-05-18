@@ -34,5 +34,16 @@ namespace ExtendedTest
                 element.Draw(spriteBatch);
             }
         }
+
+        public UIElement getUIElement(String UIName)
+        {
+            UIElement element = UIElements.Find(x => x.Name == UIName);
+            if(element == null)
+            {
+                Console.WriteLine("UI Element: " + UIName + " not found.");
+                return null;
+            }
+            return element;
+        }
     }
 }

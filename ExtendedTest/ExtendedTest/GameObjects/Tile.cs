@@ -21,7 +21,7 @@ namespace ExtendedTest
         public bool visible = false;
         public bool active = false;
         public bool walkable = true;
-
+        public Color myColor = Color.White;
         public Rectangle destRect;
 
         public Vector2 tileCenter;
@@ -54,7 +54,7 @@ namespace ExtendedTest
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_Texture, destRect, _SourceRec, Color.White);
+            spriteBatch.Draw(_Texture, destRect, _SourceRec, myColor);
         }
     }
 }

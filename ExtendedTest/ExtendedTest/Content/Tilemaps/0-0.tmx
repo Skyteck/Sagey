@@ -16,24 +16,25 @@
   </tile>
   <tile id="1">
    <properties>
-    <property name="Walkable" type="bool" value="true"/>
+    <property name="Walkable" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
     <property name="Walkable" type="bool" value="false"/>
    </properties>
+   <objectgroup draworder="index"/>
   </tile>
  </tileset>
  <layer name="Tile Layer 1" width="32" height="32">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
-1,1,3,3,3,3,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
-1,1,3,3,3,3,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
-1,1,3,3,3,3,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
-1,1,3,3,3,3,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
-1,1,3,3,3,3,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
-1,1,3,3,3,3,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
+1,1,3,3,3,1,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
+1,3,3,3,3,1,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
+1,1,3,1,1,1,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
+1,1,3,1,3,3,3,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
+1,1,3,1,1,1,1,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
+1,1,3,3,3,3,1,3,1,1,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,
@@ -67,17 +68,7 @@
   <object id="35" name="tree2" type="tree" x="224" y="992"/>
  </objectgroup>
  <objectgroup name="NPC Layer">
-  <object id="36" name="Slime1" type="Slime" x="128" y="64" width="384" height="384">
-   <properties>
-    <property name="Agressive" type="bool" value="true"/>
-   </properties>
-  </object>
   <object id="37" name="Slime2" type="Slime" x="768" y="64" width="384" height="384">
-   <properties>
-    <property name="Agressive" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="39" name="Slime3" type="Slime" x="448" y="16" width="368" height="304">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>

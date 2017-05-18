@@ -48,6 +48,17 @@ namespace ExtendedTest
             kMonsterType
         }
 
+        public enum Direction
+        {
+            kDirectionUp,
+            kDirectionDown,
+            kDirectionLeft,
+            kDirectionRight,
+            kDirectionNone
+        }
+
+        public Direction _Direction = Direction.kDirectionNone;
+
         public SpriteType _Tag = SpriteType.kNoneType;
 
         public Vector2 _Center
@@ -55,6 +66,14 @@ namespace ExtendedTest
             get
             {
                 return new Vector2(frameWidth / 2, frameHeight / 2);
+            }
+        }
+
+        public Vector2 _TopLeft
+        {
+            get
+            {
+                return new Vector2((int)_Position.X - (this._Texture.Width / 2), ((int)_Position.Y - (this._Texture.Height / 2)));
             }
         }
 

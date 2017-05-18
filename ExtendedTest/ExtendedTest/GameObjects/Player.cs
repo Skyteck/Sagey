@@ -19,8 +19,8 @@ namespace ExtendedTest
         {
             kStateIdle = 0,
             kStateWalk,
-            kStateRun,
             kStateWC,
+            kStateRun,
             kStateFish,
             kStateMine,
             kStateAttack,
@@ -45,7 +45,7 @@ namespace ExtendedTest
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
-            SetupAnimation(2, 30, 2, true);
+            SetupAnimation(2, 30, 3, true);
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -54,7 +54,8 @@ namespace ExtendedTest
             movingX = false;
             movingY = false;
             handleInput(gameTime);
-            if (atDestination)
+
+            if(_Direction == Direction.kDirectionNone)
             {
                 this.ChangeState(CurrentState.kStateIdle);
             }
@@ -65,28 +66,7 @@ namespace ExtendedTest
 
             if(_Target != null)
             {
-
-                if(_Target._Tag == SpriteType.kMonsterType)
-                {
-                    this.Destination = _Target._Position;
-                    if(Vector2.Distance(_Target._Position, this._Position) <= attackRange)
-                    {
-                        _CBManager.PerformAttack(this, _Target as Character);
-                        atDestination = true;
-                    }
-                }
-                if(atDestination)
-                {
-                    this.ChangeState(CurrentState.kStateIdle);
-                    if (_Target._Tag == SpriteType.kTreeType)
-                    {
-                        Chop(_Target as Tree);
-                    }
-                    else if (_Target._Tag == SpriteType.kRockType)
-                    {
-                        Mine(_Target as Rock);
-                    }
-                }
+                
             }
 
             base.UpdateActive(gameTime);
@@ -96,29 +76,35 @@ namespace ExtendedTest
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if(!atDestination)
-            {
-                base.findPath();
-            }
+            //if(!atDestination)
+            //{
+            //    base.findPath();
+            //}
 
             #region Keyboard State
-            //KeyboardState state = Keyboard.GetState();
-            //if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
-            //{
-            //    _Position.X -= maxSpeed;
-            //}
-            //else if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
-            //{
-            //    _Position.X += maxSpeed;
-            //}
-            //if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
-            //{
-            //    _Position.Y -= maxSpeed;
-            //}
-            //else if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
-            //{
-            //    _Position.Y += maxSpeed;
-            //}
+            KeyboardState state = Keyboard.GetState();
+            bool moving = false;
+            _Direction = Direction.kDirectionNone;
+            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
+            {
+                //_Position.X -= _Speed;
+                _Direction = Direction.kDirectionLeft;
+            }
+            else if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
+            {
+                //_Position.X += _Speed;
+                _Direction = Direction.kDirectionRight;
+            }
+            if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
+            {
+                //_Position.Y -= _Speed;
+                _Direction = Direction.kDirectionUp;
+            }
+            else if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
+            {
+                //_Position.Y += _Speed;
+                _Direction = Direction.kDirectionDown;
+            }
             #endregion
             #region Gamepad state
             /* GamePad Stuff
@@ -192,7 +178,7 @@ namespace ExtendedTest
             if (item != null)
             {
                 invenManager.AddItem(item);
-                this.ChangeState(CurrentState.kStateIdle);
+                this.ChangeState(CurrentState.kStateWC);
                 if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
                     this._Target = null;
@@ -205,7 +191,7 @@ namespace ExtendedTest
             if (item != null)
             {
                 invenManager.AddItem(item);
-                this.ChangeState(CurrentState.kStateIdle);
+                this.ChangeState(CurrentState.kStateWC);
                 if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
                     this._Target = null;

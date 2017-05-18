@@ -139,14 +139,17 @@ namespace ExtendedTest
             {
                 if(map.Tilesets[0].Tiles[i].Properties.ContainsKey("Walkable"))
                 {
-                    if(Convert.ToBoolean(map.Tilesets[0].Tiles[i].Properties["Walkable"]) == false)
+                    bool walkable = Convert.ToBoolean(map.Tilesets[0].Tiles[i].Properties["Walkable"]);
+                    if (walkable == false)
                     {
-                        notWalkableTiles.Add(i);
+                        notWalkableTiles.Add(i+1);
                     }
                 }
             }
             return notWalkableTiles;
         }
+
+
 
         public void Update(GameTime gameTime)
         {

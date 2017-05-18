@@ -67,12 +67,24 @@ namespace ExtendedTest
 
         public void Draw(SpriteBatch spriteBatch, Vector2 StartPos)
         {
-            int i = 0;
-            foreach(InventorySlot item in itemList)
+            int rows = 5;
+            int columns = 6;
+            int buffer = 30;
+            int itemsDrawn = 0;
+            StartPos.X += 8;
+            StartPos.Y += 8;
+            for (int i = 0; i < rows; i++)
             {
-                Vector2 Pos = new Vector2(StartPos.X+(i * 32), StartPos.Y);
-                item.itemInSlot.Draw(spriteBatch, Pos);
-                i++;
+                for(int j = 0; j < columns; j++)
+                {
+                    Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
+                    itemList[itemsDrawn].itemInSlot.Draw(spriteBatch, pos);
+                    itemsDrawn++;
+                    if(itemsDrawn >= itemList.Count)
+                    {
+                        return;
+                    }
+                }
             }
         }
     }

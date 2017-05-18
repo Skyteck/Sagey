@@ -59,7 +59,10 @@ namespace ExtendedTest
         public void SetPath(List<Tile> path)
         {
             myPath = path;
-            setDestination(myPath[0].tileCenter);
+            if(path!= null)
+            {
+                setDestination(myPath[0].tileCenter);
+            }
         }
 
         public void findPath()
