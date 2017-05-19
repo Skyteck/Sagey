@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    class WorldObject : Sprite
+    public class WorldObject : Sprite
     {
         public List<WorldObject> parentList;
         public double respawnTimerStart = 15d;

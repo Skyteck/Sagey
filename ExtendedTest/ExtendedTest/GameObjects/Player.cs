@@ -29,6 +29,29 @@ namespace ExtendedTest
 
         private CurrentState action = CurrentState.kStateIdle;
         
+        private Rectangle checkRect
+        {
+            get
+            {
+                if(_Direction==Direction.kDirectionDown)
+                {
+                    return new Rectangle((int)this._Position.X - 32, (int)this._Position.Y + 32, 64, 32);
+                }
+                else if(_Direction==Direction.kDirectionUp)
+                {
+                    return new Rectangle((int)this._Position.X - 32, (int)this._Position.Y - 64, 64, 32);
+                }
+                else if (_Direction == Direction.kDirectionLeft)
+                {
+                    return new Rectangle((int)this._Position.X - 64, (int)this._Position.Y - 32, 32, 642);
+                }
+                else if (_Direction == Direction.kDirectionRight)
+                {
+                    return new Rectangle((int)this._Position.X + 32, (int)this._Position.Y - 32, 32, 64);
+                }
+                return new Rectangle();
+            }
+        }
 
         public Player(InventoryManager manager, CombatManager cbManager) : base(cbManager)
         {
@@ -39,7 +62,7 @@ namespace ExtendedTest
             attack = 6;
             attackCD = 2;
             attackSpeed = 2;
-            _Speed = 1f;
+            _Speed = 4f;
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -55,7 +78,7 @@ namespace ExtendedTest
             movingY = false;
             handleInput(gameTime);
 
-            if(_Direction == Direction.kDirectionNone)
+            if(moving)
             {
                 this.ChangeState(CurrentState.kStateIdle);
             }
@@ -66,7 +89,25 @@ namespace ExtendedTest
 
             if(_Target != null)
             {
-                
+
+                if (_Target._Tag == SpriteType.kMonsterType)
+                {
+                    if (Vector2.Distance(_Target._Position, this._Position) <= attackRange)
+                    {
+                        _CBManager.PerformAttack(this, _Target as Character);
+                        atDestination = true;
+                    }
+                }
+                if (_Target._Tag == SpriteType.kRockType)
+                {
+                    Mine(_Target as Rock);
+                    this.ChangeState(CurrentState.kStateWC);
+                }
+                else if (_Target._Tag == SpriteType.kTreeType)
+                {
+                    Chop(_Target as Tree);
+                    this.ChangeState(CurrentState.kStateWC);
+                }
             }
 
             base.UpdateActive(gameTime);
@@ -83,27 +124,29 @@ namespace ExtendedTest
 
             #region Keyboard State
             KeyboardState state = Keyboard.GetState();
-            bool moving = false;
-            _Direction = Direction.kDirectionNone;
             if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
             {
                 //_Position.X -= _Speed;
                 _Direction = Direction.kDirectionLeft;
+                moving = true;
             }
             else if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
             {
                 //_Position.X += _Speed;
                 _Direction = Direction.kDirectionRight;
+                moving = true;
             }
             if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
             {
                 //_Position.Y -= _Speed;
                 _Direction = Direction.kDirectionUp;
+                moving = true;
             }
             else if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
             {
                 //_Position.Y += _Speed;
                 _Direction = Direction.kDirectionDown;
+                moving = true;
             }
             #endregion
             #region Gamepad state
@@ -191,7 +234,6 @@ namespace ExtendedTest
             if (item != null)
             {
                 invenManager.AddItem(item);
-                this.ChangeState(CurrentState.kStateWC);
                 if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
                     this._Target = null;
@@ -215,6 +257,30 @@ namespace ExtendedTest
             {
                 this.action = action;
                 ChangeAnimation((int)this.action);
+            }
+        }
+
+        public WorldObject CheckObjectHit(List<WorldObject> spriteList)
+        {
+            foreach(WorldObject sprite in spriteList)
+            {
+                if(checkRect.Intersects(sprite._BoundingBox))
+                {
+                    this.SetTarget(sprite);
+                    return sprite;
+                }
+            }
+            return null;
+        }
+
+        internal void checkCharacterHit(List<Character> spriteListActive)
+        {
+            foreach(NPC npc in spriteListActive)
+            {
+                if(checkRect.Intersects(npc._BoundingBox))
+                {
+                    this.SetTarget(npc);
+                }
             }
         }
     }

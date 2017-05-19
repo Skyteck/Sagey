@@ -20,6 +20,7 @@ namespace ExtendedTest
         public bool atDestination = true;
         public bool movingX = false;
         public bool movingY = false;
+        public bool moving = false;
 
         //Combat values
         public CombatManager _CBManager;
@@ -35,9 +36,25 @@ namespace ExtendedTest
 
         List<Tile> myPath;
 
+        public Tile nextTileInPath
+        {
+            get
+            {
+                if(myPath.Count>0)
+                {
+                    return myPath[0];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public Character(CombatManager cbManager)
         {
             _CBManager = cbManager;
+            myPath = new List<Tile>();
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -56,14 +73,24 @@ namespace ExtendedTest
             base.UpdateActive(gameTime);
         }
 
-        public void SetPath(List<Tile> path)
+        public void AddPath(List<Tile> path)
         {
-            myPath = path;
-            if(path!= null)
+            myPath.AddRange(path);
+            if(myPath!= null)
             {
                 setDestination(myPath[0].tileCenter);
             }
         }
+
+        public void AddToPath(Tile tile)
+        {
+            myPath.Add(tile);
+            if (myPath != null)
+            {
+                setDestination(myPath[0].tileCenter);
+            }
+        }
+
 
         public void findPath()
         {
@@ -111,6 +138,11 @@ namespace ExtendedTest
                 }
 
             }
+        }
+
+        public void ClearPath()
+        {
+            myPath.Clear();
         }
 
         public virtual void setDestination(Vector2 dest)

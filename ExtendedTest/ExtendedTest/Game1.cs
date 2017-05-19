@@ -254,9 +254,22 @@ namespace ExtendedTest
             Tile newDest = _MapManager.findWalkableTile(newPos);
             if(newDest!= null)
             {
+                if(newDest != playerTile)
+                {
                     player.setDestination(newDest.tileCenter);
 
+                }
             }
+
+            if(kbState.IsKeyDown(Keys.Space) && previousKBState.IsKeyUp(Keys.Space))
+            {
+                WorldObject gotHit = player.CheckObjectHit(_GameObjectManager.ObjectList);
+                if(gotHit == null)
+                {
+                    player.checkCharacterHit(_NPCManager._SpriteListActive);
+                }
+            }
+
             Console.WriteLine(playerTile.tileCenter);
         }
 
