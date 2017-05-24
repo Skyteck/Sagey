@@ -19,10 +19,10 @@ namespace ExtendedTest
         public bool _Stackable = false;
         public enum ItemType
         {
-            ItemLog, ItemNone, ItemError, ItemOre
+            kItemLog, kItemNone, kItemError, kItemOre, kItemFish
         }
 
-        public ItemType myType = ItemType.ItemNone;
+        public ItemType myType = ItemType.kItemNone;
         
 
         public void Draw(SpriteBatch spritebatch, Vector2 Pos)

@@ -7,58 +7,58 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    class Tree : WorldObject
+    class FishingHole : WorldObject
     {
         int difficulty = 300;
         int hits = 0;
-        int logCount = 3; 
-        public enum TreeType
+        int fishCount = 3; 
+        public enum FishingType
         {
-            kNormalTree,
-            kOakTree,
-            kCedarTree
+            kFlyFishType,
+            kBaitType,
+            kNetType
         }
 
-        public TreeType treeType = TreeType.kNormalTree;
-        public Tree(TreeType myType)
+        public FishingType fishingType = FishingType.kNetType;
+        public FishingHole(FishingType myType)
         {
-            treeType = myType;
-            switch(treeType)
+            fishingType = myType;
+            switch(fishingType)
             {
-                case TreeType.kNormalTree:
+                case FishingType.kNetType:
+                    difficulty = 200;
+                    break;
+                case FishingType.kBaitType:
                     difficulty = 600;
                     break;
-                case TreeType.kOakTree:
-                    difficulty = 1200;
-                    break;
-                case TreeType.kCedarTree:
-                    difficulty = 1800;
+                case FishingType.kFlyFishType:
+                    difficulty = 900;
                     break;                    
                 default:
-                    difficulty = 9001;
+                    difficulty = 90000001;
                     break;
             }
             Random ran = new Random();
-            logCount = ran.Next(1, 7);
+            fishCount = ran.Next(1, 7);
 
-            this._Tag = Sprite.SpriteType.kTreeType;
+            this._Tag = Sprite.SpriteType.kFishingType;
             this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 
-        public Item getChopped()
+        public Item getFished()
         {
             Random ran = new Random();
             int randomNumber = ran.Next(0, difficulty);
             if(randomNumber == 0)
             {
-                Log log = new Log();
-                logCount--;
-                if(logCount <= 0)
+                Fish fish = new Fish();
+                fishCount--;
+                if(fishCount <= 0)
                 {
                     this._CurrentState = SpriteState.kStateInActive;
                     this._Draw = false;
                 }
-                return log;
+                return fish;
             }
             else
             {
@@ -72,7 +72,7 @@ namespace ExtendedTest
             base.Revive();
 
             Random ran = new Random();
-            logCount = ran.Next(1, 7);
+            fishCount = ran.Next(1, 7);
         }
     }
 }

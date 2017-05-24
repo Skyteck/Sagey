@@ -54,6 +54,15 @@ namespace ExtendedTest
                 anotherRock.Name = thing.Name;
                 ObjectList.Add(anotherRock);
             }
+            else if (thing.Type.Equals("FishingHole"))
+            {
+                FishingHole anotherFish = new FishingHole(FishingHole.FishingType.kNetType);
+                anotherFish.LoadContent("Art/" + thing.Type, Content);
+                anotherFish._Position = _TilemapManager.findTile(pos).tileCenter;
+                anotherFish.parentList = ObjectList;
+                anotherFish.Name = thing.Name;
+                ObjectList.Add(anotherFish);
+            }
         }
 
         public void Update(GameTime gameTime)

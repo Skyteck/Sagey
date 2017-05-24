@@ -11,22 +11,43 @@ namespace ExtendedTest
 {
     public class InventoryManager
     {
-        List<InventorySlot> itemList;
+        List<InventorySlot> itemSlots;
+        SpriteFont count;
         int capacity = 28;
         ContentManager _Content;
+
+
+        Texture2D normalBG;
+        Texture2D SelectedBG;
+        Item selectedItem;
+
         public InventoryManager(ContentManager content)
         {
             _Content = content;
-            itemList = new List<InventorySlot>();
+            itemSlots = new List<InventorySlot>();
             
         }
 
-        public Texture2D getTexture(Item item)
+        public void loadContent()
+        {
+            count = _Content.Load<SpriteFont>("Fonts/Fipps");
+            normalBG = _Content.Load<Texture2D>("Art/itemSlotNormal");
+            SelectedBG = _Content.Load<Texture2D>("Art/itemSlotSelected");
+        }
+
+        public Texture2D getTexture(Item item, bool selected = false)
         {
             Texture2D newTex;
             try
             {
-                newTex = _Content.Load<Texture2D>("Art/" + item._Name);
+                if(selected)
+                {
+                    newTex = _Content.Load<Texture2D>("Art/" + item._Name + "Selected");
+                }
+                else
+                {
+                    newTex = _Content.Load<Texture2D>("Art/" + item._Name);
+                }
             }
             catch
             {
@@ -40,27 +61,39 @@ namespace ExtendedTest
         public void AddItem(Item item, int amount = 1)
         {
             //find if the item already exists in a slot
-            InventorySlot itemSlot = itemList.Find(x => x.itemInSlot.ID == item.ID);
+            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot.ID == item.ID);
             if (item._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
-                itemSlot.amount += amount;
+                itemSlot.Amount += amount;
             }
             else //item not stackable or item not found, create a new slot
             {
-                if(itemList.Count < this.capacity) //Bag can only be so full...
+                if(itemSlots.Count < this.capacity) //Bag can only be so full...
                 {
                     // create new slot for the item
                     itemSlot = new InventorySlot();
                     //create the item
                     //put item in slot
                     item.itemtexture = getTexture(item); 
-                    itemSlot.itemInSlot = item;
-                    itemSlot.amount = 1;
-                    itemList.Add(itemSlot);
+                    itemSlot.ItemInSlot = item;
+                    itemSlot.Amount = 1;
+                    itemSlots.Add(itemSlot);
                 }
                 else
                 {
                     //error adding item message;
+                }
+            }
+        }
+
+        public void checkClicks(Vector2 pos)
+        {
+            foreach(InventorySlot item in itemSlots)
+            {
+                if(item.myRect.Contains(pos))
+                {
+                    selectedItem = item.ItemInSlot;
+                    return;
                 }
             }
         }
@@ -78,9 +111,18 @@ namespace ExtendedTest
                 for(int j = 0; j < columns; j++)
                 {
                     Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
-                    itemList[itemsDrawn].itemInSlot.Draw(spriteBatch, pos);
+                    itemSlots[itemsDrawn]._Position = pos;
+                    if(itemSlots[itemsDrawn].ItemInSlot == selectedItem)
+                    {
+                        spriteBatch.Draw(SelectedBG, new Vector2(pos.X-8, pos.Y-8), Color.White);
+                    }
+                    itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
+                    if(itemSlots[itemsDrawn].ItemInSlot._Stackable)
+                    {
+                        spriteBatch.DrawString(count, itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
+                    }
                     itemsDrawn++;
-                    if(itemsDrawn >= itemList.Count)
+                    if(itemsDrawn >= itemSlots.Count)
                     {
                         return;
                     }

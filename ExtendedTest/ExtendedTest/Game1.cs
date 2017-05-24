@@ -87,6 +87,7 @@ namespace ExtendedTest
             LoadMapObjects(_MapManager.findMapByName("0-0"));
             _MapManager.LoadMap("0-1", Content);
             font = Content.Load<SpriteFont>("Fonts/Fipps");
+            _InvenManager.loadContent();
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
             //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
@@ -269,14 +270,19 @@ namespace ExtendedTest
                     player.checkCharacterHit(_NPCManager._SpriteListActive);
                 }
             }
-
-            Console.WriteLine(playerTile.tileCenter);
+            
         }
 
         private void ProcessMouse(GameTime gameTime)
         {
             MouseState mouseState = Mouse.GetState();
 
+            if(mouseState.LeftButton==ButtonState.Pressed && previousMouseState.LeftButton==ButtonState.Released)
+            {
+                //clicked. loop through the inventory to see if anything in there was clicked.
+                Vector2 mouseClickpos = new Vector2(mouseState.Position.X, mouseState.Position.Y);
+                _InvenManager.checkClicks(camera.ToWorld(mouseClickpos));
+            }
 
             if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
             {

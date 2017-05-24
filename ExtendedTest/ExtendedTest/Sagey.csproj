@@ -46,12 +46,13 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\AnimatedSprite.cs" />
     <Compile Include="GameObjects\Character.cs" />
-    <Compile Include="GameObjects\Items\Ore.cs" />
+    <Compile Include="GameObjects\Items\Items.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Monster.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Projectiles\Projectile.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Slime.cs" />
     <Compile Include="GameObjects\Objects\Rock.cs" />
     <Compile Include="GameObjects\NPCs\NPC.cs" />
+    <Compile Include="GameObjects\Objects\FishingHole.cs" />
     <Compile Include="GameObjects\Objects\WorldObject.cs" />
     <Compile Include="GameObjects\UIElement.cs" />
     <Compile Include="kbHandler.cs" />
@@ -60,7 +61,6 @@
     <Compile Include="Managers\UIManager.cs" />
     <Compile Include="Managers\WorldObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
-    <Compile Include="GameObjects\Items\Log.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="GameObjects\Tilemap.cs" />
@@ -94,6 +94,7 @@
   <ItemGroup>
     <Content Include="Content\Art\attackAxe.png" />
     <Content Include="Content\Art\axe.png" />
+    <Content Include="Content\Art\fishSelected.png" />
     <Content Include="Content\Art\inventoryBG.png" />
     <Content Include="Content\Art\inventoryBG2.png" />
     <Content Include="Content\Art\log.png" />

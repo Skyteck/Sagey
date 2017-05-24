@@ -47,8 +47,7 @@ namespace ExtendedTest
             //this.bottomBoundary += this._Position.Y;
             //this.leftBoundary += this._Texture.Width;
             //this.topBoundary += this._Texture.Height;
-
-            Console.WriteLine(leftBoundary + " " + rightBoundary);
+            
         }
 
         public override void UpdateActive(GameTime gameTime)

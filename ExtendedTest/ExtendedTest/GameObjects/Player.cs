@@ -108,6 +108,11 @@ namespace ExtendedTest
                     Chop(_Target as Tree);
                     this.ChangeState(CurrentState.kStateWC);
                 }
+                else if (_Target._Tag == SpriteType.kFishingType)
+                {
+                    Fish(_Target as FishingHole);
+                    this.ChangeState(CurrentState.kStateWC);
+                }
             }
 
             base.UpdateActive(gameTime);
@@ -231,6 +236,19 @@ namespace ExtendedTest
         private void Mine(Rock rock)
         {
             Item item = rock.getChopped();
+            if (item != null)
+            {
+                invenManager.AddItem(item);
+                if (this._Target._CurrentState == SpriteState.kStateInActive)
+                {
+                    this._Target = null;
+                }
+            }
+        }
+
+        private void Fish(FishingHole fishHole)
+        {
+            Item item = fishHole.getFished();
             if (item != null)
             {
                 invenManager.AddItem(item);
