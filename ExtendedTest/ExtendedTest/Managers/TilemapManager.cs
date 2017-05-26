@@ -13,9 +13,9 @@ namespace ExtendedTest
     public class TilemapManager
     {
         List<TileMap> mapList;
-        NpcManager _NpcManager;
+        NPCManager _NpcManager;
         WorldObjectManager _WorldObjectManager;
-        public TilemapManager(NpcManager npcManager, WorldObjectManager _GameObjectmanager)
+        public TilemapManager(NPCManager npcManager, WorldObjectManager _GameObjectmanager)
         {
             mapList = new List<TileMap>();
             _NpcManager = npcManager;

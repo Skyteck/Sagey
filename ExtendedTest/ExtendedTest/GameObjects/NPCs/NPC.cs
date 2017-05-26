@@ -19,7 +19,7 @@ namespace ExtendedTest
         public double bottomBoundary { get; private set; }
         public double topBoundary { get; private set; }
 
-        NpcManager ParentManager;
+        NPCManager ParentManager;
         public List<Character> parentList;
 
 
@@ -34,7 +34,7 @@ namespace ExtendedTest
         }
 
         public AttackStyle _AttackStyle = AttackStyle.kMeleeStyle;
-        public NPC(NpcManager manager, CombatManager cbManager) :base(cbManager)
+        public NPC(NPCManager manager, CombatManager cbManager) :base(cbManager)
         {
             ParentManager = manager;
         }

@@ -10,7 +10,7 @@ using TiledSharp;
 
 namespace ExtendedTest
 {
-    public class NpcManager
+    public class NPCManager
     {
         public List<Character> _SpriteListActive;
         public List<Character> _SpriteListDead;
@@ -20,7 +20,7 @@ namespace ExtendedTest
         Player thePlayer;
         List<Projectile> _ProjectileList;
 
-        public NpcManager(TilemapManager tMapManager, CombatManager cbManager ,ContentManager content, Player player)
+        public NPCManager(TilemapManager tMapManager, CombatManager cbManager ,ContentManager content, Player player)
         {
             _SpriteListActive = new List<Character>();
             _SpriteListDead = new List<Character>();

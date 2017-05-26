@@ -83,6 +83,18 @@ namespace ExtendedTest
             }
         }
 
+        public WorldObject CheckClicks(Vector2 pos)
+        {
+            foreach(WorldObject thing in objectList)
+            {
+                if(thing._BoundingBox.Contains(pos))
+                {
+                    return thing;
+                }
+            }
+            return null;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach(Sprite sprite in ObjectList)

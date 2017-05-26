@@ -32,7 +32,7 @@ namespace ExtendedTest
         //Managers
         InventoryManager _InvenManager;
         TilemapManager _MapManager;
-        public NpcManager _NPCManager;
+        public NPCManager _NPCManager;
         WorldObjectManager _GameObjectManager;
         CombatManager _CBManager;
         UIManager _UIManager;
@@ -62,7 +62,7 @@ namespace ExtendedTest
             _CBManager = new CombatManager();
             player = new Player(_InvenManager, _CBManager);
             _MapManager = new TilemapManager(_NPCManager, _GameObjectManager);
-            _NPCManager = new NpcManager(_MapManager, _CBManager,  Content, player);
+            _NPCManager = new NPCManager(_MapManager, _CBManager,  Content, player);
             _GameObjectManager = new WorldObjectManager(_MapManager, _InvenManager, Content, player);
             _UIManager = new UIManager(_InvenManager);
             camera = new Camera(GraphicsDevice);
@@ -293,7 +293,7 @@ namespace ExtendedTest
                     if(itemClicked != null)
                     {
                         command = itemClicked.Use(selectedItem);
-                        if(command!= String.Empty)
+                        if(command!= String.Empty && command != "None")
                         {
                             itemClicked.Uses--;
                             selectedItem.Uses--;
@@ -311,6 +311,26 @@ namespace ExtendedTest
                                 }
                             }
 
+                        }
+                    }
+                    else // item wasn't clicked. was another object like a fire or tree?
+                    {
+                        WorldObject thing = _GameObjectManager.CheckClicks(mouseClickpos);
+                        if(thing != null)
+                        {
+                            command = selectedItem.Use(thing);
+                            if(command == "Cook")
+                            {
+                                selectedItem.Uses--;
+                                if(selectedItem.Uses <= 0)
+                                {
+                                    if(selectedItem.myType==Item.ItemType.kItemFish)
+                                    {
+                                        _InvenManager.RemoveItem(selectedItem);
+                                        _InvenManager.AddItem(new CookedFish(), 1);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

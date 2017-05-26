@@ -57,6 +57,7 @@
     <Compile Include="GameObjects\Objects\WorldObject.cs" />
     <Compile Include="GameObjects\UIElement.cs" />
     <Compile Include="kbHandler.cs" />
+    <Compile Include="Managers\ChemistryManager.cs" />
     <Compile Include="Managers\CombatManager.cs" />
     <Compile Include="Managers\InventorySlot.cs" />
     <Compile Include="Managers\UIManager.cs" />

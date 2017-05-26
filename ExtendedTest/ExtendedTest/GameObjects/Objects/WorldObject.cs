@@ -14,7 +14,7 @@ namespace ExtendedTest
         public double timeDead = 0d;
         public WorldObject()
         {
-
+            
         }
 
 

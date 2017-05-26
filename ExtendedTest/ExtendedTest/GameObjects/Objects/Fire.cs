@@ -11,6 +11,8 @@ namespace ExtendedTest
 
         public Fire()
         {
+            this._Tag = Sprite.SpriteType.kFireType;
+            this._CurrentState = Sprite.SpriteState.kStateActive;
 
         }
     }

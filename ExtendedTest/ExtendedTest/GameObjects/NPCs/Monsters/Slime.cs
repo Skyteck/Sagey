@@ -9,7 +9,7 @@ namespace ExtendedTest.GameObjects.NPCs.Monsters
 {
     class Slime : Monster
     {
-        public Slime(NpcManager manager, CombatManager cbManager) : base(manager, cbManager)
+        public Slime(NPCManager manager, CombatManager cbManager) : base(manager, cbManager)
         {
             attack = 6;
             defense = 5;
