@@ -120,6 +120,7 @@ namespace ExtendedTest
             {
                 _InvenManager.AddItem(new Log());
             }
+            _InvenManager.AddItem(new Matches());
         }
 
         private void LoadGUI()
@@ -276,12 +277,43 @@ namespace ExtendedTest
         private void ProcessMouse(GameTime gameTime)
         {
             MouseState mouseState = Mouse.GetState();
-
+            String command = string.Empty;
             if(mouseState.LeftButton==ButtonState.Pressed && previousMouseState.LeftButton==ButtonState.Released)
             {
-                //clicked. loop through the inventory to see if anything in there was clicked.
-                Vector2 mouseClickpos = new Vector2(mouseState.Position.X, mouseState.Position.Y);
-                _InvenManager.checkClicks(camera.ToWorld(mouseClickpos));
+                Vector2 mouseClickpos = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
+                if (_InvenManager.selectedItem == null)
+                {
+                    //clicked. loop through the inventory to see if anything in there was clicked.
+                    _InvenManager.SelectItem(mouseClickpos);
+                }
+                else //item is selected. try using the items together
+                {
+                    Item itemClicked = _InvenManager.checkClicks(mouseClickpos);
+                    Item selectedItem = _InvenManager.selectedItem;
+                    if(itemClicked != null)
+                    {
+                        command = itemClicked.Use(selectedItem);
+                        if(command!= String.Empty)
+                        {
+                            itemClicked.Uses--;
+                            selectedItem.Uses--;
+                            if (command == "Create Fire")
+                            {
+                                _GameObjectManager.CreateObject(Sprite.SpriteType.kFireType, player._Position);
+                                if (itemClicked.Uses <= 0)
+                                {
+                                    _InvenManager.RemoveItem(itemClicked);
+                                }
+                                if (selectedItem.Uses <= 0)
+                                {
+                                    _InvenManager.RemoveItem(selectedItem);
+
+                                }
+                            }
+
+                        }
+                    }
+                }
             }
 
             if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)

@@ -38,7 +38,6 @@ namespace ExtendedTest
             {
                 Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
                 anotherTree.LoadContent("Art/tree", Content);
-                anotherTree._Position =
                 anotherTree._Position = _TilemapManager.findTile(pos).tileCenter;
                 anotherTree.parentList = ObjectList;
                 anotherTree.Name = thing.Name;
@@ -89,6 +88,20 @@ namespace ExtendedTest
             foreach(Sprite sprite in ObjectList)
             {
                 sprite.Draw(spriteBatch);
+            }
+        }
+
+        internal void CreateObject(Sprite.SpriteType objectType, Vector2 position)
+        {
+            if (objectType == Sprite.SpriteType.kFireType)
+            {
+                Fire fire = new Fire();
+                fire.LoadContent("Art/Fire", Content);
+                fire._Position = _TilemapManager.findTile(position).tileCenter;
+                fire.parentList = ObjectList;
+                fire.Name = "Fire";
+                ObjectList.Add(fire);
+
             }
         }
     }

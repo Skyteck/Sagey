@@ -19,7 +19,7 @@ namespace ExtendedTest
 
         Texture2D normalBG;
         Texture2D SelectedBG;
-        Item selectedItem;
+        public Item selectedItem;
 
         public InventoryManager(ContentManager content)
         {
@@ -86,13 +86,58 @@ namespace ExtendedTest
             }
         }
 
-        public void checkClicks(Vector2 pos)
+        public void RemoveItem(Item item, int amount = 1)
+        {
+            if(item == selectedItem)
+            {
+                selectedItem = null;
+            }
+            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot.ID == item.ID);
+            if(item._Stackable)
+            {
+                itemSlot.Amount -= amount;
+                if(itemSlot.Amount<= 0)
+                {
+                    itemSlots.Remove(itemSlot);
+                }
+            }
+            else
+            {
+                itemSlots.Remove(itemSlot);
+            }
+
+        }
+
+        public Item checkClicks(Vector2 pos)
         {
             foreach(InventorySlot item in itemSlots)
             {
                 if(item.myRect.Contains(pos))
                 {
+                    return item.ItemInSlot;
+                }
+            }
+            return null;
+        }
+
+        public void SelectItem(Vector2 pos)
+        {
+            foreach (InventorySlot item in itemSlots)
+            {
+                if (item.myRect.Contains(pos))
+                {
                     selectedItem = item.ItemInSlot;
+                }
+            }
+        }
+
+        public void SelectItem(Item item)
+        {
+            foreach(InventorySlot itemSlot in itemSlots)
+            {
+                if(itemSlot.ItemInSlot == item)
+                {
+                    selectedItem = itemSlot.ItemInSlot;
                     return;
                 }
             }
@@ -106,28 +151,32 @@ namespace ExtendedTest
             int itemsDrawn = 0;
             StartPos.X += 8;
             StartPos.Y += 8;
-            for (int i = 0; i < rows; i++)
+            if(itemSlots.Count>0)
             {
-                for(int j = 0; j < columns; j++)
+                for (int i = 0; i < rows; i++)
                 {
-                    Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
-                    itemSlots[itemsDrawn]._Position = pos;
-                    if(itemSlots[itemsDrawn].ItemInSlot == selectedItem)
+                    for (int j = 0; j < columns; j++)
                     {
-                        spriteBatch.Draw(SelectedBG, new Vector2(pos.X-8, pos.Y-8), Color.White);
-                    }
-                    itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
-                    if(itemSlots[itemsDrawn].ItemInSlot._Stackable)
-                    {
-                        spriteBatch.DrawString(count, itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
-                    }
-                    itemsDrawn++;
-                    if(itemsDrawn >= itemSlots.Count)
-                    {
-                        return;
+                        Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
+                        itemSlots[itemsDrawn]._Position = pos;
+                        if (itemSlots[itemsDrawn].ItemInSlot == selectedItem)
+                        {
+                            spriteBatch.Draw(SelectedBG, new Vector2(pos.X - 8, pos.Y - 8), Color.White);
+                        }
+                        itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
+                        if (itemSlots[itemsDrawn].ItemInSlot._Stackable)
+                        {
+                            spriteBatch.DrawString(count, itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
+                        }
+                        itemsDrawn++;
+                        if (itemsDrawn >= itemSlots.Count)
+                        {
+                            return;
+                        }
                     }
                 }
             }
+
         }
     }
 

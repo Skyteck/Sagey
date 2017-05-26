@@ -43,5 +43,6 @@ namespace ExtendedTest
             this._Draw = true;
             timeDead = 0;
         }
+        
     }
 }
