@@ -15,15 +15,16 @@ namespace ExtendedTest
         SpriteFont count;
         int capacity = 28;
         ContentManager _Content;
-
+        ChemistryManager _ChemistryManager;
 
         Texture2D normalBG;
         Texture2D SelectedBG;
         public Item selectedItem;
 
-        public InventoryManager(ContentManager content)
+        public InventoryManager(ContentManager content, ChemistryManager chemistryManager)
         {
             _Content = content;
+            _ChemistryManager = chemistryManager;
             itemSlots = new List<InventorySlot>();
             
         }
@@ -78,6 +79,7 @@ namespace ExtendedTest
                     itemSlot.ItemInSlot = item;
                     itemSlot.Amount = 1;
                     itemSlots.Add(itemSlot);
+                    
                 }
                 else
                 {
