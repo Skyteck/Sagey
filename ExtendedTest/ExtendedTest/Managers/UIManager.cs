@@ -6,22 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest
+namespace ExtendedTest.Managers
 { 
     public class UIManager
     {
-        public List<UIElement> UIElements;
+        public List<UIPanel> UIPanels;
         InventoryManager _invenManager;
 
         public UIManager(InventoryManager invenManager)
         {
-            UIElements = new List<UIElement>();
+            UIPanels = new List<UIPanel>();
             _invenManager = invenManager;
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach(UIElement element in UIElements)
+            foreach(UIPanel element in UIPanels)
             {
                 element.UpdateActive(gameTime);
             }
@@ -29,15 +29,15 @@ namespace ExtendedTest
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach(UIElement element in UIElements)
+            foreach(UIPanel panel in UIPanels)
             {
-                element.Draw(spriteBatch);
+                panel.Draw(spriteBatch);
             }
         }
 
-        public UIElement getUIElement(String UIName)
+        public UIPanel getUIElement(String UIName)
         {
-            UIElement element = UIElements.Find(x => x.Name == UIName);
+            UIPanel element = UIPanels.Find(x => x.Name == UIName);
             if(element == null)
             {
                 Console.WriteLine("UI Element: " + UIName + " not found.");

@@ -42,6 +42,7 @@ namespace ExtendedTest
             fishCount = ran.Next(1, 7);
 
             this._Tag = Sprite.SpriteType.kFishingType;
+            this.myWorldObjectTag = WorldObjectTag.kFishingHoleTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 

@@ -12,6 +12,17 @@ namespace ExtendedTest
         public List<WorldObject> parentList;
         public double respawnTimerStart = 15d;
         public double timeDead = 0d;
+
+        public enum WorldObjectTag
+        {
+            kFireTag,
+            kTreeTag,
+            kRockTag,
+            kFishingHoleTag,
+            kNoneTag
+        }
+
+        public WorldObjectTag myWorldObjectTag;
         public WorldObject()
         {
             

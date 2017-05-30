@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 
-namespace ExtendedTest
+namespace ExtendedTest.Managers
 {
     public class NPCManager
     {

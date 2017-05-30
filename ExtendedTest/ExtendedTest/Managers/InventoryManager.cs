@@ -7,24 +7,22 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-namespace ExtendedTest
+namespace ExtendedTest.Managers
 {
     public class InventoryManager
     {
-        List<InventorySlot> itemSlots;
+        public List<InventorySlot> itemSlots;
         SpriteFont count;
         int capacity = 28;
         ContentManager _Content;
-        ChemistryManager _ChemistryManager;
 
         Texture2D normalBG;
         Texture2D SelectedBG;
         public Item selectedItem;
 
-        public InventoryManager(ContentManager content, ChemistryManager chemistryManager)
+        public InventoryManager(ContentManager content)
         {
             _Content = content;
-            _ChemistryManager = chemistryManager;
             itemSlots = new List<InventorySlot>();
             
         }
@@ -145,41 +143,59 @@ namespace ExtendedTest
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 StartPos)
+        public int getItemCount(string itemName)
         {
-            int rows = 5;
-            int columns = 6;
-            int buffer = 30;
-            int itemsDrawn = 0;
-            StartPos.X += 8;
-            StartPos.Y += 8;
-            if(itemSlots.Count>0)
+            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Name == itemName);
+            if(itemSlot == null)
             {
-                for (int i = 0; i < rows; i++)
-                {
-                    for (int j = 0; j < columns; j++)
-                    {
-                        Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
-                        itemSlots[itemsDrawn]._Position = pos;
-                        if (itemSlots[itemsDrawn].ItemInSlot == selectedItem)
-                        {
-                            spriteBatch.Draw(SelectedBG, new Vector2(pos.X - 8, pos.Y - 8), Color.White);
-                        }
-                        itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
-                        if (itemSlots[itemsDrawn].ItemInSlot._Stackable)
-                        {
-                            spriteBatch.DrawString(count, itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
-                        }
-                        itemsDrawn++;
-                        if (itemsDrawn >= itemSlots.Count)
-                        {
-                            return;
-                        }
-                    }
-                }
+                return 0;
+            }
+            if (itemSlot.ItemInSlot._Stackable)
+            {
+                return itemSlot.Amount;
+            }
+            else
+            {
+                int count = itemSlots.Count(x => x.ItemInSlot._Name == itemName);
+                return count;
             }
 
         }
+
+        //public void Draw(SpriteBatch spriteBatch, Vector2 StartPos)
+        //{
+        //    int rows = 5;
+        //    int columns = 6;
+        //    int buffer = 30;
+        //    int itemsDrawn = 0;
+        //    StartPos.X += 8;
+        //    StartPos.Y += 8;
+        //    if(itemSlots.Count>0)
+        //    {
+        //        for (int i = 0; i < rows; i++)
+        //        {
+        //            for (int j = 0; j < columns; j++)
+        //            {
+        //                Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
+        //                itemSlots[itemsDrawn]._Position = pos;
+        //                if (itemSlots[itemsDrawn].ItemInSlot == selectedItem)
+        //                {
+        //                    spriteBatch.Draw(SelectedBG, new Vector2(pos.X - 8, pos.Y - 8), Color.White);
+        //                }
+        //                itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
+        //                if (itemSlots[itemsDrawn].ItemInSlot._Stackable)
+        //                {
+        //                    spriteBatch.DrawString(count, itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
+        //                }
+        //                itemsDrawn++;
+        //                if (itemsDrawn >= itemSlots.Count)
+        //                {
+        //                    return;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 
 

@@ -12,7 +12,7 @@ namespace ExtendedTest
     public class Player : Character
     {
         Vector2 Destination = Vector2.Zero;
-        InventoryManager invenManager;
+        Managers.InventoryManager invenManager;
         Sprite _Target;
         
         public enum CurrentState
@@ -53,7 +53,7 @@ namespace ExtendedTest
             }
         }
 
-        public Player(InventoryManager manager, CombatManager cbManager) : base(cbManager)
+        public Player(Managers.InventoryManager manager, Managers.CombatManager cbManager) : base(cbManager)
         {
             this.startHP = 10;
             _HP = 10;

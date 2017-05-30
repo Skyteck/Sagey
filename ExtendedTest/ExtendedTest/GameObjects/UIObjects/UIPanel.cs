@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest
 {
-    public class UIElement : Sprite
+    public class UIPanel : Sprite
     {
         int minWidth = 15;
         int adJustedWidth;
@@ -26,7 +26,7 @@ namespace ExtendedTest
         }
 
         //List<InventorySlot> slots;
-        public UIElement()
+        public UIPanel()
         {
             //slots = new List<InventorySlot>();
         }

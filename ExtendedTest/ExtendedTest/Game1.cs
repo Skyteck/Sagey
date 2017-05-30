@@ -30,13 +30,13 @@ namespace ExtendedTest
         public KbHandler kbHandler;
 
         //Managers
-        InventoryManager _InvenManager;
-        TilemapManager _MapManager;
-        public NPCManager _NPCManager;
-        WorldObjectManager _GameObjectManager;
-        CombatManager _CBManager;
-        UIManager _UIManager;
-
+        Managers.InventoryManager _InvenManager;
+        Managers.TilemapManager _MapManager;
+        public Managers.NPCManager _NPCManager;
+        Managers.WorldObjectManager _GameObjectManager;
+        Managers.CombatManager _CBManager;
+        Managers.UIManager _UIManager;
+        Managers.ChemistryManager _ChemistryManager;
         //UI
         
         Vector2 mouseClickPos;
@@ -58,13 +58,14 @@ namespace ExtendedTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _InvenManager = new InventoryManager(Content);
-            _CBManager = new CombatManager();
+            _InvenManager = new Managers.InventoryManager(Content);
+            _CBManager = new Managers.CombatManager();
             player = new Player(_InvenManager, _CBManager);
-            _MapManager = new TilemapManager(_NPCManager, _GameObjectManager);
-            _NPCManager = new NPCManager(_MapManager, _CBManager,  Content, player);
-            _GameObjectManager = new WorldObjectManager(_MapManager, _InvenManager, Content, player);
-            _UIManager = new UIManager(_InvenManager);
+            _MapManager = new Managers.TilemapManager(_NPCManager, _GameObjectManager);
+            _NPCManager = new Managers.NPCManager(_MapManager, _CBManager,  Content, player);
+            _GameObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
+            _UIManager = new Managers.UIManager(_InvenManager);
+            _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _GameObjectManager, _NPCManager, Content);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();
@@ -88,6 +89,8 @@ namespace ExtendedTest
             _MapManager.LoadMap("0-1", Content);
             font = Content.Load<SpriteFont>("Fonts/Fipps");
             _InvenManager.loadContent();
+
+            _ChemistryManager.LoadIcons();
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
             //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
@@ -125,12 +128,21 @@ namespace ExtendedTest
 
         private void LoadGUI()
         {
-            UIElement inventoryBG = new UIElement();
+            GameObjects.UIObjects.InventoryPanel inventoryBG = new GameObjects.UIObjects.InventoryPanel(_InvenManager);
             inventoryBG.LoadContent("Art/inventoryBG", Content);
-            inventoryBG._Position = new Vector2(450, 450);
+            inventoryBG._Position = new Vector2(250, 450);
             inventoryBG.Name = "Inventory";
             inventoryBG._Opacity = 0.6f;
-            _UIManager.UIElements.Add(inventoryBG);
+            _UIManager.UIPanels.Add(inventoryBG);
+
+            GameObjects.UIObjects.CraftingPanel craftingPanel = new GameObjects.UIObjects.CraftingPanel(_ChemistryManager);
+            craftingPanel.LoadContent("Art/inventoryBG", Content);
+            craftingPanel._Position = new Vector2(450, 450);
+            craftingPanel.Name = "Crafting";
+            craftingPanel._Opacity = 0.9f;
+            _UIManager.UIPanels.Add(craftingPanel);
+
+
 
             mouseCursor = new Sprite();
             mouseCursor.LoadContent("Art/log", Content);
@@ -210,8 +222,9 @@ namespace ExtendedTest
                 }
 
                 _UIManager.getUIElement("Inventory")._Position = camera.ToWorld(400, 400);
+                _UIManager.getUIElement("Crafting")._Position = camera.ToWorld(600, 400);
 
-                foreach(UIElement element in _UIManager.UIElements)
+                foreach (UIPanel element in _UIManager.UIPanels)
                 {
                     element.UpdateActive(gameTime);
                 }
@@ -270,6 +283,11 @@ namespace ExtendedTest
                 {
                     player.checkCharacterHit(_NPCManager._SpriteListActive);
                 }
+            }
+
+            if(kbState.IsKeyDown(Keys.E) && previousKBState.IsKeyUp(Keys.E))
+            {
+                _ChemistryManager.CheckRecipes();
             }
             
         }
@@ -402,8 +420,8 @@ namespace ExtendedTest
 
             _UIManager.Draw(spriteBatch);
 
-            Vector2 invenBgpos = _UIManager.getUIElement("Inventory")._TopLeft;
-            _InvenManager.Draw(spriteBatch, invenBgpos);
+            //Vector2 invenBgpos = _UIManager.getUIElement("Inventory")._TopLeft;
+            //_InvenManager.Draw(spriteBatch, invenBgpos);
 
             mouseCursor.Draw(spriteBatch);
 

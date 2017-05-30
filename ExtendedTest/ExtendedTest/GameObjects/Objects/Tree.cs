@@ -42,6 +42,7 @@ namespace ExtendedTest
             logCount = ran.Next(1, 7);
 
             this._Tag = Sprite.SpriteType.kTreeType;
+            this.myWorldObjectTag = WorldObjectTag.kTreeTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 

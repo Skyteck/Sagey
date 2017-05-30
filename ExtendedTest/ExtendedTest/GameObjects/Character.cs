@@ -23,7 +23,7 @@ namespace ExtendedTest
         public bool moving = false;
 
         //Combat values
-        public CombatManager _CBManager;
+        public Managers.CombatManager _CBManager;
         public double attackSpeed = 3.0;
         public double attackCD = 0;
         public int startHP = 1;
@@ -51,7 +51,7 @@ namespace ExtendedTest
             }
         }
 
-        public Character(CombatManager cbManager)
+        public Character(Managers.CombatManager cbManager)
         {
             _CBManager = cbManager;
             myPath = new List<Tile>();

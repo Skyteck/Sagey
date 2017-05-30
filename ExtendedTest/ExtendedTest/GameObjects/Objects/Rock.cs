@@ -43,6 +43,7 @@ namespace ExtendedTest
             }
             
             this._Tag = Sprite.SpriteType.kRockType;
+            this.myWorldObjectTag = WorldObjectTag.kRockTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 
