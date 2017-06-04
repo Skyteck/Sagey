@@ -288,6 +288,7 @@ namespace ExtendedTest
             if(kbState.IsKeyDown(Keys.E) && previousKBState.IsKeyUp(Keys.E))
             {
                 _ChemistryManager.CheckRecipes();
+                _UIManager.getUIElement("Crafting").UpdateActive(gameTime);
             }
             
         }
@@ -325,7 +326,6 @@ namespace ExtendedTest
                                 if (selectedItem.Uses <= 0)
                                 {
                                     _InvenManager.RemoveItem(selectedItem);
-
                                 }
                             }
 

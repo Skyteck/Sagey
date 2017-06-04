@@ -13,6 +13,7 @@ namespace ExtendedTest.GameObjects.UIObjects
     {
         Managers.InventoryManager _InventoryManager;
         SpriteFont count;
+        Texture2D SelectedBG;
 
         public InventoryPanel(Managers.InventoryManager invenM)
         {
@@ -23,7 +24,7 @@ namespace ExtendedTest.GameObjects.UIObjects
         {
             base.LoadContent(path, content);
             count = content.Load<SpriteFont>("Fonts/Fipps");
-
+            SelectedBG = content.Load<Texture2D>("Art/itemSlotSelected");
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -46,6 +47,10 @@ namespace ExtendedTest.GameObjects.UIObjects
                         Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
                         _InventoryManager.itemSlots[itemsDrawn]._Position = pos;
 
+                        if (_InventoryManager.itemSlots[itemsDrawn].ItemInSlot == _InventoryManager.selectedItem)
+                        {
+                            spriteBatch.Draw(SelectedBG, new Vector2(pos.X - 8, pos.Y - 8), Color.White);
+                        }
                         _InventoryManager.itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
                         if (_InventoryManager.itemSlots[itemsDrawn].ItemInSlot._Stackable)
                         {

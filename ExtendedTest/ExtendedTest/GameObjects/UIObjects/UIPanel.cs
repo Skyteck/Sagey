@@ -45,7 +45,7 @@ namespace ExtendedTest
         }
 
         public override void Draw(SpriteBatch spriteBatch)
-        {        
+        {
             if (_Draw)
             {
                 //Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * StateNum), frameWidth, frameHeight);
