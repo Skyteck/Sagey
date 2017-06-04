@@ -60,7 +60,7 @@ namespace ExtendedTest.Managers
         public void AddItem(Item item, int amount = 1)
         {
             //find if the item already exists in a slot
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot.ID == item.ID);
+            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot.myType == item.myType);
             if (item._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
                 itemSlot.Amount += amount;
@@ -88,23 +88,52 @@ namespace ExtendedTest.Managers
 
         public void RemoveItem(Item item, int amount = 1)
         {
-            if(item == selectedItem)
+            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot.myType == item.myType);
+            ReallyRemoveItem(itemSlot, amount);
+
+        }
+
+        internal void RemoveItem(string name, int amount)
+        {
+            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Name == name);
+
+            ReallyRemoveItem(itemSlot, amount);
+        }
+
+        private void ReallyRemoveItem(List<InventorySlot> Slots, int Amount)
+        {
+            int numberRemoved = 0;
+            foreach(InventorySlot slot in Slots)
             {
-                selectedItem = null;
-            }
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot.ID == item.ID);
-            if(item._Stackable)
-            {
-                itemSlot.Amount -= amount;
-                if(itemSlot.Amount<= 0)
+                if (slot != null)
                 {
-                    itemSlots.Remove(itemSlot);
+                    if (slot.ItemInSlot._Stackable)
+                    {
+                        slot.Amount -= Amount;
+                        numberRemoved = Amount;
+                        if (slot.Amount <= 0)
+                        {
+                            itemSlots.Remove(slot);
+                        }
+                    }
+                    else
+                    {
+                        itemSlots.Remove(slot);
+                        numberRemoved++;
+                    }
+
+                    if (slot.ItemInSlot == selectedItem)
+                    {
+                        selectedItem = null;
+                    }
                 }
+                if(numberRemoved >= Amount)
+                {
+                    break;
+                }
+
             }
-            else
-            {
-                itemSlots.Remove(itemSlot);
-            }
+
 
         }
 
@@ -142,6 +171,8 @@ namespace ExtendedTest.Managers
                 }
             }
         }
+
+
 
         public int getItemCount(string itemName)
         {

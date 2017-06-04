@@ -44,6 +44,11 @@ namespace ExtendedTest
             adJustedWidth += (int)difference.X;
         }
 
+        public virtual void ProcessClick(Vector2 pos)
+        {
+
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (_Draw)

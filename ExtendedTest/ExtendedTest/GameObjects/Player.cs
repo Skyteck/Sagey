@@ -68,7 +68,7 @@ namespace ExtendedTest
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
-            SetupAnimation(2, 30, 3, true);
+            SetupAnimation(2, 10, 3, true);
         }
 
         public override void UpdateActive(GameTime gameTime)

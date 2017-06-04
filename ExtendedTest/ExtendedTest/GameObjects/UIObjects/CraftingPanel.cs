@@ -40,6 +40,17 @@ namespace ExtendedTest.GameObjects.UIObjects
             }
         }
 
+        public override void ProcessClick(Vector2 pos)
+        {
+            foreach (CraftingSlot slot in CraftSlots)
+            {
+                if (slot.MyRect.Contains(pos))
+                {
+                    _ChemistryManager.ProcessRecipe(slot.MyRecipe);
+                }
+            }
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
@@ -100,6 +111,7 @@ namespace ExtendedTest.GameObjects.UIObjects
             MyRecipe = recipe;
             Active = true;
         }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {

@@ -17,6 +17,7 @@ namespace ExtendedTest.Managers
 
         public List<Recipe> RecipeList;
         public List<Recipe> ActiveRecipes;
+
         public ChemistryManager(InventoryManager invenM, WorldObjectManager WOM, NPCManager NPCM, ContentManager content)
         {
             RecipeList = new List<Recipe>();
@@ -37,7 +38,7 @@ namespace ExtendedTest.Managers
             slot.Amount = 1;
             matches.ingredients.Add(slot);
             matches.output = new Matches();
-            matches.amount = 1;
+            matches.amount = 2;
             matches.CraftingTime = 1.0f; //one second?
             matches.MadeOnTag = WorldObject.WorldObjectTag.kNoneTag;
             RecipeList.Add(matches);
@@ -46,7 +47,7 @@ namespace ExtendedTest.Managers
             DoubleLog.Name = "2xLog";
             slot = new itemSlot();
             slot.Name = "Log";
-            slot.Amount = 1;
+            slot.Amount = 2;
             DoubleLog.ingredients.Add(slot);
             DoubleLog.output = new Log();
             DoubleLog.amount = 1;
@@ -54,7 +55,21 @@ namespace ExtendedTest.Managers
             DoubleLog.MadeOnTag = WorldObject.WorldObjectTag.kNoneTag;
             RecipeList.Add(DoubleLog);
 
-
+            Recipe fishStick = new Recipe();
+            fishStick.Name = "Fish Stick";
+            slot = new itemSlot();
+            slot.Name = "Fish";
+            slot.Amount = 1;
+            fishStick.ingredients.Add(slot);
+            slot = new itemSlot();
+            slot.Name = "Log";
+            slot.Amount = 1;
+            fishStick.ingredients.Add(slot);
+            fishStick.output = new FishStick();
+            fishStick.amount = 1;
+            fishStick.CraftingTime = 1f;
+            fishStick.MadeOnTag = WorldObject.WorldObjectTag.kFireTag;
+            RecipeList.Add(fishStick);
         }
 
         public void LoadIcons()
@@ -116,5 +131,26 @@ namespace ExtendedTest.Managers
                 }
             }
         }
+
+        public void ProcessRecipe(Recipe recipe)
+        {
+            //make sure the recipe is active...
+
+            Recipe theRecipe = ActiveRecipes.Find(x => x == recipe);
+            if(theRecipe != null)
+            {
+                foreach(itemSlot slot in recipe.ingredients)
+                {
+                    _InvenManager.RemoveItem(slot.Name, slot.Amount);                    
+                }
+                _InvenManager.AddItem(recipe.output, recipe.amount);
+                this.CheckRecipes();
+            }
+            else
+            {
+                Console.WriteLine("Null recipe:" + recipe.Name);
+            }
+        }
+
     }
 }
