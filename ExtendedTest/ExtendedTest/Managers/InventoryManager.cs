@@ -60,7 +60,7 @@ namespace ExtendedTest.Managers
         public void AddItem(Item item, int amount = 1)
         {
             //find if the item already exists in a slot
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot.myType == item.myType);
+            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == item._Type);
             if (item._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
                 itemSlot.Amount += amount;
@@ -86,9 +86,9 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public void RemoveItem(Item item, int amount = 1)
+        public void RemoveItem(Item.ItemType itemType, int amount = 1)
         {
-            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot.myType == item.myType);
+            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Type == itemType);
             ReallyRemoveItem(itemSlot, amount);
 
         }
@@ -174,9 +174,9 @@ namespace ExtendedTest.Managers
 
 
 
-        public int getItemCount(string itemName)
+        public int getItemCount(Item.ItemType itemType)
         {
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Name == itemName);
+            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemType);
             if(itemSlot == null)
             {
                 return 0;
@@ -187,46 +187,11 @@ namespace ExtendedTest.Managers
             }
             else
             {
-                int count = itemSlots.Count(x => x.ItemInSlot._Name == itemName);
+                int count = itemSlots.Count(x => x.ItemInSlot._Type == itemType);
                 return count;
             }
 
         }
-
-        //public void Draw(SpriteBatch spriteBatch, Vector2 StartPos)
-        //{
-        //    int rows = 5;
-        //    int columns = 6;
-        //    int buffer = 30;
-        //    int itemsDrawn = 0;
-        //    StartPos.X += 8;
-        //    StartPos.Y += 8;
-        //    if(itemSlots.Count>0)
-        //    {
-        //        for (int i = 0; i < rows; i++)
-        //        {
-        //            for (int j = 0; j < columns; j++)
-        //            {
-        //                Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
-        //                itemSlots[itemsDrawn]._Position = pos;
-        //                if (itemSlots[itemsDrawn].ItemInSlot == selectedItem)
-        //                {
-        //                    spriteBatch.Draw(SelectedBG, new Vector2(pos.X - 8, pos.Y - 8), Color.White);
-        //                }
-        //                itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
-        //                if (itemSlots[itemsDrawn].ItemInSlot._Stackable)
-        //                {
-        //                    spriteBatch.DrawString(count, itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
-        //                }
-        //                itemsDrawn++;
-        //                if (itemsDrawn >= itemSlots.Count)
-        //                {
-        //                    return;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
     }
 
 

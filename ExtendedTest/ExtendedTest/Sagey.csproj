@@ -63,6 +63,7 @@
     <Compile Include="Managers\ChemistryManager.cs" />
     <Compile Include="Managers\CombatManager.cs" />
     <Compile Include="Managers\InventorySlot.cs" />
+    <Compile Include="Managers\ItemManager.cs" />
     <Compile Include="Managers\UIManager.cs" />
     <Compile Include="Managers\WorldObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
@@ -88,6 +89,9 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -110,9 +114,6 @@
     <Content Include="Content\Art\Slime.png" />
     <Content Include="Content\Art\SlimeShot.png" />
     <Content Include="Content\Art\tree.png" />
-    <Content Include="Content\Items.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Tilemaps\gfgfg.png" />
     <Content Include="Content\Tilemaps\ggggg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -123,6 +124,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="Content\Fonts\Fipps.spritefont" />
+    <None Include="Content\JSON\Items.json" />
     <None Include="Content\Tilemaps\0-1.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -136,6 +138,7 @@
     <None Include="Content\Tilemaps\testmap.tmx" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

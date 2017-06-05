@@ -10,7 +10,7 @@ namespace ExtendedTest
     {
         public Fish()
         {
-            this.myType = ItemType.kItemFish;
+            this._Type = ItemType.kItemFish;
             this._Weight = 1;
             this._SaleValue = 1;
             this._Name = "Fish";
@@ -22,7 +22,7 @@ namespace ExtendedTest
     {
         public Log()
         {
-            this.myType = ItemType.kItemLog;
+            this._Type = ItemType.kItemLog;
             this._Weight = 1;
             this._SaleValue = 1;
             this._Name = "Log";
@@ -33,7 +33,7 @@ namespace ExtendedTest
     {
         public Ore()
         {
-            this.myType = ItemType.kItemOre;
+            this._Type = ItemType.kItemOre;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "Ore";
@@ -44,7 +44,7 @@ namespace ExtendedTest
     {
         public CookedFish()
         {
-            this.myType = ItemType.kItemMatches;
+            this._Type = ItemType.kItemMatches;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "CookedFish";
@@ -55,7 +55,7 @@ namespace ExtendedTest
     {
         public Matches()
         {
-            this.myType = ItemType.kItemMatches;
+            this._Type = ItemType.kItemMatches;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "Matches";
@@ -67,7 +67,7 @@ namespace ExtendedTest
     {
         public FishStick()
         {
-            this.myType = ItemType.kItemFishStick;
+            this._Type = ItemType.kItemFishStick;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "FishStick";

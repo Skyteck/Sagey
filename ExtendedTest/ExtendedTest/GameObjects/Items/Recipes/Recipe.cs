@@ -9,7 +9,7 @@ namespace ExtendedTest
     public class Recipe
     {
         public string Name;
-        public List<itemSlot> ingredients;
+        public List<Ingredient> ingredients;
         public Item output;
         public int amount;
         public float CraftingTime;
@@ -17,16 +17,16 @@ namespace ExtendedTest
 
         public Recipe()
         {
-            ingredients = new List<itemSlot>();
+            ingredients = new List<Ingredient>();
         }
 
     }
 
-    public class itemSlot
+    public class Ingredient
     {
-        public string Name;
+        public Item.ItemType _ItemType;
         public int Amount;
-        public itemSlot()
+        public Ingredient()
         {
 
         }

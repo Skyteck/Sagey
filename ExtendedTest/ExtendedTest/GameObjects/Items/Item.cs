@@ -21,16 +21,16 @@ namespace ExtendedTest
         public enum ItemType
         {
             kItemLog = 0,
-            kItemNone,
-            kItemError,
             kItemOre,
             kItemFish,
             kItemFishNet,
             kItemMatches,
-            kItemFishStick
+            kItemFishStick,
+            kItemNone,
+            kItemError
         }
 
-        public ItemType myType = ItemType.kItemNone;
+        public ItemType _Type = ItemType.kItemNone;
         
 
         public void Draw(SpriteBatch spritebatch, Vector2 Pos)

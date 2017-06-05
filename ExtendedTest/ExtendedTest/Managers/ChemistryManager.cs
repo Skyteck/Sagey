@@ -29,14 +29,14 @@ namespace ExtendedTest.Managers
 
             Recipe matches = new Recipe();
             matches.Name = "Matches";
-            itemSlot slot = new itemSlot();
-            slot.Name = "Log";
-            slot.Amount = 2;
-            matches.ingredients.Add(slot);
-            slot = new itemSlot();
-            slot.Name = "Ore";
-            slot.Amount = 1;
-            matches.ingredients.Add(slot);
+            Ingredient ingredient = new Ingredient();
+            ingredient._ItemType = Item.ItemType.kItemLog;
+            ingredient.Amount = 2;
+            matches.ingredients.Add(ingredient);
+            ingredient = new Ingredient();
+            ingredient._ItemType = Item.ItemType.kItemOre;
+            ingredient.Amount = 1;
+            matches.ingredients.Add(ingredient);
             matches.output = new Matches();
             matches.amount = 2;
             matches.CraftingTime = 1.0f; //one second?
@@ -45,10 +45,10 @@ namespace ExtendedTest.Managers
 
             Recipe DoubleLog = new Recipe();
             DoubleLog.Name = "2xLog";
-            slot = new itemSlot();
-            slot.Name = "Log";
-            slot.Amount = 2;
-            DoubleLog.ingredients.Add(slot);
+            ingredient = new Ingredient();
+            ingredient._ItemType = Item.ItemType.kItemLog;
+            ingredient.Amount = 2;
+            DoubleLog.ingredients.Add(ingredient);
             DoubleLog.output = new Log();
             DoubleLog.amount = 1;
             DoubleLog.CraftingTime = 0.5f;
@@ -57,14 +57,14 @@ namespace ExtendedTest.Managers
 
             Recipe fishStick = new Recipe();
             fishStick.Name = "Fish Stick";
-            slot = new itemSlot();
-            slot.Name = "Fish";
-            slot.Amount = 1;
-            fishStick.ingredients.Add(slot);
-            slot = new itemSlot();
-            slot.Name = "Log";
-            slot.Amount = 1;
-            fishStick.ingredients.Add(slot);
+            ingredient = new Ingredient();
+            ingredient._ItemType = Item.ItemType.kItemFish;
+            ingredient.Amount = 1;
+            fishStick.ingredients.Add(ingredient);
+            ingredient = new Ingredient();
+            ingredient._ItemType = Item.ItemType.kItemLog;
+            ingredient.Amount = 1;
+            fishStick.ingredients.Add(ingredient);
             fishStick.output = new FishStick();
             fishStick.amount = 1;
             fishStick.CraftingTime = 1f;
@@ -101,9 +101,9 @@ namespace ExtendedTest.Managers
             foreach(Recipe recipe in RecipeList)
             {
                 bool itemsFound = false;
-                foreach(itemSlot slot in recipe.ingredients)
+                foreach(Ingredient slot in recipe.ingredients)
                 {
-                    int amt = _InvenManager.getItemCount(slot.Name);
+                    int amt = _InvenManager.getItemCount(slot._ItemType);
                     if(amt >= slot.Amount)
                     {
                         itemsFound = true;
@@ -139,9 +139,9 @@ namespace ExtendedTest.Managers
             Recipe theRecipe = ActiveRecipes.Find(x => x == recipe);
             if(theRecipe != null)
             {
-                foreach(itemSlot slot in recipe.ingredients)
+                foreach(Ingredient slot in recipe.ingredients)
                 {
-                    _InvenManager.RemoveItem(slot.Name, slot.Amount);                    
+                    _InvenManager.RemoveItem(slot._ItemType, slot.Amount);                    
                 }
                 _InvenManager.AddItem(recipe.output, recipe.amount);
                 this.CheckRecipes();

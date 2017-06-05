@@ -134,11 +134,11 @@ namespace ExtendedTest.GameObjects.UIObjects
                 //draw ingredient list
                 int buffer = 20;
                 int count = 0;
-                foreach (itemSlot slot in MyRecipe.ingredients)
+                foreach (Ingredient slot in MyRecipe.ingredients)
                 {
                     Vector2 drawPos = new Vector2(Position.X, Position.Y + 20 + (buffer * count));
                     spriteBatch.DrawString(font, slot.Amount.ToString(), drawPos, Color.White);
-                    spriteBatch.DrawString(font, slot.Name, new Vector2(drawPos.X + 16, drawPos.Y), Color.White);
+                    //spriteBatch.DrawString(font, slot._ItemType, new Vector2(drawPos.X + 16, drawPos.Y), Color.White);
                     count++;
                 }
                 //gray ingredients out if can't make recipe
