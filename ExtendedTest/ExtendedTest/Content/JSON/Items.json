@@ -2,7 +2,7 @@
   "Items": {
     "Log": {
       "Name": "Log",
-      "ID": 0,
+      "ID": 1,
       "Weight": 1,
       "SaleValue": 1,
       "Stackable": false,
@@ -10,7 +10,39 @@
     },
     "Ore": {
       "Name": "Ore",
-      "ID": 1,
+      "ID": 2,
+      "Weight": 1,
+      "SaleValue": 1,
+      "Stackable": false,
+      "Uses": 1
+    },
+    "Fish": {
+      "Name": "Fish",
+      "ID": 3,
+      "Weight": 1,
+      "SaleValue": 1,
+      "Stackable": true,
+      "Uses": 1
+    },
+    "Fishnet": {
+      "Name": "Fishnet",
+      "ID": 4,
+      "Weight": 1,
+      "SaleValue": 1,
+      "Stackable": false,
+      "Uses": 1
+    },
+    "Matches": {
+      "Name": "Matches",
+      "ID": 5,
+      "Weight": 1,
+      "SaleValue": 1,
+      "Stackable": false,
+      "Uses": 5
+    },
+    "Fishstick": {
+      "Name": "Fishstick",
+      "ID": 6,
       "Weight": 1,
       "SaleValue": 1,
       "Stackable": false,

@@ -59,7 +59,7 @@ namespace ExtendedTest
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "Matches";
-            this.Uses = 5;
+            this._Uses = 5;
         }
     }
 

@@ -37,6 +37,7 @@ namespace ExtendedTest
         Managers.CombatManager _CBManager;
         Managers.UIManager _UIManager;
         Managers.ChemistryManager _ChemistryManager;
+        Managers.ItemManager _ItemManager;
         //UI
         
         Vector2 mouseClickPos;
@@ -58,6 +59,7 @@ namespace ExtendedTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(Content);
             _CBManager = new Managers.CombatManager();
             player = new Player(_InvenManager, _CBManager);
@@ -89,7 +91,7 @@ namespace ExtendedTest
             _MapManager.LoadMap("0-1", Content);
             font = Content.Load<SpriteFont>("Fonts/Fipps");
             _InvenManager.loadContent();
-
+            _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");

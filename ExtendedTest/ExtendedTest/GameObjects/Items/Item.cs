@@ -10,17 +10,21 @@ namespace ExtendedTest
 {
     public class Item
     {
-        public  String _Name;
-        public double _Weight;
-        public String _Image;
-        public int _SaleValue;
-        public Texture2D itemtexture;
-        public bool _Stackable = false;
-        public int Uses = 1;
+        public String _Name { get; set; }
+        public double _Weight { get; set; }
+        public int _SaleValue { get; set; }
+        public Texture2D itemtexture { get; set; }
+        public bool _Stackable { get => stackable; set => stackable = value; }
+        public int _Uses { get => uses; set => uses = value; }
+        public ItemType _Type { get => type; set => type = value; }
+
+        private bool stackable = false;
+
+        private int uses = 1;
 
         public enum ItemType
         {
-            kItemLog = 0,
+            kItemLog = 1,
             kItemOre,
             kItemFish,
             kItemFishNet,
@@ -30,8 +34,8 @@ namespace ExtendedTest
             kItemError
         }
 
-        public ItemType _Type = ItemType.kItemNone;
-        
+        private ItemType type = ItemType.kItemNone;
+
 
         public void Draw(SpriteBatch spritebatch, Vector2 Pos)
         {
