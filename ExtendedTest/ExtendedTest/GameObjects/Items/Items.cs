@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest
+namespace ExtendedTest.Items
 {
     class Fish : Item
     {

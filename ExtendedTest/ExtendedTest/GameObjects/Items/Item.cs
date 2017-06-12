@@ -42,4 +42,21 @@ namespace ExtendedTest
             spritebatch.Draw(itemtexture, Pos, Color.White);
         }
     }
+
+
+    public class Rootobject
+    {
+        public Disc Disc { get; set; }
+    }
+
+    public class Disc
+    {
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public int Weight { get; set; }
+        public int SaleValue { get; set; }
+        public bool Stackable { get; set; }
+        public int Uses { get; set; }
+    }
+
 }

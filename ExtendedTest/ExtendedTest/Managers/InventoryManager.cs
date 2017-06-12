@@ -14,15 +14,19 @@ namespace ExtendedTest.Managers
         public List<InventorySlot> itemSlots;
         SpriteFont count;
         int capacity = 28;
+
+        //Managers
         ContentManager _Content;
+        ItemManager _ItemManager;
 
         Texture2D normalBG;
         Texture2D SelectedBG;
         public Item selectedItem;
 
-        public InventoryManager(ContentManager content)
+        public InventoryManager(ContentManager content, ItemManager IM)
         {
             _Content = content;
+            _ItemManager = IM;
             itemSlots = new List<InventorySlot>();
             
         }
@@ -33,35 +37,20 @@ namespace ExtendedTest.Managers
             normalBG = _Content.Load<Texture2D>("Art/itemSlotNormal");
             SelectedBG = _Content.Load<Texture2D>("Art/itemSlotSelected");
         }
-
-        public Texture2D getTexture(Item item, bool selected = false)
-        {
-            Texture2D newTex;
-            try
-            {
-                if(selected)
-                {
-                    newTex = _Content.Load<Texture2D>("Art/" + item._Name + "Selected");
-                }
-                else
-                {
-                    newTex = _Content.Load<Texture2D>("Art/" + item._Name);
-                }
-            }
-            catch
-            {
-                Console.WriteLine("Failed loading texture for item: " + item._Name);
-                //item texture wasn't found. Load default texture
-                newTex = _Content.Load<Texture2D>("Art/Nulltexture");
-            }
-            return newTex;
-        }
-
-        public void AddItem(Item item, int amount = 1)
+        
+        public void AddItem(Item.ItemType itemType, int amount = 1)
         {
             //find if the item already exists in a slot
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == item._Type);
-            if (item._Stackable && itemSlot != null) //item is stackable and a slot for it was found
+            Item itemToAdd = _ItemManager.GetItem(itemType);
+
+            if(itemToAdd == null)
+            {
+                Console.WriteLine("Error finding itemtype: " + itemType);
+                return;
+            }
+
+            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
+            if (itemToAdd._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
                 itemSlot.Amount += amount;
             }
@@ -73,8 +62,8 @@ namespace ExtendedTest.Managers
                     itemSlot = new InventorySlot();
                     //create the item
                     //put item in slot
-                    item.itemtexture = getTexture(item); 
-                    itemSlot.ItemInSlot = item;
+                    itemToAdd.itemtexture = _ItemManager.GetTexture(itemToAdd); 
+                    itemSlot.ItemInSlot = itemToAdd;
                     itemSlot.Amount = 1;
                     itemSlots.Add(itemSlot);
                     
@@ -131,10 +120,7 @@ namespace ExtendedTest.Managers
                 {
                     break;
                 }
-
             }
-
-
         }
 
         public Item checkClicks(Vector2 pos)
@@ -172,8 +158,6 @@ namespace ExtendedTest.Managers
             }
         }
 
-
-
         public int getItemCount(Item.ItemType itemType)
         {
             InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemType);
@@ -190,9 +174,6 @@ namespace ExtendedTest.Managers
                 int count = itemSlots.Count(x => x.ItemInSlot._Type == itemType);
                 return count;
             }
-
         }
     }
-
-
 }

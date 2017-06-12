@@ -47,7 +47,8 @@
     <Compile Include="GameObjects\AnimatedSprite.cs" />
     <Compile Include="GameObjects\Character.cs" />
     <Compile Include="GameObjects\Items\Items.cs" />
-    <Compile Include="GameObjects\Items\Recipes\Recipe.cs" />
+    <Compile Include="GameObjects\Recipes\Recipes.cs" />
+    <Compile Include="GameObjects\Recipes\Recipe.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Monster.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Projectiles\Projectile.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Slime.cs" />

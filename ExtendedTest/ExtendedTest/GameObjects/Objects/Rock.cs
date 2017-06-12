@@ -47,21 +47,20 @@ namespace ExtendedTest
             this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 
-        public Item getChopped()
+        public Item.ItemType getChopped()
         {
             Random ran = new Random();
             int randomNumber = ran.Next(0, difficulty);
             if(randomNumber == 0)
             {
-                Ore ore = new Ore();
                 this._CurrentState = SpriteState.kStateInActive;
                 this._Draw = false;
-                return ore;
+                return Item.ItemType.kItemOre;
             }
             else
             {
                 hits++;
-                return null;
+                return Item.ItemType.kItemNone;
             }
         }
         

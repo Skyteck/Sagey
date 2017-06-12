@@ -46,25 +46,24 @@ namespace ExtendedTest
             this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 
-        public Item getFished()
+        public Item.ItemType getFished()
         {
             Random ran = new Random();
             int randomNumber = ran.Next(0, difficulty);
             if(randomNumber == 0)
             {
-                Fish fish = new Fish();
                 fishCount--;
                 if(fishCount <= 0)
                 {
                     this._CurrentState = SpriteState.kStateInActive;
                     this._Draw = false;
                 }
-                return fish;
+                return Item.ItemType.kItemFish;
             }
             else
             {
                 hits++;
-                return null;
+                return Item.ItemType.kItemNone;
             }
         }
 

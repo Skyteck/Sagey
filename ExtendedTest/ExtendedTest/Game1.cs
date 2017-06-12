@@ -60,14 +60,14 @@ namespace ExtendedTest
         {
             // TODO: Add your initialization logic here
             _ItemManager = new Managers.ItemManager(Content);
-            _InvenManager = new Managers.InventoryManager(Content);
+            _InvenManager = new Managers.InventoryManager(Content, _ItemManager);
             _CBManager = new Managers.CombatManager();
             player = new Player(_InvenManager, _CBManager);
             _MapManager = new Managers.TilemapManager(_NPCManager, _GameObjectManager);
             _NPCManager = new Managers.NPCManager(_MapManager, _CBManager,  Content, player);
             _GameObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
             _UIManager = new Managers.UIManager(_InvenManager);
-            _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _GameObjectManager, _NPCManager, Content);
+            _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _GameObjectManager, _NPCManager, Content, _ItemManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();
@@ -93,6 +93,13 @@ namespace ExtendedTest
             _InvenManager.loadContent();
             _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
+
+
+            for (int i = 0; i < 5; i++)
+            {
+                _InvenManager.AddItem(Item.ItemType.kItemLog);
+            }
+            _InvenManager.AddItem(Item.ItemType.kItemMatches);
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
             //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
@@ -121,11 +128,6 @@ namespace ExtendedTest
         {
             player.LoadContent("Art/Player", Content);
             player._Position = new Vector2(400, 400);
-            for(int i = 0; i < 5; i++)
-            {
-                _InvenManager.AddItem(new Log());
-            }
-            _InvenManager.AddItem(new Matches());
         }
 
         private void LoadGUI()

@@ -130,7 +130,7 @@ namespace ExtendedTest.GameObjects.UIObjects
                 //draw BG
                 spriteBatch.Draw(textureUsed, Position, Color.White);
                 //draw recipe output
-                spriteBatch.Draw(MyRecipe.output.itemtexture, Position, Color.White);
+                spriteBatch.Draw(MyRecipe.RecipeTexture, Position, Color.White);
                 //draw ingredient list
                 int buffer = 20;
                 int count = 0;

@@ -46,25 +46,24 @@ namespace ExtendedTest
             this._CurrentState = Sprite.SpriteState.kStateActive;
         }
 
-        public Item getChopped()
+        public Item.ItemType getChopped()
         {
             Random ran = new Random();
             int randomNumber = ran.Next(0, difficulty);
             if(randomNumber == 0)
             {
-                Log log = new Log();
                 logCount--;
                 if(logCount <= 0)
                 {
                     this._CurrentState = SpriteState.kStateInActive;
                     this._Draw = false;
                 }
-                return log;
+                return Item.ItemType.kItemLog;
             }
             else
             {
                 hits++;
-                return null;
+                return Item.ItemType.kItemNone;
             }
         }
 

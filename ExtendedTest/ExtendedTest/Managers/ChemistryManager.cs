@@ -14,11 +14,12 @@ namespace ExtendedTest.Managers
         WorldObjectManager _WorldObjectManager;
         NPCManager _NPCManager;
         ContentManager _Content;
+        ItemManager _ItemManager;
 
         public List<Recipe> RecipeList;
         public List<Recipe> ActiveRecipes;
 
-        public ChemistryManager(InventoryManager invenM, WorldObjectManager WOM, NPCManager NPCM, ContentManager content)
+        public ChemistryManager(InventoryManager invenM, WorldObjectManager WOM, NPCManager NPCM, ContentManager content, ItemManager IM)
         {
             RecipeList = new List<Recipe>();
             ActiveRecipes = new List<Recipe>();
@@ -26,49 +27,16 @@ namespace ExtendedTest.Managers
             _WorldObjectManager = WOM;
             _NPCManager = NPCM;
             _Content = content;
+            _ItemManager = IM;
 
-            Recipe matches = new Recipe();
-            matches.Name = "Matches";
-            Ingredient ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemLog;
-            ingredient.Amount = 2;
-            matches.ingredients.Add(ingredient);
-            ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemOre;
-            ingredient.Amount = 1;
-            matches.ingredients.Add(ingredient);
-            matches.output = new Matches();
-            matches.amount = 2;
-            matches.CraftingTime = 1.0f; //one second?
-            matches.MadeOnTag = WorldObject.WorldObjectTag.kNoneTag;
+            Recipe matches = new Recipes.MatchesRecipe();
             RecipeList.Add(matches);
 
-            Recipe DoubleLog = new Recipe();
-            DoubleLog.Name = "2xLog";
-            ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemLog;
-            ingredient.Amount = 2;
-            DoubleLog.ingredients.Add(ingredient);
-            DoubleLog.output = new Log();
-            DoubleLog.amount = 1;
-            DoubleLog.CraftingTime = 0.5f;
-            DoubleLog.MadeOnTag = WorldObject.WorldObjectTag.kNoneTag;
+            Recipe DoubleLog = new Recipes.DoubleLogRecipe();
             RecipeList.Add(DoubleLog);
 
-            Recipe fishStick = new Recipe();
-            fishStick.Name = "Fish Stick";
-            ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemFish;
-            ingredient.Amount = 1;
-            fishStick.ingredients.Add(ingredient);
-            ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemLog;
-            ingredient.Amount = 1;
-            fishStick.ingredients.Add(ingredient);
-            fishStick.output = new FishStick();
-            fishStick.amount = 1;
-            fishStick.CraftingTime = 1f;
-            fishStick.MadeOnTag = WorldObject.WorldObjectTag.kFireTag;
+            Recipe fishStick = new Recipes.FishStickRecipe();
+
             RecipeList.Add(fishStick);
         }
 
@@ -76,24 +44,8 @@ namespace ExtendedTest.Managers
         {
             foreach (Recipe recipe in RecipeList)
             {
-                recipe.output.itemtexture = getTexture(recipe.output);
+                recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.output));
             }
-        }
-
-        public Texture2D getTexture(Item item)
-        {
-            Texture2D newTex;
-            try
-            {
-                newTex = _Content.Load<Texture2D>("Art/" + item._Name);
-            }
-            catch
-            {
-                Console.WriteLine("Failed loading texture for item: " + item._Name);
-                //item texture wasn't found. Load default texture
-                newTex = _Content.Load<Texture2D>("Art/Nulltexture");
-            }
-            return newTex;
         }
 
         public void CheckRecipes()

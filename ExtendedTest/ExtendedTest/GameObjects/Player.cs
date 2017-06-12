@@ -222,10 +222,10 @@ namespace ExtendedTest
 
         private void Chop(Tree tree)
         {
-            Item item = tree.getChopped();
-            if (item != null)
+            Item.ItemType itemType = tree.getChopped();
+            if (itemType != Item.ItemType.kItemNone && itemType != Item.ItemType.kItemError)
             {
-                invenManager.AddItem(item);
+                invenManager.AddItem(itemType);
                 this.ChangeState(CurrentState.kStateWC);
                 if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
@@ -235,10 +235,11 @@ namespace ExtendedTest
         }
         private void Mine(Rock rock)
         {
-            Item item = rock.getChopped();
-            if (item != null)
+            Item.ItemType itemType = rock.getChopped();
+            if (itemType != Item.ItemType.kItemNone && itemType != Item.ItemType.kItemError)
             {
-                invenManager.AddItem(item);
+                invenManager.AddItem(itemType);
+                this.ChangeState(CurrentState.kStateWC);
                 if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
                     this._Target = null;
@@ -248,10 +249,11 @@ namespace ExtendedTest
 
         private void Fish(FishingHole fishHole)
         {
-            Item item = fishHole.getFished();
-            if (item != null)
+            Item.ItemType itemType = fishHole.getFished();
+            if (itemType != Item.ItemType.kItemNone && itemType != Item.ItemType.kItemError)
             {
-                invenManager.AddItem(item);
+                invenManager.AddItem(itemType);
+                this.ChangeState(CurrentState.kStateWC);
                 if (this._Target._CurrentState == SpriteState.kStateInActive)
                 {
                     this._Target = null;

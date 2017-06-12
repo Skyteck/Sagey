@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,11 @@ namespace ExtendedTest
     {
         public string Name;
         public List<Ingredient> ingredients;
-        public Item output;
+        public Item.ItemType output;
         public int amount;
         public float CraftingTime;
         public WorldObject.WorldObjectTag MadeOnTag;
+        public Texture2D RecipeTexture;
 
         public Recipe()
         {
