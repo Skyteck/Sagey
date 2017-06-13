@@ -9,10 +9,11 @@ namespace ExtendedTest
 {
     public class WorldObject : Sprite
     {
+        public int difficulty;
         public List<WorldObject> parentList;
         public double respawnTimerStart = 15d;
         public double timeDead = 0d;
-
+        public List<Item.ItemType> OutputItems;
         public enum WorldObjectTag
         {
             kFireTag,
@@ -25,7 +26,6 @@ namespace ExtendedTest
         public WorldObjectTag myWorldObjectTag;
         public WorldObject()
         {
-            
         }
 
 
@@ -47,6 +47,7 @@ namespace ExtendedTest
         {
 
         }
+
 
         public virtual void Revive()
         {

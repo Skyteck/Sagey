@@ -280,7 +280,7 @@ namespace ExtendedTest
                 }
             }
 
-            if(kbState.IsKeyDown(Keys.Space) && previousKBState.IsKeyUp(Keys.Space))
+            if(IsKeyPressed(Keys.Space))
             {
                 WorldObject gotHit = player.CheckObjectHit(_GameObjectManager.ObjectList);
                 if(gotHit == null)
@@ -289,12 +289,56 @@ namespace ExtendedTest
                 }
             }
 
-            if(kbState.IsKeyDown(Keys.E) && previousKBState.IsKeyUp(Keys.E))
+            if(IsKeyPressed(Keys.E))
             {
                 _ChemistryManager.CheckRecipes();
-                _UIManager.getUIElement("Crafting").UpdateActive(gameTime);
+                _UIManager.TogglePanel("Crafting");
             }
-            
+            if (IsKeyPressed(Keys.I))
+            {
+                _UIManager.TogglePanel("Inventory");
+            }
+
+            previousKBState = kbState;
+        }
+
+        private bool IsKeyPressed(Keys key)
+        {
+            KeyboardState kbState = Keyboard.GetState();
+            if(kbState.IsKeyDown(key) && previousKBState.IsKeyUp(key))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsKeyReleased(Keys key)
+        {
+            KeyboardState kbState = Keyboard.GetState();
+            if (kbState.IsKeyUp(key) && previousKBState.IsKeyDown(key))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsKeyHeld(Keys key)
+        {
+            KeyboardState kbState = Keyboard.GetState();
+            if (kbState.IsKeyDown(key) && previousKBState.IsKeyDown(key))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void ProcessMouse(GameTime gameTime)

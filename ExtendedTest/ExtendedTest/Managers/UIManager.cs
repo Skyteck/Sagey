@@ -11,11 +11,12 @@ namespace ExtendedTest.Managers
     public class UIManager
     {
         public List<UIPanel> UIPanels;
+        public List<UIPanel> ActivePanels;
         InventoryManager _invenManager;
-
         public UIManager(InventoryManager invenManager)
         {
             UIPanels = new List<UIPanel>();
+            ActivePanels = new List<UIPanel>();
             _invenManager = invenManager;
         }
 
@@ -29,7 +30,7 @@ namespace ExtendedTest.Managers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach(UIPanel panel in UIPanels)
+            foreach (UIPanel panel in ActivePanels)
             {
                 panel.Draw(spriteBatch);
             }
@@ -44,6 +45,21 @@ namespace ExtendedTest.Managers
                 return null;
             }
             return element;
+        }
+
+        public void TogglePanel(String PanelName)
+        {
+            //check if the panel is already in the active list
+            //if it's not add it. if it is remove it.
+            UIPanel panelToFind = UIPanels.Find(x => x.Name == PanelName);
+            if (ActivePanels.Contains(panelToFind))
+            {
+                ActivePanels.Remove(panelToFind);
+            }
+            else
+            {
+                ActivePanels.Add(panelToFind);
+            }
         }
     }
 }

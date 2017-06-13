@@ -16,6 +16,16 @@ namespace ExtendedTest.GameObjects.UIObjects
         Texture2D SelectedBG;
         Texture2D normalBG;
         List<CraftingSlot> CraftSlots;
+
+        public enum PanelMode
+        {
+            kModeAll,
+            kModeHand,
+            kModeFire
+        }
+
+        PanelMode CurrentMode = PanelMode.kModeHand;
+
         public CraftingPanel(Managers.ChemistryManager ChemM)
         {
             _ChemistryManager = ChemM;
@@ -63,16 +73,29 @@ namespace ExtendedTest.GameObjects.UIObjects
             Vector2 StartPos = this._TopLeft;
             StartPos.X += 8;
             StartPos.Y += 8;
+            List<CraftingSlot> currentSlots = new List<CraftingSlot>();
+            switch(CurrentMode)
+            {
+                case PanelMode.kModeHand:
+                    currentSlots = CraftSlots.FindAll(x => x.MyRecipe.MadeOnTag == WorldObject.WorldObjectTag.kNoneTag);
+                    break;
+                case PanelMode.kModeFire:
+                    currentSlots = CraftSlots.FindAll(x => x.MyRecipe.MadeOnTag == WorldObject.WorldObjectTag.kFireTag);
+                    break;
+                default:
+                    currentSlots = CraftSlots;
+                    break;
+            }
 
-            if (CraftSlots.Count > 0)
+            if (currentSlots.Count > 0)
             {
                 for (int i = 0; i < rows; i++)
                 {
                     for (int j = 0; j < columns; j++)
                     {
                         Vector2 pos = new Vector2(StartPos.X + (j * bufferX), StartPos.Y + (i * bufferY));
-                        CraftSlots[itemsDrawn].Position = pos;
-                        CraftSlots[itemsDrawn].Draw(spriteBatch);
+                        currentSlots[itemsDrawn].Position = pos;
+                        currentSlots[itemsDrawn].Draw(spriteBatch);
                         //spriteBatch.Draw(_ChemistryManager.ActiveRecipes[itemsDrawn].output.itemtexture, pos, Color.White);
 
                         itemsDrawn++;
@@ -117,7 +140,6 @@ namespace ExtendedTest.GameObjects.UIObjects
         {
             if(Active)
             {
-
                 Texture2D textureUsed;
                 if (Selected)
                 {

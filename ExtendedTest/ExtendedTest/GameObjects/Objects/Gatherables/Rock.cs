@@ -7,11 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 
-namespace ExtendedTest
+namespace ExtendedTest.GameObjects.Objects.Gatherables
 {
     class Rock : WorldObject
     {
-        int difficulty = 300;
         int hits = 0;
 
         public enum RockType
