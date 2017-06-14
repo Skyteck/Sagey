@@ -31,15 +31,6 @@ namespace ExtendedTest
 
         public override void UpdateDead(GameTime gameTime)
         {
-            if (_CurrentState == SpriteState.kStateInActive)
-            {
-                timeDead += gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
-            if (timeDead >= respawnTimerStart)
-            {
-                Revive();
-            }
             base.UpdateDead(gameTime);
         }
 
@@ -49,12 +40,7 @@ namespace ExtendedTest
         }
 
 
-        public virtual void Revive()
-        {
-            this._CurrentState = SpriteState.kStateActive;
-            this._Draw = true;
-            timeDead = 0;
-        }
+
         
     }
 }

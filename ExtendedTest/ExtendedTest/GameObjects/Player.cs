@@ -100,17 +100,17 @@ namespace ExtendedTest
                 }
                 if (_Target._Tag == SpriteType.kRockType)
                 {
-                    Mine(_Target as Rock);
+                    Gather(_Target as GameObjects.Objects.Gatherables.Gatherable);
                     this.ChangeState(CurrentState.kStateWC);
                 }
                 else if (_Target._Tag == SpriteType.kTreeType)
                 {
-                    Chop(_Target as Tree);
+                    Gather(_Target as GameObjects.Objects.Gatherables.Gatherable);
                     this.ChangeState(CurrentState.kStateWC);
                 }
                 else if (_Target._Tag == SpriteType.kFishingType)
                 {
-                    Fish(_Target as FishingHole);
+                    Gather(_Target as GameObjects.Objects.Gatherables.Gatherable);
                     this.ChangeState(CurrentState.kStateWC);
                 }
             }
@@ -220,36 +220,9 @@ namespace ExtendedTest
         //    return null;
         //}
 
-        private void Chop(Tree tree)
+        private void Gather(GameObjects.Objects.Gatherables.Gatherable thing)
         {
-            Item.ItemType itemType = tree.getChopped();
-            if (itemType != Item.ItemType.kItemNone && itemType != Item.ItemType.kItemError)
-            {
-                invenManager.AddItem(itemType);
-                this.ChangeState(CurrentState.kStateWC);
-                if (this._Target._CurrentState == SpriteState.kStateInActive)
-                {
-                    this._Target = null;
-                }
-            }
-        }
-        private void Mine(Rock rock)
-        {
-            Item.ItemType itemType = rock.getChopped();
-            if (itemType != Item.ItemType.kItemNone && itemType != Item.ItemType.kItemError)
-            {
-                invenManager.AddItem(itemType);
-                this.ChangeState(CurrentState.kStateWC);
-                if (this._Target._CurrentState == SpriteState.kStateInActive)
-                {
-                    this._Target = null;
-                }
-            }
-        }
-
-        private void Fish(FishingHole fishHole)
-        {
-            Item.ItemType itemType = fishHole.getFished();
+            Item.ItemType itemType = thing.GetGathered();
             if (itemType != Item.ItemType.kItemNone && itemType != Item.ItemType.kItemError)
             {
                 invenManager.AddItem(itemType);

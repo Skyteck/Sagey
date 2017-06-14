@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest.GameObjects.Objects.Gatherables
 {
-    class FishingHole : WorldObject
+    class FishingHole : Gatherable
     {
         int hits = 0;
         int fishCount = 3; 
@@ -43,27 +43,13 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             this._Tag = Sprite.SpriteType.kFishingType;
             this.myWorldObjectTag = WorldObjectTag.kFishingHoleTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
-        }
 
-        public Item.ItemType getFished()
-        {
-            Random ran = new Random();
-            int randomNumber = ran.Next(0, difficulty);
-            if(randomNumber == 0)
-            {
-                fishCount--;
-                if(fishCount <= 0)
-                {
-                    this._CurrentState = SpriteState.kStateInActive;
-                    this._Draw = false;
-                }
-                return Item.ItemType.kItemFish;
-            }
-            else
-            {
-                hits++;
-                return Item.ItemType.kItemNone;
-            }
+
+            OutputItem output = new OutputItem();
+            output.output = Item.ItemType.kItemFish;
+            output.amount = 1;
+            output.odds = 100;
+            OutputItems.Add(output);
         }
 
         public override void Revive()

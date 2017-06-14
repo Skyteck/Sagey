@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
+using ExtendedTest.GameObjects.Objects.Gatherables;
 
 namespace ExtendedTest.Managers
 {

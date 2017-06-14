@@ -61,7 +61,7 @@ namespace ExtendedTest
 
         public Direction _Direction = Direction.kDirectionNone;
 
-        public SpriteType _Tag = SpriteType.kNoneType;
+        private SpriteType tag = SpriteType.kNoneType;
 
         public Vector2 _Center
         {
@@ -86,6 +86,8 @@ namespace ExtendedTest
                 return new Rectangle((int)_Position.X - (this._Texture.Width / 2), ((int)_Position.Y - (this._Texture.Height / 2)), frameWidth, frameHeight);
             }
         }
+
+        public SpriteType _Tag { get => tag; set => tag = value; }
 
         public Sprite()
         {

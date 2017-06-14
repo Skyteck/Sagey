@@ -9,7 +9,7 @@ using TiledSharp;
 
 namespace ExtendedTest.GameObjects.Objects.Gatherables
 {
-    class Rock : WorldObject
+    class Rock : Gatherable
     {
         int hits = 0;
 
@@ -44,24 +44,13 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             this._Tag = Sprite.SpriteType.kRockType;
             this.myWorldObjectTag = WorldObjectTag.kRockTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
-        }
 
-        public Item.ItemType getChopped()
-        {
-            Random ran = new Random();
-            int randomNumber = ran.Next(0, difficulty);
-            if(randomNumber == 0)
-            {
-                this._CurrentState = SpriteState.kStateInActive;
-                this._Draw = false;
-                return Item.ItemType.kItemOre;
-            }
-            else
-            {
-                hits++;
-                return Item.ItemType.kItemNone;
-            }
-        }
-        
+
+            OutputItem output = new OutputItem();
+            output.output = Item.ItemType.kItemOre;
+            output.amount = 1;
+            output.odds = 100;
+            OutputItems.Add(output);
+        }        
     }
 }
