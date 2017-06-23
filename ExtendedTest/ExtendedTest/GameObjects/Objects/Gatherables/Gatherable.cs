@@ -16,7 +16,7 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
         public Gatherable()
         {
             OutputItems = new List<OutputItem>();
-
+            IsGatherable = true;
         }
 
 

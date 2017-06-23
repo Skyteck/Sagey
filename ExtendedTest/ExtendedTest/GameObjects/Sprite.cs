@@ -47,7 +47,8 @@ namespace ExtendedTest
             kNoneType,
             kMonsterType,
             kFishingType,
-            kFireType
+            kFireType,
+            kNPCType
         }
 
         public enum Direction

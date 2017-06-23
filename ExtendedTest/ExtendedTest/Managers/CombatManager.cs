@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExtendedTest.GameObjects.NPCs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace ExtendedTest.Managers
 
         }
 
-        public void PerformAttack(Character attacker, Character receiver)
+        public void PerformAttack(Attackable attacker, Attackable receiver)
         {
             int amt = attacker.attack - receiver.defense;
             //attacker attack higher than defense

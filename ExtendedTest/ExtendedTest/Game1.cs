@@ -38,6 +38,7 @@ namespace ExtendedTest
         Managers.UIManager _UIManager;
         Managers.ChemistryManager _ChemistryManager;
         Managers.ItemManager _ItemManager;
+        Managers.PlayerManager _PlayerManager;
         //UI
         
         Vector2 mouseClickPos;
@@ -59,15 +60,17 @@ namespace ExtendedTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            player = new Player();
             _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(Content, _ItemManager);
             _CBManager = new Managers.CombatManager();
-            player = new Player(_InvenManager, _CBManager);
             _MapManager = new Managers.TilemapManager(_NPCManager, _GameObjectManager);
             _NPCManager = new Managers.NPCManager(_MapManager, _CBManager,  Content, player);
             _GameObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
             _UIManager = new Managers.UIManager(_InvenManager);
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _GameObjectManager, _NPCManager, Content, _ItemManager);
+
+            _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _CBManager, _GameObjectManager, _NPCManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();
@@ -162,7 +165,7 @@ namespace ExtendedTest
                 {
                     int adjustThingX = (int)(thing.X + (testMap._Postion.X + (thing.Width / 2)));
                     int adjustThingY = (int)(thing.Y + (testMap._Postion.Y + (thing.Height / 2)));
-                    _NPCManager.CreateMonster(thing, new Vector2(adjustThingX, adjustThingY));
+                    _NPCManager.CreateNPC(thing, new Vector2(adjustThingX, adjustThingY));
                 }
             }
         }
@@ -214,7 +217,7 @@ namespace ExtendedTest
                 //    if (processor.currentError != string.Empty) kbHandler.Input = processor.currentError;
                 //    //kbHandler.Input = string.Empty;
                 //}
-                player.UpdateActive(gameTime);
+                _PlayerManager.Update(gameTime);
                 _NPCManager.UpdateNPCs(gameTime);
                 _GameObjectManager.Update(gameTime);
 
@@ -246,48 +249,6 @@ namespace ExtendedTest
         private void ProcessKeyboard(GameTime gameTime)
         {
             KeyboardState kbState = Keyboard.GetState();
-            //get player tile.
-
-            Tile playerTile = _MapManager.findTile(player._Position);
-            Vector2 newPos = player._Position;
-            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
-            {
-                //player._Position.X -= player._Speed;
-                newPos.X -= 64;
-            }
-            else if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
-            {
-                //player._Position.X += player._Speed;
-                newPos.X += 64;
-            }
-            if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
-            {
-                //player._Position.Y -= player._Speed;
-                newPos.Y -= 64;
-            }
-            else if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
-            {
-                //player._Position.Y += player._Speed;
-                newPos.Y += 64;
-            }
-            Tile newDest = _MapManager.findWalkableTile(newPos);
-            if(newDest!= null)
-            {
-                if(newDest != playerTile)
-                {
-                    player.setDestination(newDest.tileCenter);
-
-                }
-            }
-
-            if(IsKeyPressed(Keys.Space))
-            {
-                WorldObject gotHit = player.CheckObjectHit(_GameObjectManager.ObjectList);
-                if(gotHit == null)
-                {
-                    player.checkCharacterHit(_NPCManager._SpriteListActive);
-                }
-            }
 
             if(IsKeyPressed(Keys.E))
             {
@@ -398,7 +359,7 @@ namespace ExtendedTest
             //    this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y + 5);
             //}
 
-            this.camera.Position = player._Position;
+            this.camera.Position = _PlayerManager._PlayerPos;
 
             camera.Update(gameTime);
         }
@@ -415,7 +376,7 @@ namespace ExtendedTest
 
             _MapManager.Draw(spriteBatch);
 
-            player.Draw(spriteBatch);
+            _PlayerManager.Draw(spriteBatch);
 
             _NPCManager.DrawNPCs(spriteBatch);
 
@@ -429,10 +390,15 @@ namespace ExtendedTest
             mouseCursor.Draw(spriteBatch);
 
             spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
-            spriteBatch.DrawString(font, player._HP.ToString(), camera.ToWorld(new Vector2(200, 200)), Color.White);
+            //spriteBatch.DrawString(font, player._HP.ToString(), camera.ToWorld(new Vector2(200, 200)), Color.White);
 
             base.Draw(gameTime);
             spriteBatch.End();
+        }
+
+        private void CheckPlayerHit()
+        {
+
         }
     }
 }

@@ -28,15 +28,15 @@ namespace ExtendedTest
             }
             String command = parsedtext[0];
             string target = parsedtext[1];
-            Character commandTarget;
+            NPC commandTarget;
             Camera cam =_Game.camera;
             if (target.Equals("PLAYER"))
             {
-                commandTarget = _Game.player;
+                //commandTarget = _Game.player;
             }
             else
             {
-                commandTarget = _Game._NPCManager.findNPCByName(target);
+                commandTarget = _Game._NPCManager.FindNPCByName(target);
                 if (commandTarget == null)
                 {
                     _Game.kbHandler.Input = "NPC not found.";
@@ -60,7 +60,7 @@ namespace ExtendedTest
                 if (parsedtext[1].Equals("PLAYER"))
                 {
 
-                    _Game.player.setDestination(newPos);
+                    //_Game.player.setDestination(newPos);
                 }
                 else if(parsedtext[1].Equals("CAMERA"))
                 {
@@ -68,7 +68,7 @@ namespace ExtendedTest
                 }
                 else
                 {
-                    commandTarget.setDestination(newPos);
+                    //commandTarget.setDestination(newPos);
                 }
             }
             else if(command.Equals("TELEPORT"))
@@ -79,7 +79,7 @@ namespace ExtendedTest
                 }
                 else
                 {
-                    commandTarget._Position = newPos;
+                    //commandTarget._Position = newPos;
                 }
             }
             else

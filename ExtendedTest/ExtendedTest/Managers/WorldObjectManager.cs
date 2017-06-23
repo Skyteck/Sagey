@@ -104,7 +104,7 @@ namespace ExtendedTest.Managers
             }
         }
 
-        internal void CreateObject(Sprite.SpriteType objectType, Vector2 position)
+        public void CreateObject(Sprite.SpriteType objectType, Vector2 position)
         {
             if (objectType == Sprite.SpriteType.kFireType)
             {
@@ -116,6 +116,18 @@ namespace ExtendedTest.Managers
                 ObjectList.Add(fire);
 
             }
+        }
+
+        public WorldObject checkCollision(Rectangle rect)
+        {
+            foreach(WorldObject thing in objectList)
+            {
+                if(thing._BoundingBox.Intersects(rect))
+                {
+                    return thing;
+                }
+            }
+            return null;
         }
     }
 }

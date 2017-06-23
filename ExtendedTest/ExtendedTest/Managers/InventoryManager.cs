@@ -41,6 +41,10 @@ namespace ExtendedTest.Managers
         public void AddItem(Item.ItemType itemType, int amount = 1)
         {
             //find if the item already exists in a slot
+            if(itemType == Item.ItemType.kItemNone)
+            {
+                return;
+            }
             Item itemToAdd = _ItemManager.GetItem(itemType);
 
             if(itemToAdd == null)

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest.GameObjects.NPCs.Monsters
 {
-    class Slime : Monster
+    public class Slime : Attackable
     {
         public Slime(Managers.NPCManager manager, Managers.CombatManager cbManager) : base(manager, cbManager)
         {
@@ -19,9 +19,9 @@ namespace ExtendedTest.GameObjects.NPCs.Monsters
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
-            myShot = new Projectile(this, _CBManager);
-            myShot.LoadContent(path + "Shot", content);
-            AddChild(myShot);
+            //myShot = new Projectile(this, _CBManager);
+            //myShot.LoadContent(path + "Shot", content);
+            //AddChild(myShot);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ExtendedTest
         public List<WorldObject> parentList;
         public double respawnTimerStart = 15d;
         public double timeDead = 0d;
-        public List<Item.ItemType> OutputItems;
+        public bool IsGatherable = false;
         public enum WorldObjectTag
         {
             kFireTag,
@@ -38,9 +38,5 @@ namespace ExtendedTest
         {
 
         }
-
-
-
-        
     }
 }

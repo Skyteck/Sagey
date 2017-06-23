@@ -12,8 +12,8 @@ namespace ExtendedTest.Managers
 {
     public class NPCManager
     {
-        public List<Character> _SpriteListActive;
-        public List<Character> _SpriteListDead;
+        public List<NPC> _SpriteListActive;
+        public List<NPC> _SpriteListDead;
         public TilemapManager _TilemapManager;
         ContentManager _Content;
         CombatManager _CBmanager;
@@ -22,8 +22,8 @@ namespace ExtendedTest.Managers
 
         public NPCManager(TilemapManager tMapManager, CombatManager cbManager ,ContentManager content, Player player)
         {
-            _SpriteListActive = new List<Character>();
-            _SpriteListDead = new List<Character>();
+            _SpriteListActive = new List<NPC>();
+            _SpriteListDead = new List<NPC>();
             _ProjectileList = new List<Projectile>();
             _TilemapManager = tMapManager;
             _Content = content;
@@ -31,7 +31,7 @@ namespace ExtendedTest.Managers
             thePlayer = player;
         }
 
-        public void CreateMonster(TmxObject thing, Vector2 pos)
+        public void CreateNPC(TmxObject thing, Vector2 pos)
         {
             if(thing.Type.Equals("Slime"))
             {
@@ -41,9 +41,25 @@ namespace ExtendedTest.Managers
                 newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);
                 if (Convert.ToBoolean(thing.Properties["Agressive"]))
                 {
-                    newSprite.AddTarget(thePlayer);
+                    //newSprite.AddTarget(thePlayer);
                 }
                 newSprite._Tag = Sprite.SpriteType.kMonsterType;
+                newSprite.Name = thing.Name.ToUpper();
+                newSprite._CurrentState = Sprite.SpriteState.kStateActive;
+                newSprite.parentList = _SpriteListActive;
+                _SpriteListActive.Add(newSprite);
+            }
+            else if(thing.Type.Equals("Banker"))
+            {
+                GameObjects.NPCs.Banker newSprite = new GameObjects.NPCs.Banker(this);
+                newSprite._Position = _TilemapManager.findTile(pos).tileCenter;
+                newSprite.LoadContent("Art/" + thing.Type, _Content);
+                newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);
+                //if (Convert.ToBoolean(thing.Properties["Agressive"]))
+                //{
+                //    //newSprite.AddTarget(thePlayer);
+                //}
+                newSprite._Tag = Sprite.SpriteType.kNPCType;
                 newSprite.Name = thing.Name.ToUpper();
                 newSprite._CurrentState = Sprite.SpriteState.kStateActive;
                 newSprite.parentList = _SpriteListActive;
@@ -54,7 +70,7 @@ namespace ExtendedTest.Managers
         public void UpdateNPCs(GameTime gameTime)
         {
 
-            List<Character> combinedList = new List<Character>();
+            List<NPC> combinedList = new List<NPC>();
             combinedList.AddRange(_SpriteListActive);
             combinedList.AddRange(_SpriteListDead);
             _SpriteListActive = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateActive);
@@ -80,14 +96,26 @@ namespace ExtendedTest.Managers
 
         }
 
-        public Character findNPCByName(String sprite)
+        public NPC FindNPCByName(String sprite)
         {
-            return (NPC)_SpriteListActive.Find(x => x.Name == sprite);
+            return _SpriteListActive.Find(x => x.Name == sprite);
         }
 
-        public List<Character> findNPCsByTag(Sprite.SpriteType tag)
+        public List<NPC> FindNPCsByTag(Sprite.SpriteType tag)
         {
             return _SpriteListActive.FindAll(x => x._Tag == tag); 
+        }
+
+        public NPC CheckCollisions(Rectangle checkRect)
+        {
+            foreach(NPC npc in _SpriteListActive)
+            {
+                if(npc._BoundingBox.Intersects(checkRect))
+                {
+                    return npc;
+                }
+            }
+            return null;
         }
     }
 }
