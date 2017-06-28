@@ -55,10 +55,32 @@ namespace ExtendedTest.Managers
             if (ActivePanels.Contains(panelToFind))
             {
                 ActivePanels.Remove(panelToFind);
+                panelToFind._Showing = false;
             }
             else
             {
                 ActivePanels.Add(panelToFind);
+                panelToFind._Showing = true;
+            }
+        }
+
+        public void ShowPanel(String PanelName)
+        {
+            UIPanel panelToFind = UIPanels.Find(x => x.Name == PanelName);
+            if (!ActivePanels.Contains(panelToFind))
+            {
+                ActivePanels.Add(panelToFind);
+                panelToFind._Showing = true;
+            }
+        }
+
+        public void HidePanel(String PanelName)
+        {
+            UIPanel panelToFind = UIPanels.Find(x => x.Name == PanelName);
+            if (ActivePanels.Contains(panelToFind))
+            {
+                ActivePanels.Remove(panelToFind);
+                panelToFind._Showing = false;
             }
         }
     }

@@ -15,6 +15,7 @@ namespace ExtendedTest
         int adJustedWidth;
         int minHeight = 15;
         int adjustedHeight;
+        public bool _Showing = false;
         Vector2 prevScale;
 
         public Vector2 _Center

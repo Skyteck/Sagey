@@ -39,10 +39,14 @@ namespace ExtendedTest
         Managers.ChemistryManager _ChemistryManager;
         Managers.ItemManager _ItemManager;
         Managers.PlayerManager _PlayerManager;
-        //UI
-        
+        Managers.BankManager _BankManager;
+
+
+        //UI        
         Vector2 mouseClickPos;
         Sprite mouseCursor;
+
+        bool BankMode = false;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -62,7 +66,8 @@ namespace ExtendedTest
             // TODO: Add your initialization logic here
             player = new Player();
             _ItemManager = new Managers.ItemManager(Content);
-            _InvenManager = new Managers.InventoryManager(Content, _ItemManager);
+            _InvenManager = new Managers.InventoryManager(_ItemManager);
+            _BankManager = new Managers.BankManager(_ItemManager);
             _CBManager = new Managers.CombatManager();
             _MapManager = new Managers.TilemapManager(_NPCManager, _GameObjectManager);
             _NPCManager = new Managers.NPCManager(_MapManager, _CBManager,  Content, player);
@@ -93,16 +98,14 @@ namespace ExtendedTest
             LoadMapObjects(_MapManager.findMapByName("0-0"));
             _MapManager.LoadMap("0-1", Content);
             font = Content.Load<SpriteFont>("Fonts/Fipps");
-            _InvenManager.loadContent();
             _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
 
-
-            for (int i = 0; i < 5; i++)
-            {
-                _InvenManager.AddItem(Item.ItemType.kItemLog);
-            }
+            
+            _InvenManager.AddItem(Item.ItemType.kItemLog, 5);
             _InvenManager.AddItem(Item.ItemType.kItemMatches);
+
+            _BankManager.AddItem(Item.ItemType.kItemLog, 10);
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
             //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
@@ -149,7 +152,12 @@ namespace ExtendedTest
             craftingPanel._Opacity = 0.9f;
             _UIManager.UIPanels.Add(craftingPanel);
 
-
+            GameObjects.UIObjects.BankPanel bankPanel = new GameObjects.UIObjects.BankPanel(_BankManager);
+            bankPanel.LoadContent("Art/inventoryBG", Content);
+            bankPanel._Position = new Vector2(0, 0);
+            bankPanel.Name = "Bank";
+            bankPanel._Opacity = 1f;
+            _UIManager.UIPanels.Add(bankPanel);
 
             mouseCursor = new Sprite();
             mouseCursor.LoadContent("Art/log", Content);
@@ -218,6 +226,16 @@ namespace ExtendedTest
                 //    //kbHandler.Input = string.Empty;
                 //}
                 _PlayerManager.Update(gameTime);
+
+                if(_PlayerManager._BankerGo)
+                {
+                    _UIManager.ShowPanel("Bank");
+                }
+                else
+                {
+                    _UIManager.HidePanel("Bank");
+                }
+
                 _NPCManager.UpdateNPCs(gameTime);
                 _GameObjectManager.Update(gameTime);
 
@@ -225,11 +243,13 @@ namespace ExtendedTest
                 {
                     //processor.currentError = string.Empty;
                     ProcessCamera(gameTime);
+                    BankMode = !BankMode;
 
                 }
 
                 _UIManager.getUIElement("Inventory")._Position = camera.ToWorld(400, 400);
                 _UIManager.getUIElement("Crafting")._Position = camera.ToWorld(600, 400);
+                _UIManager.getUIElement("Bank")._Position = camera.ToWorld(200, 400);
 
                 foreach (UIPanel element in _UIManager.UIPanels)
                 {
@@ -341,23 +361,6 @@ namespace ExtendedTest
 
         private void ProcessCamera(GameTime gameTime)
         {
-            //KeyboardState state = Keyboard.GetState();
-            //if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
-            //{
-            //    this.camera.Position = new Vector2(this.camera.Position.X - 5, this.camera.Position.Y);
-            //}
-            //else if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
-            //{
-            //    this.camera.Position = new Vector2(this.camera.Position.X + 5, this.camera.Position.Y);
-            //}
-            //if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
-            //{
-            //    this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y - 5);
-            //}
-            //else if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
-            //{
-            //    this.camera.Position = new Vector2(this.camera.Position.X, this.camera.Position.Y + 5);
-            //}
 
             this.camera.Position = _PlayerManager._PlayerPos;
 

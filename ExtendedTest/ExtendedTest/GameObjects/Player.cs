@@ -22,23 +22,13 @@ namespace ExtendedTest
         public int _AttackSpeed { get; private set; }
         public float _Speed { get; private set; }
 
+        public Managers.PlayerManager.PlayerState _MyState = Managers.PlayerManager.PlayerState.kStateIdle;
+
         //    Vector2 Destination = Vector2.Zero;
         //    Managers.InventoryManager invenManager;
         //    Sprite _Target;
 
-        //    public enum CurrentState
-        //    {
-        //        kStateIdle = 0,
-        //        kStateWalk,
-        //        kStateWC,
-        //        kStateRun,
-        //        kStateFish,
-        //        kStateMine,
-        //        kStateAttack,
-        //        kStateDefend
-        //    }
 
-        //    private CurrentState action = CurrentState.kStateIdle;
 
         //    private Rectangle checkRect
         //    {
@@ -82,52 +72,11 @@ namespace ExtendedTest
             SetupAnimation(2, 10, 3, true);
         }
 
-        //    public override void UpdateActive(GameTime gameTime)
-        //    {
-        //        Vector2 originalPos = _Position;
-        //        movingX = false;
-        //        movingY = false;
-        //        handleInput(gameTime);
+        public override void UpdateActive(GameTime gameTime)
+        {
 
-        //        if(moving)
-        //        {
-        //            this.ChangeState(CurrentState.kStateIdle);
-        //        }
-        //        else
-        //        {
-        //            this.ChangeState(CurrentState.kStateWalk);
-        //        }
-
-        //        if(_Target != null)
-        //        {
-
-        //            if (_Target._Tag == SpriteType.kMonsterType)
-        //            {
-        //                if (Vector2.Distance(_Target._Position, this._Position) <= attackRange)
-        //                {
-        //                    _CBManager.PerformAttack(this, _Target as Character);
-        //                    atDestination = true;
-        //                }
-        //            }
-        //            if (_Target._Tag == SpriteType.kRockType)
-        //            {
-        //                Gather(_Target as GameObjects.Objects.Gatherables.Gatherable);
-        //                this.ChangeState(CurrentState.kStateWC);
-        //            }
-        //            else if (_Target._Tag == SpriteType.kTreeType)
-        //            {
-        //                Gather(_Target as GameObjects.Objects.Gatherables.Gatherable);
-        //                this.ChangeState(CurrentState.kStateWC);
-        //            }
-        //            else if (_Target._Tag == SpriteType.kFishingType)
-        //            {
-        //                Gather(_Target as GameObjects.Objects.Gatherables.Gatherable);
-        //                this.ChangeState(CurrentState.kStateWC);
-        //            }
-        //        }
-
-        //        base.UpdateActive(gameTime);
-        //    }
+            base.UpdateActive(gameTime);
+        }
 
         //    private void handleInput(GameTime gameTime)
         //    {
@@ -255,14 +204,14 @@ namespace ExtendedTest
         //        this._Target = target;
         //    }
 
-        //    public void ChangeState(CurrentState action)
-        //    {
-        //        if(this.action != action)
-        //        {
-        //            this.action = action;
-        //            ChangeAnimation((int)this.action);
-        //        }
-        //    }
+        public void ChangeState(Managers.PlayerManager.PlayerState action)
+        {
+            if (_MyState != action)
+            {
+                _MyState = action;
+                ChangeAnimation((int)_MyState);
+            }
+        }
 
         //    public WorldObject CheckObjectHit(List<WorldObject> spriteList)
         //    {

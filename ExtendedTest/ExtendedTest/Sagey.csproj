@@ -59,10 +59,12 @@
     <Compile Include="GameObjects\NPCs\Attackable.cs" />
     <Compile Include="GameObjects\Objects\Gatherables\FishingHole.cs" />
     <Compile Include="GameObjects\Objects\WorldObject.cs" />
+    <Compile Include="GameObjects\UIObjects\BankPanel.cs" />
     <Compile Include="GameObjects\UIObjects\CraftingPanel.cs" />
     <Compile Include="GameObjects\UIObjects\InventoryPanel.cs" />
     <Compile Include="GameObjects\UIObjects\UIPanel.cs" />
     <Compile Include="kbHandler.cs" />
+    <Compile Include="Managers\BankManager.cs" />
     <Compile Include="Managers\ChemistryManager.cs" />
     <Compile Include="Managers\CombatManager.cs" />
     <Compile Include="Managers\InventorySlot.cs" />

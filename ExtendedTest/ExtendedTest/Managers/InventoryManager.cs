@@ -12,32 +12,20 @@ namespace ExtendedTest.Managers
     public class InventoryManager
     {
         public List<InventorySlot> itemSlots;
-        SpriteFont count;
         int capacity = 28;
 
         //Managers
-        ContentManager _Content;
         ItemManager _ItemManager;
-
-        Texture2D normalBG;
-        Texture2D SelectedBG;
+        
         public Item selectedItem;
 
-        public InventoryManager(ContentManager content, ItemManager IM)
+        public InventoryManager(ItemManager IM)
         {
-            _Content = content;
             _ItemManager = IM;
             itemSlots = new List<InventorySlot>();
             
         }
-
-        public void loadContent()
-        {
-            count = _Content.Load<SpriteFont>("Fonts/Fipps");
-            normalBG = _Content.Load<Texture2D>("Art/itemSlotNormal");
-            SelectedBG = _Content.Load<Texture2D>("Art/itemSlotSelected");
-        }
-        
+                
         public void AddItem(Item.ItemType itemType, int amount = 1)
         {
             //find if the item already exists in a slot
