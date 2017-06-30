@@ -230,10 +230,12 @@ namespace ExtendedTest
                 if(_PlayerManager._BankerGo)
                 {
                     _UIManager.ShowPanel("Bank");
+                    BankMode = true;
                 }
                 else
                 {
                     _UIManager.HidePanel("Bank");
+                    BankMode = false;
                 }
 
                 _NPCManager.UpdateNPCs(gameTime);
@@ -243,7 +245,6 @@ namespace ExtendedTest
                 {
                     //processor.currentError = string.Empty;
                     ProcessCamera(gameTime);
-                    BankMode = !BankMode;
 
                 }
 
@@ -331,8 +332,29 @@ namespace ExtendedTest
                 Vector2 mouseClickpos = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
 
                 //check if a click was in the crafting panel
-                foreach(UIPanel panel in _UIManager.UIPanels)
+                foreach(UIPanel panel in _UIManager.ActivePanels)
                 {
+                    if(BankMode)
+                    {
+                        if (panel.Name.Equals("Bank"))
+                        {
+                            Item.ItemType item = (panel as GameObjects.UIObjects.BankPanel).ProcessClick(mouseClickpos);
+                            if (item != Item.ItemType.kItemNone)
+                            {
+                                _BankManager.RemoveItem(item);
+                                _InvenManager.AddItem(item);
+                            }
+                        }
+                        if (panel.Name.Equals("Inventory"))
+                        {
+                            Item.ItemType item = (panel as GameObjects.UIObjects.InventoryPanel).ProcessClick(mouseClickpos);
+                            if (item != Item.ItemType.kItemNone)
+                            {
+                                _InvenManager.RemoveItem(item);
+                                _BankManager.AddItem(item);
+                            }
+                        }
+                    }
                     panel.ProcessClick(mouseClickpos);
                 }
 

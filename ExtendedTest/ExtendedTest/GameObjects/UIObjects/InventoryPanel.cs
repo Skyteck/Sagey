@@ -27,6 +27,18 @@ namespace ExtendedTest.GameObjects.UIObjects
             SelectedBG = content.Load<Texture2D>("Art/itemSlotSelected");
         }
 
+        new public Item.ItemType ProcessClick(Vector2 pos)
+        {
+            foreach (InventorySlot slot in _InventoryManager.itemSlots)
+            {
+                if (slot.myRect.Contains(pos))
+                {
+                    return slot.ItemInSlot._Type;
+                }
+            }
+            return Item.ItemType.kItemNone;
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
