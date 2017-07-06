@@ -99,7 +99,7 @@ namespace ExtendedTest.GameObjects.UIObjects
                         //spriteBatch.Draw(_ChemistryManager.ActiveRecipes[itemsDrawn].output.itemtexture, pos, Color.White);
 
                         itemsDrawn++;
-                        if (itemsDrawn >= CraftSlots.Count)
+                        if (itemsDrawn >= currentSlots.Count)
                         {
                             return;
                         }

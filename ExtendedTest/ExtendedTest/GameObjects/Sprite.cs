@@ -64,7 +64,7 @@ namespace ExtendedTest
 
         private SpriteType tag = SpriteType.kNoneType;
 
-        public Vector2 _Center
+        public virtual Vector2 _Center
         {
             get
             {
@@ -102,6 +102,18 @@ namespace ExtendedTest
             frameWidth = _Texture.Width;
         }
 
+        public virtual void Update(GameTime gt)
+        {
+            if(_CurrentState == SpriteState.kStateActive)
+            {
+                UpdateActive(gt);
+            }
+            else
+            {
+                UpdateDead(gt);
+            }
+        }
+
         public virtual void UpdateActive(GameTime gameTime)
         {
             if (_CurrentState == SpriteState.kStateActive)
@@ -112,7 +124,7 @@ namespace ExtendedTest
                     {
                         foreach (Sprite child in _ChildrenList)
                         {
-                            child.UpdateActive(gameTime);
+                            child.Update(gameTime);
                         }
                     }
                 }
@@ -233,10 +245,14 @@ namespace ExtendedTest
 
         public virtual void Activate(Vector2 pos)
         {
-            _CurrentState = SpriteState.kStateActive;
-            _Draw = true;
-
             _Position = pos;
+            Activate();
+        }
+
+        public virtual void Deactivate()
+        {
+            _CurrentState = SpriteState.kStateInActive;
+            _Draw = false;
         }
     }
 }

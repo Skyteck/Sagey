@@ -12,7 +12,7 @@ namespace ExtendedTest.Managers
 {
     public class PlayerManager
     {
-        Player player;
+        Player _Player;
         WorldObject _CurrentWOTarget;
         //Managers
         CombatManager _CombatManager;
@@ -46,21 +46,21 @@ namespace ExtendedTest.Managers
         {
             get
             {
-                if (player._Direction == Sprite.Direction.kDirectionDown)
+                if (_Player._Direction == Sprite.Direction.kDirectionDown)
                 {
-                    return new Rectangle((int)player._Position.X - 32, (int)player._Position.Y + 32, 64, 32);
+                    return new Rectangle((int)_Player._Position.X - 32, (int)_Player._Position.Y + 32, 64, 32);
                 }
-                else if (player._Direction == Sprite.Direction.kDirectionUp)
+                else if (_Player._Direction == Sprite.Direction.kDirectionUp)
                 {
-                    return new Rectangle((int)player._Position.X - 32, (int)player._Position.Y - 64, 64, 32);
+                    return new Rectangle((int)_Player._Position.X - 32, (int)_Player._Position.Y - 64, 64, 32);
                 }
-                else if (player._Direction == Sprite.Direction.kDirectionLeft)
+                else if (_Player._Direction == Sprite.Direction.kDirectionLeft)
                 {
-                    return new Rectangle((int)player._Position.X - 64, (int)player._Position.Y - 32, 32, 642);
+                    return new Rectangle((int)_Player._Position.X - 64, (int)_Player._Position.Y - 32, 32, 642);
                 }
-                else if (player._Direction == Sprite.Direction.kDirectionRight)
+                else if (_Player._Direction == Sprite.Direction.kDirectionRight)
                 {
-                    return new Rectangle((int)player._Position.X + 32, (int)player._Position.Y - 32, 32, 64);
+                    return new Rectangle((int)_Player._Position.X + 32, (int)_Player._Position.Y - 32, 32, 64);
                 }
                 else
                 {
@@ -70,10 +70,9 @@ namespace ExtendedTest.Managers
             }
         }
 
-
         public PlayerManager(Player p, InventoryManager IM, CombatManager CM, WorldObjectManager WOM, NPCManager NPCM)
         {
-            player = p;
+            _Player = p;
             _CombatManager = CM;
             _InventoryManager = IM;
             _WorldObjectManager = WOM;
@@ -83,7 +82,7 @@ namespace ExtendedTest.Managers
         public void Update(GameTime gt)
         {
             ProcessKeyboard(gt);
-            player.UpdateActive(gt);
+            _Player.UpdateActive(gt);
 
             if(_CurrentWOTarget != null)
             {
@@ -98,44 +97,44 @@ namespace ExtendedTest.Managers
                 }
             }
 
-            _PlayerPos = player._Position;
+            _PlayerPos = _Player._Position;
         }
 
         public void ProcessKeyboard(GameTime gt)
         {
             KeyboardState kbState = Keyboard.GetState();
             bool moved = false;
-            Vector2 newPos = player._Position;
+            Vector2 newPos = _Player._Position;
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
             {
                 //player._Position.X -= player._Speed;
                 newPos.X -= (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
-                player._Direction = Sprite.Direction.kDirectionLeft;
+                _Player._Direction = Sprite.Direction.kDirectionLeft;
                 moved = true;
             }
             else if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
             {
                 //player._Position.X += player._Speed;
                 newPos.X += (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
-                player._Direction = Sprite.Direction.kDirectionRight;
+                _Player._Direction = Sprite.Direction.kDirectionRight;
                 moved = true;
             }
             if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
             {
                 //player._Position.Y -= player._Speed;
                 newPos.Y -= (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
-                player._Direction = Sprite.Direction.kDirectionUp;
+                _Player._Direction = Sprite.Direction.kDirectionUp;
                 moved = true;
             }
             else if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
             {
                 //player._Position.Y += player._Speed;
                 newPos.Y += (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
-                player._Direction = Sprite.Direction.kDirectionDown;
+                _Player._Direction = Sprite.Direction.kDirectionDown;
                 moved = true;
             }
 
-            player._Position = newPos;
+            _Player._Position = newPos;
             if ( kbState.IsKeyDown(Keys.Space) && _PrevKBState.IsKeyUp(Keys.Space))
             {
                 //This is for interacting with NPCs or other objects.
@@ -151,7 +150,13 @@ namespace ExtendedTest.Managers
                     _CurrentWOTarget = _WorldObjectManager.checkCollision(CheckRect);
                 }
             }
-            if(moved)
+
+            if (kbState.IsKeyDown(Keys.V) && _PrevKBState.IsKeyUp(Keys.V))
+            {
+                _Player.Attack();
+            }
+
+            if (moved)
             {
                 ChangePlayerState(PlayerState.kStateIdle);
                 ClearTargets();
@@ -183,13 +188,20 @@ namespace ExtendedTest.Managers
 
         public void Draw(SpriteBatch SB)
         {
-            player.Draw(SB);
+            _Player.Draw(SB);
         }
 
         public void ChangePlayerState(PlayerState state)
         {
             _PlayerState = state;
-            player.ChangeState(state);
+            _Player.ChangeState(state);
+        }
+
+        public void SetPosition(float x, float y)
+        {
+            _Player._Position.X = x;
+            _Player._Position.Y = y;
+            _PlayerPos = new Vector2(x, y);
         }
 
         public void ClearTargets()

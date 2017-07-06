@@ -139,5 +139,16 @@ namespace ExtendedTest.Managers
                 }
             }
         }
+
+        public List<string> getList()
+        {
+            List<string> items = new List<string>();
+            foreach(InventorySlot slot in itemSlots)
+            {
+                string thing = string.Format("{0} {1}", (int)slot.ItemInSlot._Type, slot.Amount);
+                items.Add(thing);
+            }
+            return items;
+        }
     }
 }

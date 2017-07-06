@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
+using ExtendedTest.GameObjects;
 
 namespace ExtendedTest
 {
@@ -13,7 +14,7 @@ namespace ExtendedTest
     {
         private int startHP;
 
-
+        Sword sword;
 
         public int _HP { get; private set; }
         public int _Defense { get; private set; }
@@ -64,82 +65,52 @@ namespace ExtendedTest
             _AttackSpeed = 2;
             _Speed = 4f;
             _Direction = Direction.kDirectionDown;
+            sword = new Sword();
+            sword.Deactivate();
+            AddChild(sword);
         }
 
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
             SetupAnimation(2, 10, 3, true);
+            sword.LoadContent("Art/Sword", content);
+            
         }
 
         public override void UpdateActive(GameTime gameTime)
         {
-
             base.UpdateActive(gameTime);
         }
-
-        //    private void handleInput(GameTime gameTime)
-        //    {
-        //        var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        //        //if(!atDestination)
-        //        //{
-        //        //    base.findPath();
-        //        //}
-
-        //        #region Keyboard State
-        //        KeyboardState state = Keyboard.GetState();
-        //        if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
-        //        {
-        //            //_Position.X -= _Speed;
-        //            _Direction = Direction.kDirectionLeft;
-        //            moving = true;
-        //        }
-        //        else if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
-        //        {
-        //            //_Position.X += _Speed;
-        //            _Direction = Direction.kDirectionRight;
-        //            moving = true;
-        //        }
-        //        if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
-        //        {
-        //            //_Position.Y -= _Speed;
-        //            _Direction = Direction.kDirectionUp;
-        //            moving = true;
-        //        }
-        //        else if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
-        //        {
-        //            //_Position.Y += _Speed;
-        //            _Direction = Direction.kDirectionDown;
-        //            moving = true;
-        //        }
-        //        #endregion
-        //        #region Gamepad state
-        //        /* GamePad Stuff
-        //        GamePadCapabilities cap = GamePad.GetCapabilities(PlayerIndex.One);
-
-        //        if (cap.IsConnected && cap.HasLeftXThumbStick && cap.HasLeftYThumbStick && cap.HasRightXThumbStick && cap.HasRightYThumbStick)
-        //        {
-        //            GamePadState gpState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
-        //            _Position.X += (maxSpeed * gpState.ThumbSticks.Left.X);
-        //            _Position.Y += (maxSpeed * -gpState.ThumbSticks.Left.Y);
-        //            if (gpState.ThumbSticks.Right.X == 0 && gpState.ThumbSticks.Right.Y == 0)
-        //            {
-        //            }
-
-        //        } 
-        //        */
-        //        #endregion
-
-        //        //LockInBounds();
-        //    }
-
-        //    public override void setDestination(Vector2 dest)
-        //    {
-        //        base.setDestination(dest);
-        //        _Target = null;
-        //        this.ChangeState(CurrentState.kStateWalk);
-        //    }
+        
+        public void Attack()
+        {
+            Vector2 swordPos;
+            if (_Direction == Direction.kDirectionUp)
+            {
+                swordPos = new Vector2(_Position.X, _Position.Y - (frameHeight/2));
+                sword.PointTo(swordPos, Sword.SwordPoint.kNorth);
+            }
+            else if (_Direction == Direction.kDirectionDown)
+            {
+                swordPos = new Vector2(_Position.X, _Position.Y + (frameHeight/2));
+                sword.PointTo(swordPos, Sword.SwordPoint.kSouth);
+            }
+            else if (_Direction == Direction.kDirectionLeft)
+            {
+                swordPos = new Vector2(_Position.X - (frameWidth/2), _Position.Y);
+                sword.PointTo(swordPos, Sword.SwordPoint.kWest);
+            }
+            else if (_Direction == Direction.kDirectionRight)
+            {
+                swordPos = new Vector2(_Position.X + (frameWidth/2), _Position.Y);
+                sword.PointTo(swordPos, Sword.SwordPoint.kEast);
+            }
+            else
+            {
+                Console.WriteLine("Sword Error!");
+            }
+        }
 
         //    //private Sprite collisionCheck(List<Character> gameObjectList)
         //    //{

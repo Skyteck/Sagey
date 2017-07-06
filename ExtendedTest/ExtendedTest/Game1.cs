@@ -101,11 +101,82 @@ namespace ExtendedTest
             _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
 
-            
-            _InvenManager.AddItem(Item.ItemType.kItemLog, 5);
-            _InvenManager.AddItem(Item.ItemType.kItemMatches);
+            //check if save exists
 
-            _BankManager.AddItem(Item.ItemType.kItemLog, 10);
+            //else start a new save
+            bool saveExist = false;
+            string path = Content.RootDirectory + @"\Save\save.txt";
+            if (System.IO.File.Exists(path))
+            {
+                saveExist = true;
+            }
+            if (saveExist)
+            {
+                //load
+                System.IO.StreamReader file = new System.IO.StreamReader(path);
+                string line = file.ReadLine();
+                if (line != null)
+                {
+                    string[] playerPos = line.Split(' ');
+                    float.TryParse(playerPos[0], out var x);
+                    float.TryParse(playerPos[1], out var y);
+                    _PlayerManager.SetPosition(x, y);
+                }
+                bool bankMode = false;
+                bool inventoryMode = false;
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (line.Equals("B"))
+                    {
+                        bankMode = true;
+                        continue;
+                    }
+                    else if (line.Equals("BEnd"))
+                    {
+                        bankMode = false;
+                        continue;
+                    }
+                    if (line.Equals("I"))
+                    {
+                        inventoryMode = true;
+                        continue;
+                    }
+                    else if (line.Equals("IEnd"))
+                    {
+                        inventoryMode = false;
+                        continue;
+                    }
+                    if (bankMode || inventoryMode)
+                    {
+                        string[] items = line.Split(' ');
+                        Int32.TryParse(items[0], out int itemType);
+                        Item.ItemType type = (Item.ItemType)itemType;
+                        Int32.TryParse(items[1], out int amt);
+                        if (bankMode)
+                        {
+                            _BankManager.AddItem(type, amt);
+                        }
+                        else if (inventoryMode)
+                        {
+                            _InvenManager.AddItem(type, amt);
+                        }
+                    }
+                    
+                }
+
+                file.Close();
+            }
+            else
+            {
+                player._Position = new Vector2(300, 300);
+
+                _InvenManager.AddItem(Item.ItemType.kItemLog, 5);
+                _InvenManager.AddItem(Item.ItemType.kItemMatches);
+
+                _BankManager.AddItem(Item.ItemType.kItemLog, 10);
+                _BankManager.AddItem(Item.ItemType.kItemFish, 3);
+            }
+
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
             //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
@@ -133,7 +204,6 @@ namespace ExtendedTest
         private void LoadPlayerContent()
         {
             player.LoadContent("Art/Player", Content);
-            player._Position = new Vector2(400, 400);
         }
 
         private void LoadGUI()
@@ -212,7 +282,10 @@ namespace ExtendedTest
             {
                 // TODO: Add your update logic here
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                {
+                    SaveGame();
                     Exit();
+                }
 
 
                 ProcessMouse(gameTime);
@@ -280,7 +353,10 @@ namespace ExtendedTest
             {
                 _UIManager.TogglePanel("Inventory");
             }
-
+            if(IsKeyPressed(Keys.P))
+            {
+                SaveGame();
+            }
             previousKBState = kbState;
         }
 
@@ -424,6 +500,32 @@ namespace ExtendedTest
         private void CheckPlayerHit()
         {
 
+        }
+
+        private void SaveGame()
+        {
+            string playerPos = string.Format("{0} {1}", _PlayerManager._PlayerPos.X, _PlayerManager._PlayerPos.Y);
+
+            List<string> bankStuff = _BankManager.getList();
+            List<string> inventoryStuff = _InvenManager.getList();
+            string test = Content.RootDirectory + @"\Save\save.txt";
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(test))
+            {
+                file.WriteLine(playerPos);
+                file.WriteLine("B");
+                foreach(string line in bankStuff)
+                {
+                    file.WriteLine(line);
+                }
+                file.WriteLine("BEnd");
+                file.WriteLine("I");
+                foreach (string line in inventoryStuff)
+                {
+                    file.WriteLine(line);
+                }
+                file.WriteLine("IEnd");
+            }
         }
     }
 }
