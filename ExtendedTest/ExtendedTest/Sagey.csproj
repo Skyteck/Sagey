@@ -100,7 +100,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TiledSharp, Version=0.10.5776.22942, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TiledSharp\TiledSharp.dll</HintPath>
+      <HintPath>..\packages\TiledSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
