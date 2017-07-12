@@ -25,12 +25,93 @@ namespace ExtendedTest
 
         public Managers.PlayerManager.PlayerState _MyState = Managers.PlayerManager.PlayerState.kStateIdle;
 
-        //    Vector2 Destination = Vector2.Zero;
-        //    Managers.InventoryManager invenManager;
-        //    Sprite _Target;
+        private Vector2 swordAnchor;
+        public Vector2 _SwordAnchor
+        {
+            get
+            {
+                float x = _Position.X;
+                float y = _Position.Y;
+                Vector2 newPos;
 
+                if(comboNum != 3)
+                {
+                    if(_Direction == Direction.kDirectionDown)
+                    {
+                        newPos = _Position;
+                        newPos.Y += frameHeight;
+                    }
+                    else if(_Direction == Direction.kDirectionLeft)
+                    {
+                        newPos = _Position;
+                        newPos.Y += frameHeight / 2;
+                        newPos.X -= frameWidth / 2;
+                    }
+                    else if(_Direction == Direction.kDirectionRight)
+                    {
+                        newPos = _Position;
+                        newPos.Y += frameHeight / 2;
+                        newPos.X += frameWidth / 2;
+                    }
+                    else
+                    {
+                        newPos = _Position;
+                    }
+                }
+                else
+                {
+                    newPos = _Position;
 
+                }
 
+                //if(comboNum != 3)
+                //{
+                //    if (_Direction == Direction.kDirectionUp)
+                //    {
+                //        newPos = new Vector2(x, y );
+                //    }
+                //    else if (_Direction == Direction.kDirectionDown)
+                //    {
+                //        newPos = new Vector2(x, y + (frameHeight / 2));
+                //    }
+                //    else if (_Direction == Direction.kDirectionLeft)
+                //    {
+                //        newPos = new Vector2(x - (frameWidth / 2), y);
+                //    }
+                //    else if (_Direction == Direction.kDirectionRight)
+                //    {
+                //        newPos = new Vector2(x + (frameWidth / 2), y);
+                //    }
+                //    else
+                //    {
+                //        Console.WriteLine("Sword Error!");
+                //        return Vector2.Zero;
+                //    }
+                //}
+                //else
+                //{
+                //}
+
+                //if (_Rotation != 0)
+                //{
+                    x = _Position.X;
+                    y = _Position.Y;
+                    x = newPos.X;
+                    y = newPos.Y;
+                    int radias = frameWidth/2;
+                    double mathSin = Math.Sin(_Rotation);
+                    double mathCos = Math.Cos(_Rotation);
+                    newPos.X = (float)(x + (radias * mathSin));
+                    newPos.Y = (float)(y - (radias * mathCos));
+                //}
+
+                return newPos;
+            }
+            set => swordAnchor = value;
+        }
+
+        int comboNum = 1;
+        double comboCD = 0f;
         //    private Rectangle checkRect
         //    {
         //        get
@@ -65,7 +146,7 @@ namespace ExtendedTest
             _AttackSpeed = 2;
             _Speed = 4f;
             _Direction = Direction.kDirectionDown;
-            sword = new Sword();
+            sword = new Sword(this);
             sword.Deactivate();
             AddChild(sword);
         }
@@ -80,35 +161,90 @@ namespace ExtendedTest
 
         public override void UpdateActive(GameTime gameTime)
         {
+            if(comboCD > 0f)
+            {
+                comboCD -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                comboNum = 1;
+                _Rotation = 0;
+            }
+            if(comboNum == 3)
+            {
+                this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
+            }
             base.UpdateActive(gameTime);
         }
         
         public void Attack()
         {
             Vector2 swordPos;
-            if (_Direction == Direction.kDirectionUp)
+            if(comboCD > 0)
             {
-                swordPos = new Vector2(_Position.X, _Position.Y - (frameHeight/2));
-                sword.PointTo(swordPos, Sword.SwordPoint.kNorth);
-            }
-            else if (_Direction == Direction.kDirectionDown)
-            {
-                swordPos = new Vector2(_Position.X, _Position.Y + (frameHeight/2));
-                sword.PointTo(swordPos, Sword.SwordPoint.kSouth);
-            }
-            else if (_Direction == Direction.kDirectionLeft)
-            {
-                swordPos = new Vector2(_Position.X - (frameWidth/2), _Position.Y);
-                sword.PointTo(swordPos, Sword.SwordPoint.kWest);
-            }
-            else if (_Direction == Direction.kDirectionRight)
-            {
-                swordPos = new Vector2(_Position.X + (frameWidth/2), _Position.Y);
-                sword.PointTo(swordPos, Sword.SwordPoint.kEast);
+                comboNum++;
+                if (comboNum == 4)
+                {
+                    comboNum = 1;
+                }
             }
             else
             {
-                Console.WriteLine("Sword Error!");
+                comboNum = 1;
+            }
+            comboCD = 0.42;
+            if(comboNum == 1)
+            {
+                _Rotation = 0f;
+                if (_Direction == Direction.kDirectionUp)
+                {
+                    sword.Attack1(Sword.SwordPoint.kNorth);
+                }
+                else if (_Direction == Direction.kDirectionDown)
+                {
+                    sword.Attack1(Sword.SwordPoint.kSouth);
+                }
+                else if (_Direction == Direction.kDirectionLeft)
+                {
+                    sword.Attack1(Sword.SwordPoint.kWest);
+                }
+                else if (_Direction == Direction.kDirectionRight)
+                {
+                    sword.Attack1(Sword.SwordPoint.kEast);
+                }
+                else
+                {
+                    Console.WriteLine("Sword Error!");
+                }
+
+            }
+            else if(comboNum == 2)
+            {
+                _Rotation = 0f;
+                if (_Direction == Direction.kDirectionUp)
+                {
+                    sword.Attack2(Sword.SwordPoint.kNorth);
+                }
+                else if (_Direction == Direction.kDirectionDown)
+                {
+                    sword.Attack2(Sword.SwordPoint.kSouth);
+                }
+                else if (_Direction == Direction.kDirectionLeft)
+                {
+                    sword.Attack2(Sword.SwordPoint.kWest);
+                }
+                else if (_Direction == Direction.kDirectionRight)
+                {
+                    sword.Attack2(Sword.SwordPoint.kEast);
+                }
+                else
+                {
+                    Console.WriteLine("Sword Error!");
+                }
+            }
+            else if(comboNum == 3)
+            {
+                sword.Attack3();
             }
         }
 

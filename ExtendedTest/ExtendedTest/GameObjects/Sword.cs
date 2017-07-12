@@ -11,6 +11,10 @@ namespace ExtendedTest.GameObjects
     {
         float TTL= 0.15f;
         float currentTime = 0f;
+        Player parentPlayer;
+
+        int mode = 1;
+        int damage = 1;
         public enum SwordPoint
         {
             kNorth, kSouth, kWest, kEast, kNone
@@ -22,26 +26,42 @@ namespace ExtendedTest.GameObjects
         {
             get
             {
-                if(_Pointing != SwordPoint.kNone)
+                if (_Pointing != SwordPoint.kNone)
                 {
-                    return new Vector2(frameWidth/2, frameHeight);
+                    return new Vector2(frameWidth / 2, frameHeight);
                 }
                 else
                 {
                     return Vector2.Zero;
                 }
             }
+            //return _Center;
         }
 
-        public Sword()
+        public Sword(Player p)
         {
+            parentPlayer = p;
         }
 
         public override void UpdateActive(GameTime gameTime)
         {
             if(_CurrentState == SpriteState.kStateActive)
             {
-                this._Rotation += (float) gameTime.ElapsedGameTime.TotalSeconds * 30;
+                if(mode == 1)
+                {
+                    this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
+                    TTL = 0.15f;
+                }
+                else if(mode == 2)
+                {
+                    this._Rotation -= (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
+                    TTL = 0.15f;
+                }
+                else if(mode == 3)
+                {
+                    this._Rotation = parentPlayer._Rotation;
+                    TTL = 0.42f;
+                }
                 currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 base.UpdateActive(gameTime);
                 if(currentTime >= TTL)
@@ -49,12 +69,21 @@ namespace ExtendedTest.GameObjects
                     Deactivate();
                     currentTime = 0f;
                 }
+                this._Position = parentPlayer._SwordAnchor;
+
+                CollisionCheck();
             }
 
         }
-
-        public void PointTo(Vector2 pos, SwordPoint dir)
+        
+        private void CollisionCheck()
         {
+
+        }
+
+        public void Attack1(SwordPoint dir)
+        {
+            mode = 1;
             _Pointing = dir;
             if(dir == SwordPoint.kEast)
             {
@@ -74,7 +103,39 @@ namespace ExtendedTest.GameObjects
                 _Rotation = 4f;
             }
             currentTime = 0f;
-            Activate(pos);
+            Activate();
+        }
+
+        public void Attack2(SwordPoint dir)
+        {
+            mode = 2;
+            _Pointing = dir;
+            if (dir == SwordPoint.kEast)
+            {
+                _Rotation = 4f;
+            }
+            else if (dir == SwordPoint.kSouth)
+            {
+                //_Rotation = (float)(90 * (Math.PI / 180));
+                _Rotation = -0.8f;
+            }
+            else if (dir == SwordPoint.kWest)
+            {
+                _Rotation = 1f;
+            }
+            else if (dir == SwordPoint.kNorth)
+            {
+                _Rotation = 2.2f;
+            }
+            currentTime = 0f;
+            Activate();
+        }
+
+        public void Attack3()
+        {
+            mode = 3;
+            currentTime = 0f;
+            Activate();
         }
     }
 }

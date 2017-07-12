@@ -32,6 +32,8 @@ namespace ExtendedTest
 
         public String name;
 
+        public List<Rectangle> WallList;
+
         public TileMap(String mapName, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             name = mapName;
@@ -104,9 +106,32 @@ namespace ExtendedTest
                     backgroundTiles.Add(newTile);
                 }
             }
+
+            WallList = FindWalls();
         }
 
-        public TmxList<TmxObject> findObjects()
+        private List<Rectangle> FindWalls()
+        {
+            List<Rectangle> walls = new List<Rectangle>();
+            if(map.Layers.Count>1)
+            {
+                TmxLayer collisionLayer = map.Layers.Single(x => x.Name == "Collision");
+
+                List<TmxLayerTile> collisionTiles = collisionLayer.Tiles.Where(x => x.Gid != 0).ToList();
+
+                foreach (TmxLayerTile tile in collisionTiles)
+                {
+                    Vector2 rectPos = new Vector2(tile.X * 64, tile.Y * 64);
+                    walls.Add(new Rectangle((int)rectPos.X, (int)rectPos.Y, 64, 64));
+                }
+
+
+
+            }
+            return walls;
+        }
+
+        public TmxList<TmxObject> FindObjects()
         {
             if (map.ObjectGroups.Count >= 1)
             {
@@ -119,7 +144,7 @@ namespace ExtendedTest
             return null;
         }
 
-        public TmxList<TmxObject> findNPCs()
+        public TmxList<TmxObject> FindNPCs()
         {
             if (map.ObjectGroups.Count >= 1)
             {
@@ -131,6 +156,8 @@ namespace ExtendedTest
             }
             return null;
         }
+
+
 
         private List<int> FindUnwalkableTiles(TmxMap map)
         {

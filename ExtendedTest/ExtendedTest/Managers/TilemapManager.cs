@@ -14,6 +14,7 @@ namespace ExtendedTest.Managers
     {
         List<TileMap> mapList;
         NPCManager _NpcManager;
+        public TileMap ActiveMap;
         WorldObjectManager _WorldObjectManager;
         public TilemapManager(NPCManager npcManager, WorldObjectManager _GameObjectmanager)
         {
@@ -117,85 +118,7 @@ namespace ExtendedTest.Managers
 
             return adjacentTiles;
         }
-
-        public Tile findClosestTile(Vector2 targetPos, Vector2 playerPos, bool allowDiagonal = true)
-        {
-            Tile targetTile = findTile(targetPos);
-            Tile playerTile = findTile(playerPos);
-            Tile ClosestTile = null;
-            List<Tile> walkableNearby = FindAdjacentTiles(targetTile.tileCenter, true);
-            //get distance for tiles surrounding targettile
-            float distance = Vector2.Distance(targetTile.tileCenter, playerTile.tileCenter);
-            float newDistance;
-
-
-
-
-            if(walkableNearby.Count > 0)
-            {
-                distance = Vector2.Distance(walkableNearby[0].tileCenter, playerTile.tileCenter);
-                foreach(Tile tile in walkableNearby)
-                {
-                    newDistance = Vector2.Distance(tile.tileCenter, playerTile.tileCenter);
-                    if (newDistance <= distance)
-                    {
-                        ClosestTile = tile;
-                        distance = newDistance;
-                    }
-                }
-            }
-
-            if(ClosestTile!= null)
-            {
-                ClosestTile.myColor = Color.Black;
-            }
-            return ClosestTile;
-        }
-
-        public List<Tile> wtfDoIDo(Vector2 pos1, Vector2 pos2, bool toAdjacent = false, bool allowDiagonal = true)
-        {
-            Tile targetTile = findTile(pos1);
-            Tile currentTile = findTile(pos2);
-            Console.WriteLine(currentTile.localPos);
-
-            List<Tile> closedSet = new List<Tile>();
-            List<Tile> openSet = FindAdjacentTiles(currentTile.tileCenter);
-            List<Tile> path = new List<Tile>();
-
-            bool pathFound = false;
-            path.Add(targetTile);
-            Tile lastTile = targetTile;
-
-            float distance = 99999999999;
-            Tile closestTile = currentTile;
-            while(!pathFound)
-            {
-                //get closest node to target in openSet
-                Tile tile = FindClosestTile(openSet, currentTile);
-                tile.myColor = Color.Black;
-                Console.WriteLine(tile.localPos);
-                if(tile == targetTile)
-                {
-                    pathFound = true;
-                    break;
-                }
-                List<Tile> adjacentNotInClosed = FindAdjacentTiles(tile.tileCenter);
-                List<Tile> newList = adjacentNotInClosed.Except(closedSet).ToList();
-                List<Tile> newList2 = newList.Except(openSet).ToList();
-                openSet.AddRange(newList2);
-                openSet.Remove(tile);
-                closedSet.Add(tile);
-
-            }
-
-
-
-
-
-
-            return path;
-
-        }
+        
 
         public Tile FindClosestTile(List<Tile> list, Tile target)
         {
@@ -215,53 +138,9 @@ namespace ExtendedTest.Managers
 
             return closest;
         }
+        
 
-        public List<Tile> CalculatePath(Vector2 pos1, Vector2 pos2, bool toAdjacent = false, bool allowDiagonal = true)
-        {
-            Tile targetTile = findTile(pos1);
-            Tile currentTile = findTile(pos2);
-            bool pathFound = false;
-            int stepCount = 15;
-            List<Tile> path = wtfDoIDo(pos1, pos2);
-            return path;
-            path.Add(targetTile);
-            Tile lastTile = targetTile;
-            List<Tile> lookedAtTiles = new List<Tile>();
-            while(!pathFound)
-            {
-                Tile newTile = findClosestTile(lastTile.tileCenter, currentTile.tileCenter);
-                if(newTile== null)
-                {
-                    return null;
-                }
-                if(newTile == currentTile)
-                {
-                    pathFound = true;
-                }
-                else
-                {
-                    //if a tile is already in the path then go back until we find a tile not in the path?
-                    if(path.Contains(newTile)) //tile found in path already
-                    {
-
-                    }
-                    else
-                    {
-                        path.Add(newTile);
-
-                    }
-                    lookedAtTiles.Add(newTile);
-                    Console.WriteLine(newTile.localPos);
-                    lastTile = newTile;
-                }
-
-            }
-            path.Reverse();
-            Console.WriteLine("Done");
-            return path;
-        }
-
-        private Vector2 PosToWorldTilePos(Vector2 pos)
+        public Vector2 PosToWorldTilePos(Vector2 pos)
         {
 
             int clickMapX = (int)pos.X / 2048;

@@ -20,6 +20,7 @@ namespace ExtendedTest.Managers
         KeyboardState _PrevKBState;
         WorldObjectManager _WorldObjectManager;
         NPCManager _NPCManager;
+        TilemapManager _MapManager;
         public Vector2 _PlayerPos;
 
         private bool bankerGo = false;
@@ -70,18 +71,25 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public PlayerManager(Player p, InventoryManager IM, CombatManager CM, WorldObjectManager WOM, NPCManager NPCM)
+        public PlayerManager(Player p, InventoryManager IM, CombatManager CM, WorldObjectManager WOM, NPCManager NPCM, TilemapManager tm)
         {
             _Player = p;
             _CombatManager = CM;
             _InventoryManager = IM;
             _WorldObjectManager = WOM;
             _NPCManager = NPCM;
+            _MapManager = tm;
         }
 
         public void Update(GameTime gt)
         {
+            _PlayerPos = _Player._Position;
+            Vector2 currentPos = _Player._Position;
             ProcessKeyboard(gt);
+            if(CheckCollision())
+            {
+                _Player._Position = currentPos;
+            }
             _Player.UpdateActive(gt);
 
             if(_CurrentWOTarget != null)
@@ -98,6 +106,33 @@ namespace ExtendedTest.Managers
             }
 
             _PlayerPos = _Player._Position;
+        }
+
+        private bool CheckCollision()
+        {
+            //check collision with map
+            //will check every rectangle on the current active map... not good but optimize later
+            TileMap currentMap = _MapManager.findMap(_MapManager.PosToWorldTilePos(_PlayerPos));
+            List<Rectangle> mapRects = currentMap.WallList;
+            foreach(Rectangle rect in mapRects)
+            {
+                if(rect.Intersects(_Player._WorldBoundingBox))
+                {
+                    return true;
+                }
+            }
+
+            //check collision with other sprites
+            Sprite hit = _NPCManager.CheckCollisions(_Player._BoundingBox);
+            if (hit == null)
+            {
+                hit = _WorldObjectManager.checkCollision(_Player._BoundingBox);
+            }
+            if(hit != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void ProcessKeyboard(GameTime gt)
@@ -132,6 +167,15 @@ namespace ExtendedTest.Managers
                 newPos.Y += (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
                 _Player._Direction = Sprite.Direction.kDirectionDown;
                 moved = true;
+            }
+
+            if(kbState.IsKeyDown(Keys.R) )
+            {
+                _Player._Rotation += 0.05f;
+            }
+            if(kbState.IsKeyDown(Keys.F))
+            {
+                _Player._Rotation = 0f;
             }
 
             _Player._Position = newPos;

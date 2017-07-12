@@ -75,7 +75,7 @@ namespace ExtendedTest
             _UIManager = new Managers.UIManager(_InvenManager);
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _GameObjectManager, _NPCManager, Content, _ItemManager);
 
-            _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _CBManager, _GameObjectManager, _NPCManager);
+            _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _CBManager, _GameObjectManager, _NPCManager, _MapManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();
@@ -236,7 +236,7 @@ namespace ExtendedTest
 
         public void LoadMapNPCs(TileMap testMap)
         {
-            TmxList<TmxObject> ObjectList = testMap.findNPCs();
+            TmxList<TmxObject> ObjectList = testMap.FindNPCs();
             if (ObjectList != null)
             {
                 foreach (TmxObject thing in ObjectList)
@@ -250,7 +250,7 @@ namespace ExtendedTest
 
         public void LoadMapObjects(TileMap testMap)
         {
-            TmxList<TmxObject> ObjectList = testMap.findObjects();
+            TmxList<TmxObject> ObjectList = testMap.FindObjects();
             if (ObjectList != null)
             {
                 foreach (TmxObject thing in ObjectList)
