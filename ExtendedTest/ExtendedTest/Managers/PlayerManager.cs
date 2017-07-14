@@ -114,13 +114,19 @@ namespace ExtendedTest.Managers
             //will check every rectangle on the current active map... not good but optimize later
             TileMap currentMap = _MapManager.findMap(_MapManager.PosToWorldTilePos(_PlayerPos));
             List<Rectangle> mapRects = currentMap.WallList;
-            foreach(Rectangle rect in mapRects)
+            List<Vector2> test = _Player.RotatedRect(_Player._WorldBoundingBox, _Player._Rotation);
+            foreach (Rectangle rect in mapRects)
             {
-                if(rect.Intersects(_Player._WorldBoundingBox))
+                var dddd = _Player.RotatedRect(rect, 0);
+                bool collided = CollisionDetection2D.BoundingRectangle(test, dddd);
+                if (collided)
                 {
+                    collided = CollisionDetection2D.BoundingRectangle(test, dddd);
+                    collided = CollisionDetection2D.BoundingRectangle(test, dddd);
                     return true;
                 }
             }
+            
 
             //check collision with other sprites
             Sprite hit = _NPCManager.CheckCollisions(_Player._BoundingBox);

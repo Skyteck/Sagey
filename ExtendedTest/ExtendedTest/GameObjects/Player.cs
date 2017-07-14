@@ -63,47 +63,16 @@ namespace ExtendedTest
                     newPos = _Position;
 
                 }
-
-                //if(comboNum != 3)
-                //{
-                //    if (_Direction == Direction.kDirectionUp)
-                //    {
-                //        newPos = new Vector2(x, y );
-                //    }
-                //    else if (_Direction == Direction.kDirectionDown)
-                //    {
-                //        newPos = new Vector2(x, y + (frameHeight / 2));
-                //    }
-                //    else if (_Direction == Direction.kDirectionLeft)
-                //    {
-                //        newPos = new Vector2(x - (frameWidth / 2), y);
-                //    }
-                //    else if (_Direction == Direction.kDirectionRight)
-                //    {
-                //        newPos = new Vector2(x + (frameWidth / 2), y);
-                //    }
-                //    else
-                //    {
-                //        Console.WriteLine("Sword Error!");
-                //        return Vector2.Zero;
-                //    }
-                //}
-                //else
-                //{
-                //}
-
-                //if (_Rotation != 0)
-                //{
-                    x = _Position.X;
-                    y = _Position.Y;
-                    x = newPos.X;
-                    y = newPos.Y;
-                    int radias = frameWidth/2;
-                    double mathSin = Math.Sin(_Rotation);
-                    double mathCos = Math.Cos(_Rotation);
-                    newPos.X = (float)(x + (radias * mathSin));
-                    newPos.Y = (float)(y - (radias * mathCos));
-                //}
+                
+                x = _Position.X;
+                y = _Position.Y;
+                x = newPos.X;
+                y = newPos.Y;
+                int radias = frameWidth/2;
+                double mathSin = Math.Sin(_Rotation);
+                double mathCos = Math.Cos(_Rotation);
+                newPos.X = (float)(x + (radias * mathSin));
+                newPos.Y = (float)(y - (radias * mathCos));
 
                 return newPos;
             }
@@ -112,29 +81,6 @@ namespace ExtendedTest
 
         int comboNum = 1;
         double comboCD = 0f;
-        //    private Rectangle checkRect
-        //    {
-        //        get
-        //        {
-        //            if(_Direction==Direction.kDirectionDown)
-        //            {
-        //                return new Rectangle((int)this._Position.X - 32, (int)this._Position.Y + 32, 64, 32);
-        //            }
-        //            else if(_Direction==Direction.kDirectionUp)
-        //            {
-        //                return new Rectangle((int)this._Position.X - 32, (int)this._Position.Y - 64, 64, 32);
-        //            }
-        //            else if (_Direction == Direction.kDirectionLeft)
-        //            {
-        //                return new Rectangle((int)this._Position.X - 64, (int)this._Position.Y - 32, 32, 642);
-        //            }
-        //            else if (_Direction == Direction.kDirectionRight)
-        //            {
-        //                return new Rectangle((int)this._Position.X + 32, (int)this._Position.Y - 32, 32, 64);
-        //            }
-        //            return new Rectangle();
-        //        }
-        //    }
 
         public Player()
         {
@@ -163,12 +109,12 @@ namespace ExtendedTest
         {
             if(comboCD > 0f)
             {
-                comboCD -= gameTime.ElapsedGameTime.TotalSeconds;
+                //comboCD -= gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
                 comboNum = 1;
-                _Rotation = 0;
+                //_Rotation = 0;
             }
             if(comboNum == 3)
             {

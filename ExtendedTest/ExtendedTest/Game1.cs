@@ -168,7 +168,7 @@ namespace ExtendedTest
             }
             else
             {
-                player._Position = new Vector2(300, 300);
+                player._Position = new Vector2(32, 32);
 
                 _InvenManager.AddItem(Item.ItemType.kItemLog, 5);
                 _InvenManager.AddItem(Item.ItemType.kItemMatches);

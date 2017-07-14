@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CollisionDetection2D.cs" />
     <Compile Include="Commander.cs" />
     <Compile Include="enums\NPCenums.cs" />
     <Compile Include="ExtendedTest\GameObjects\NPCs\Banker.cs" />

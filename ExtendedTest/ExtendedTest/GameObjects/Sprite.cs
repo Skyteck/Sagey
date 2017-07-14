@@ -96,6 +96,8 @@ namespace ExtendedTest
             }
         }
 
+
+
         public SpriteType _Tag { get => tag; set => tag = value; }
 
         public Sprite()
@@ -261,6 +263,28 @@ namespace ExtendedTest
         {
             _CurrentState = SpriteState.kStateInActive;
             _Draw = false;
+        }
+
+        public List<Vector2> RotatedRect(Rectangle rect, float Rotation, int offset = 0)
+        {
+            List<Vector2> points = new List<Vector2>();
+
+            Vector2 topleft = new Vector2(rect.Left + offset, rect.Top + offset);
+            topleft = Vector2.Transform(topleft, Matrix.CreateRotationZ(Rotation));
+            points.Add(topleft);
+
+            Vector2 topRight = new Vector2(rect.Right - offset, rect.Top + offset);
+            topRight = Vector2.Transform(topRight, Matrix.CreateRotationZ(Rotation));
+            points.Add(topRight);
+
+            Vector2 bottomLeft = new Vector2(rect.Left + offset, rect.Bottom-offset);
+            bottomLeft = Vector2.Transform(bottomLeft, Matrix.CreateRotationZ(Rotation));
+            points.Add(bottomLeft);
+
+            Vector2 bottomRight = new Vector2(rect.Right-offset, rect.Bottom-offset);
+            bottomRight = Vector2.Transform(bottomRight, Matrix.CreateRotationZ(Rotation));
+            points.Add(bottomRight);
+            return points;
         }
     }
 }

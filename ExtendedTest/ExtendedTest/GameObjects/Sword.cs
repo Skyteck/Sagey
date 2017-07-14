@@ -59,7 +59,8 @@ namespace ExtendedTest.GameObjects
                 }
                 else if(mode == 3)
                 {
-                    this._Rotation = parentPlayer._Rotation;
+                    this._Rotation = 0;
+                    //this._Rotation = parentPlayer._Rotation;
                     TTL = 0.42f;
                 }
                 currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
