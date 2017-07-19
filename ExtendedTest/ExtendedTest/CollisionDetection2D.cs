@@ -175,8 +175,20 @@ namespace ExtendedTest
             bool inside = false;
             for (int i = 0, j = polygon.Count - 1; i < polygon.Count; j = i++)
             {
-                if ((polygon[i].Y > p.Y) != (polygon[j].Y > p.Y) &&
-                     p.X < (polygon[j].X - polygon[i].X) * (p.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) + polygon[i].X)
+                //gotta break this down...
+                float aa = polygon[i].Y;
+                bool part1 = (aa > p.Y);
+                float ab = polygon[j].Y;
+                bool part2 = (ab > p.Y);
+
+                float ba = polygon[j].X;
+                float bb = polygon[i].X;
+                float b1 = (ba - bb);
+
+                float bc = polygon[i].Y;
+                float b2 = (p.Y - bc);
+
+                if (part1 != part2 && p.X < b1 * (b2) / (polygon[j].Y - polygon[i].Y) + polygon[i].X)
                 {
                     inside = !inside;
                 }

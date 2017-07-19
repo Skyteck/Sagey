@@ -206,6 +206,11 @@ namespace ExtendedTest.Managers
                 _Player.Attack();
             }
 
+            if (kbState.IsKeyDown(Keys.J) && _PrevKBState.IsKeyUp(Keys.J))
+            {
+                _Player.ToggleCorners();
+            }
+
             if (moved)
             {
                 ChangePlayerState(PlayerState.kStateIdle);

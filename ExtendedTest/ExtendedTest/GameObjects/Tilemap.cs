@@ -34,9 +34,12 @@ namespace ExtendedTest
 
         public List<Rectangle> WallList;
 
+        List<Sprite> wallSprites;
+
         public TileMap(String mapName, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             name = mapName;
+            wallSprites = new List<Sprite>();
             backgroundTiles = new List<Tile>();
             nearbyMaps = new List<string>();
             map = new TmxMap("Content/Tilemaps/" + mapName + ".tmx");
@@ -108,6 +111,19 @@ namespace ExtendedTest
             }
 
             WallList = FindWalls();
+
+            foreach(Rectangle rect in WallList)
+            {
+                wallSprites.Add(SpriteFromRect(rect, content));
+            }
+        }
+
+        private Sprite SpriteFromRect(Rectangle rect, Microsoft.Xna.Framework.Content.ContentManager content)
+        {
+            Sprite newSprite = new Sprite();
+            newSprite._Position = new Vector2(rect.Center.X, rect.Center.Y);
+            newSprite.LoadContent("Art/Collision", content);
+            return newSprite;
         }
 
         private List<Rectangle> FindWalls()
@@ -199,6 +215,11 @@ namespace ExtendedTest
                 foreach(Tile tile in drawTiles)
                 {
                     tile.Draw(spriteBatch);
+                }
+
+                foreach(Sprite sprite in wallSprites)
+                {
+                    sprite.Draw(spriteBatch);
                 }
             }
         }

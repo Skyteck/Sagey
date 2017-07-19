@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using ExtendedTest.GameObjects;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ExtendedTest
 {
@@ -81,7 +82,7 @@ namespace ExtendedTest
 
         int comboNum = 1;
         double comboCD = 0f;
-
+        
         public Player()
         {
             this.startHP = 10;
@@ -94,7 +95,8 @@ namespace ExtendedTest
             _Direction = Direction.kDirectionDown;
             sword = new Sword(this);
             sword.Deactivate();
-            AddChild(sword);
+            _Tag = SpriteType.kPlayerType;
+            //AddChild(sword);
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -102,14 +104,13 @@ namespace ExtendedTest
             base.LoadContent(path, content);
             SetupAnimation(2, 10, 3, true);
             sword.LoadContent("Art/Sword", content);
-            
         }
 
         public override void UpdateActive(GameTime gameTime)
         {
             if(comboCD > 0f)
             {
-                //comboCD -= gameTime.ElapsedGameTime.TotalSeconds;
+                comboCD -= gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
@@ -122,7 +123,7 @@ namespace ExtendedTest
             }
             base.UpdateActive(gameTime);
         }
-        
+
         public void Attack()
         {
             Vector2 swordPos;
@@ -265,29 +266,5 @@ namespace ExtendedTest
                 ChangeAnimation((int)_MyState);
             }
         }
-
-        //    public WorldObject CheckObjectHit(List<WorldObject> spriteList)
-        //    {
-        //        foreach(WorldObject sprite in spriteList)
-        //        {
-        //            if(checkRect.Intersects(sprite._BoundingBox))
-        //            {
-        //                this.SetTarget(sprite);
-        //                return sprite;
-        //            }
-        //        }
-        //        return null;
-        //    }
-
-        //    internal void checkCharacterHit(List<Character> spriteListActive)
-        //    {
-        //        foreach(NPC npc in spriteListActive)
-        //        {
-        //            if(checkRect.Intersects(npc._BoundingBox))
-        //            {
-        //                this.SetTarget(npc);
-        //            }
-        //        }
-        //    }
     }
 }
