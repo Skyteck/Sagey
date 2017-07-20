@@ -74,33 +74,7 @@ namespace ExtendedTest
             if (_Draw)
             {
                 Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * animStateNum), frameWidth, frameHeight);
-                if (!_FlipX && !_FlipY)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, _Rotation, _Center, _Scale, SpriteEffects.None, 0f);
-                }
-                else if (_FlipX)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, _Rotation, _Center, _Scale, SpriteEffects.FlipHorizontally, 0f);
-                }
-                else if (_FlipY)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, _Rotation, _Center, _Scale, SpriteEffects.FlipVertically, 0f);
-                }
-                else if (_FlipX && _FlipY)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, _MyColor, (_Rotation + (float)Math.PI), _Center, _Scale, SpriteEffects.None, 0f);
-                }
-
-                if (_ChildrenList != null)
-                {
-                    if (_ChildrenList.Count >= 1)
-                    {
-                        foreach (Sprite child in _ChildrenList)
-                        {
-                            child.Draw(spriteBatch);
-                        }
-                    }
-                }
+                Draw(spriteBatch, sr);
             }
         }
     }

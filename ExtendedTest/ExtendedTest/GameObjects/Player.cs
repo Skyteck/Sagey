@@ -65,8 +65,6 @@ namespace ExtendedTest
 
                 }
                 
-                x = _Position.X;
-                y = _Position.Y;
                 x = newPos.X;
                 y = newPos.Y;
                 int radias = frameWidth/2;
@@ -96,7 +94,7 @@ namespace ExtendedTest
             sword = new Sword(this);
             sword.Deactivate();
             _Tag = SpriteType.kPlayerType;
-            //AddChild(sword);
+            AddChild(sword);
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -104,6 +102,7 @@ namespace ExtendedTest
             base.LoadContent(path, content);
             SetupAnimation(2, 10, 3, true);
             sword.LoadContent("Art/Sword", content);
+            sword.ToggleCorners();
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -115,7 +114,7 @@ namespace ExtendedTest
             else
             {
                 comboNum = 1;
-                //_Rotation = 0;
+                _Rotation = 0;
             }
             if(comboNum == 3)
             {

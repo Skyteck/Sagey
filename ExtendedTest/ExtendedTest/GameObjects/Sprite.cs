@@ -85,7 +85,7 @@ namespace ExtendedTest
             }
         }
 
-        public Rectangle _BoundingBox
+        public virtual Rectangle _BoundingBox
         {
             get
             {
@@ -121,7 +121,7 @@ namespace ExtendedTest
             cornerTex = content.Load<Texture2D>("Art/Corner");
 
 
-            List<Vector2> playerCorners = this.RotatedRect(this._BoundingBox, _Rotation);
+            List<Vector2> playerCorners = HelperFunctions.RotatedRectList(this._BoundingBox, _Rotation);
             Sprite topLeft = new Sprite();
             topLeft._Position = new Vector2(playerCorners[0].X, playerCorners[0].Y);
             topLeft.LoadContent(cornerTex);
@@ -199,6 +199,16 @@ namespace ExtendedTest
             {
                 //Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * StateNum), frameWidth, frameHeight);
                 Rectangle sr = new Rectangle(0, 0, frameWidth, frameHeight);
+                Draw(spriteBatch, sr);
+            }
+        }
+
+
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle sr)
+        {
+            if (_Draw)
+            {
+                //Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * StateNum), frameWidth, frameHeight);
                 if (!_FlipX && !_FlipY)
                 {
                     spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, _Scale, SpriteEffects.None, 0f);
@@ -226,28 +236,16 @@ namespace ExtendedTest
                         }
                     }
                 }
-
-                if (_Tag == SpriteType.kPlayerType)
-                {
-                    Console.Write(showCorners);
-                }
+                
                 if (showCorners)
                 {
-                    Console.Write(showCorners);
                     foreach (Sprite sprite in corners)
                     {
                         sprite.Draw(spriteBatch);
                     }
                 }
-                else
-                {
-                    Console.Write(showCorners);
-
-                }
             }
         }
-
-
 
         public void AddChild(Sprite child)
         {
@@ -324,28 +322,7 @@ namespace ExtendedTest
             _CurrentState = SpriteState.kStateInActive;
             _Draw = false;
         }
-
-        public List<Vector2> RotatedRect(Rectangle rect, float Rotation, int offset = 0)
-        {
-            List<Vector2> points = new List<Vector2>();
-
-            Vector2 topleft = new Vector2(rect.Left + offset, rect.Top + offset);
-            topleft = Vector2.Transform(topleft, Matrix.CreateRotationZ(Rotation));
-            points.Add(topleft);
-
-            Vector2 topRight = new Vector2(rect.Right - offset, rect.Top + offset);
-            topRight = Vector2.Transform(topRight, Matrix.CreateRotationZ(Rotation));
-            points.Add(topRight);
-
-            Vector2 bottomLeft = new Vector2(rect.Left + offset, rect.Bottom-offset);
-            bottomLeft = Vector2.Transform(bottomLeft, Matrix.CreateRotationZ(Rotation));
-            points.Add(bottomLeft);
-
-            Vector2 bottomRight = new Vector2(rect.Right-offset, rect.Bottom-offset);
-            bottomRight = Vector2.Transform(bottomRight, Matrix.CreateRotationZ(Rotation));
-            points.Add(bottomRight);
-            return points;
-        }
+        
 
         public void ToggleCorners()
         {
@@ -367,7 +344,7 @@ namespace ExtendedTest
 
         private void UpdateCorners()
         {
-            List<Vector2> myCorners = RotatedRect(_WorldBoundingBox, _Rotation);
+            List<Vector2> myCorners = HelperFunctions.RotatedRectList(_BoundingBox, _Rotation);
             for (int i = 0; i < corners.Count; i++)
             {
                 corners[i].Activate(new Vector2(myCorners[i].X, myCorners[i].Y));

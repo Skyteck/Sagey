@@ -38,6 +38,14 @@ namespace ExtendedTest.GameObjects
             //return _Center;
         }
 
+        public override Rectangle _BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)_Position.X, ((int)_Position.Y), frameWidth, frameHeight);
+            }
+        }
+
         public Sword(Player p)
         {
             parentPlayer = p;
@@ -49,7 +57,7 @@ namespace ExtendedTest.GameObjects
             {
                 if(mode == 1)
                 {
-                    this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
+                    this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     TTL = 0.15f;
                 }
                 else if(mode == 2)
@@ -60,14 +68,14 @@ namespace ExtendedTest.GameObjects
                 else if(mode == 3)
                 {
                     this._Rotation = 0;
-                    //this._Rotation = parentPlayer._Rotation;
+                    this._Rotation = parentPlayer._Rotation;
                     TTL = 0.42f;
                 }
                 currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 base.UpdateActive(gameTime);
                 if(currentTime >= TTL)
                 {
-                    Deactivate();
+                    //Deactivate();
                     currentTime = 0f;
                 }
                 this._Position = parentPlayer._SwordAnchor;
