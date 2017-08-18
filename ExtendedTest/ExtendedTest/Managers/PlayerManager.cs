@@ -105,7 +105,23 @@ namespace ExtendedTest.Managers
                 }
             }
 
+            if(_Player._PlayerAttacking)
+            {
+                CheckSwordCollision();
+            }
+
             _PlayerPos = _Player._Position;
+        }
+
+        private void CheckSwordCollision()
+        {
+            NPC npcHit = _NPCManager.CheckAttacks(_Player.swordTip._BoundingBox);
+            if(npcHit != null)
+            {
+                Console.WriteLine(npcHit.Name);
+                npcHit.ReceiveDamage(1);
+
+            }
         }
 
         private bool CheckCollision()
@@ -204,14 +220,13 @@ namespace ExtendedTest.Managers
                 _Player.Attack();
             }
 
-            if (kbState.IsKeyDown(Keys.J) && _PrevKBState.IsKeyUp(Keys.J))
-            {
-                _Player.ToggleCorners();
-            }
+            //if (kbState.IsKeyDown(Keys.J) && _PrevKBState.IsKeyUp(Keys.J))
+            //{
+            //    _Player.ToggleCorners();
+            //}
 
             if (moved)
             {
-                ChangePlayerState(PlayerState.kStateIdle);
                 ClearTargets();
             }
             _PrevKBState = kbState;
@@ -236,7 +251,10 @@ namespace ExtendedTest.Managers
         }
         private void ProcessNPC(NPC npcHit)
         {
-            _BankerGo = true;
+            if(npcHit._Tag == Sprite.SpriteType.kNPCType)
+            {
+                _BankerGo = true;
+            }
         }
 
         public void Draw(SpriteBatch SB)

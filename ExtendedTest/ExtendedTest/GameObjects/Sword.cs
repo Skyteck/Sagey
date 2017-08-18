@@ -15,6 +15,27 @@ namespace ExtendedTest.GameObjects
 
         int mode = 1;
         int damage = 1;
+
+        public Vector2 _SwordTip
+        {
+
+            get
+            {
+                float x = _Position.X;
+                float y = _Position.Y;
+                Vector2 newPos = _Position;
+
+                x = newPos.X;
+                y = newPos.Y;
+                int radias = frameHeight;
+                double mathSin = Math.Sin(_Rotation);
+                double mathCos = Math.Cos(_Rotation);
+                newPos.X = (float)(x + (radias * mathSin));
+                newPos.Y = (float)(y - (radias * mathCos));
+
+                return newPos;
+            }
+        }
         public enum SwordPoint
         {
             kNorth, kSouth, kWest, kEast, kNone
@@ -57,7 +78,7 @@ namespace ExtendedTest.GameObjects
             {
                 if(mode == 1)
                 {
-                    this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
                     TTL = 0.15f;
                 }
                 else if(mode == 2)
@@ -75,14 +96,13 @@ namespace ExtendedTest.GameObjects
                 base.UpdateActive(gameTime);
                 if(currentTime >= TTL)
                 {
-                    //Deactivate();
+                    Deactivate();
                     currentTime = 0f;
                 }
                 this._Position = parentPlayer._SwordAnchor;
 
                 CollisionCheck();
             }
-
         }
         
         private void CollisionCheck()

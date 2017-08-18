@@ -35,13 +35,13 @@ namespace ExtendedTest.Managers
         {
             if(thing.Type.Equals("Slime"))
             {
-                GameObjects.NPCs.Monsters.Slime newSprite = new GameObjects.NPCs.Monsters.Slime(this, _CBmanager);
+                GameObjects.NPCs.Monsters.Slime newSprite = new GameObjects.NPCs.Monsters.Slime(this);
                 newSprite._Position = _TilemapManager.findTile(pos).tileCenter;
                 newSprite.LoadContent("Art/" + thing.Type, _Content);
                 newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);
                 if (Convert.ToBoolean(thing.Properties["Agressive"]))
                 {
-                    //newSprite.AddTarget(thePlayer);
+                    newSprite.AddTarget(thePlayer);
                 }
                 newSprite._Tag = Sprite.SpriteType.kMonsterType;
                 newSprite.Name = thing.Name.ToUpper();
@@ -113,6 +113,19 @@ namespace ExtendedTest.Managers
                 if(npc._BoundingBox.Intersects(checkRect))
                 {
                     return npc;
+                }
+            }
+            return null;
+        }
+
+        public NPC CheckAttacks(Rectangle rect)
+        {
+            List<NPC> attackables = _SpriteListActive.FindAll(x => x._CanFight == true);
+            foreach(NPC thing in attackables)
+            {
+                if(thing._BoundingBox.Intersects(rect))
+                {
+                    return thing;
                 }
             }
             return null;

@@ -50,10 +50,44 @@ namespace ExtendedTest
             }
         }
 
+        //Combat stats
+        public bool _CanFight = false;
+        public double attackSpeed = 3.0;
+        public double attackCD = 0;
+        public int startHP = 2;
+        public int _HP = 2;
+        public int defense;
+        public int attack;
+        public float attackRange = 64f; // tileWidth
+
+        public double respawnTimerStart = 15;
+        public double timeDead = 0d;
+
+        bool Agressive = false;
+        List<Sprite> _TargetList;
+
+        Rectangle huntZone;
+
+        public Projectile myShot;
+
+        public bool _Stunned = false;
+        public bool _Invuln = false;
+        public double _StunTime = 0;
+
+        public enum AttackStyle
+        {
+            kMeleeStyle,
+            kRangeStyle,
+            kMagicStyle
+        }
+
+        public AttackStyle _AttackStyle = AttackStyle.kMeleeStyle;
+
         public NPC(Managers.NPCManager nm)
         {
             ParentManager = nm;
             myPath = new List<Tile>();
+            _TargetList = new List<Sprite>();
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -64,12 +98,30 @@ namespace ExtendedTest
 
         public override void UpdateActive(GameTime gameTime)
         {
-
             if (!atDestination)
             {
                 FindPath();
             }
+            if(_CanFight)
+            {
+                UpdateCombat(gameTime);
+            }
             base.UpdateActive(gameTime);
+        }
+
+        public override void UpdateDead(GameTime gameTime)
+        {
+            if (_CurrentState == SpriteState.kStateInActive)
+            {
+                timeDead += gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            if (timeDead >= respawnTimerStart)
+            {
+                Activate();
+                timeDead = 0;
+            }
+            base.UpdateDead(gameTime);
         }
 
         public void AddPath(List<Tile> path)
@@ -175,5 +227,121 @@ namespace ExtendedTest
             TopBoundary = ty;
             BottomBoundary = by + ty;
         }
+
+        #region Combat Stuff
+
+
+        private void UpdateCombat(GameTime gameTime)
+        {
+            bool targetFound = false;
+            if (_StunTime <= 0)
+            {
+                if (this.Agressive)
+                {
+                    foreach (Sprite target in _TargetList)
+                    {
+                        if (target._BoundingBox.Intersects(huntZone))
+                        {
+                            targetFound = true;
+                            if (this._AttackStyle == AttackStyle.kMeleeStyle)
+                            {
+                                if(Vector2.Distance(this._Position, target._Position) > attackRange)
+                                {
+                                    this.SetDestination(target._Position);
+                                }
+                            }
+                            if (Vector2.Distance(this._Position, target._Position) <= attackRange)
+                            {
+                                if (this.attackCD <= 0)
+                                {
+                                    if (this._AttackStyle == AttackStyle.kMeleeStyle)
+                                    {
+                                        _MyColor = Color.Blue;
+                                    }
+                                    else
+                                    {
+                                        //myShot.SetTarget(target);
+                                    }
+                                    attackCD = attackSpeed;
+                                }
+                            }
+                        }
+                        if (targetFound) break;
+                    }
+                }
+                if (!targetFound)
+                {
+                    Roam(gameTime);
+                }
+                base.UpdateActive(gameTime);
+            }
+            else
+            {
+                Console.Write("Stunned");
+            }
+
+
+            if (attackCD > 0)
+            {
+                attackCD -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+
+            if (_StunTime > 0)
+            {
+                _StunTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                _Invuln = false;
+                _Stunned = false;
+                _MyColor = Color.White;
+            }
+        }
+
+        public void AddTarget(Sprite target)
+        {
+            _TargetList.Add(target);
+            this.Agressive = true;
+            huntZone = new Rectangle((int)this.LeftBoundary, (int)this.TopBoundary, (int)(this.RightBoundary - this.LeftBoundary), (int)(this.BottomBoundary - this.TopBoundary));
+        }
+
+        public void AddTarget(List<Sprite> targetList)
+        {
+            _TargetList.AddRange(targetList);
+            this.Agressive = true;
+            huntZone = new Rectangle((int)this.LeftBoundary, (int)this.TopBoundary, (int)(this.RightBoundary - this.LeftBoundary), (int)(this.BottomBoundary - this.TopBoundary));
+        }
+
+        public virtual void ReceiveDamage(int amt)
+        {
+            if (_Invuln) return;
+            _HP -= amt;
+            _StunTime = 0.3;
+            _Invuln = true;
+            _Stunned = true;
+            _MyColor = Color.Red;
+            if (_HP <= 0)
+            {
+                Die();
+            }
+        }
+
+        private void Die()
+        {
+            _CurrentState = SpriteState.kStateInActive;
+            _StunTime = 0;
+            _Invuln = false;
+            _Stunned = false;
+            _Draw = false;
+        }
+
+
+        public void Tame()
+        {
+            _TargetList.Clear();
+            this.Agressive = false;
+        }
     }
+#endregion
 }

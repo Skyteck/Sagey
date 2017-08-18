@@ -20,7 +20,7 @@ namespace ExtendedTest.GameObjects.NPCs
         public Managers.CombatManager _CBManager;
         public double attackSpeed = 3.0;
         public double attackCD = 0;
-        public int startHP = 1;
+        public int startHP = 2;
         public int _HP;
         public int defense;
         public int attack;
@@ -30,11 +30,15 @@ namespace ExtendedTest.GameObjects.NPCs
         public double timeDead = 0d;
 
         bool Agressive = false;
-        List<Attackable> _TargetList;
+        List<Sprite> _TargetList;
 
         Rectangle huntZone;
 
         public Projectile myShot;
+
+        public bool _Stunned = false;
+        public bool _Invuln = false;
+        public double _StunTime = 0;
 
         public enum AttackStyle
         {
@@ -47,7 +51,7 @@ namespace ExtendedTest.GameObjects.NPCs
         public Attackable(Managers.NPCManager manager, Managers.CombatManager cbManager) : base(manager)
         {
             _CBManager = cbManager;
-            _TargetList = new List<Attackable>();
+            _TargetList = new List<Sprite>();
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -59,41 +63,50 @@ namespace ExtendedTest.GameObjects.NPCs
         public override void UpdateActive(GameTime gameTime)
         {
             bool targetFound = false;
-            if (this.Agressive)
+            if(_StunTime <= 0)
             {
-                foreach (Attackable target in _TargetList)
-                {
-                    if (target._BoundingBox.Intersects(huntZone))
-                    {
-                        targetFound = true;
-                        if (this._AttackStyle == AttackStyle.kMeleeStyle)
-                        {
-                            HuntTarget(target);
 
-                        }
-                        if (Vector2.Distance(this._Position, target._Position) <= attackRange)
+                if (this.Agressive)
+                {
+                    foreach (Sprite target in _TargetList)
+                    {
+                        if (target._BoundingBox.Intersects(huntZone))
                         {
-                            if (this.attackCD <= 0)
+                            targetFound = true;
+                            if (this._AttackStyle == AttackStyle.kMeleeStyle)
                             {
-                                if (this._AttackStyle == AttackStyle.kMeleeStyle)
+                                HuntTarget(target);
+
+                            }
+                            if (Vector2.Distance(this._Position, target._Position) <= attackRange)
+                            {
+                                if (this.attackCD <= 0)
                                 {
-                                    _CBManager.PerformAttack(this, target);
+                                    if (this._AttackStyle == AttackStyle.kMeleeStyle)
+                                    {
+                                        //_CBManager.PerformAttack(this, target);
+                                    }
+                                    else
+                                    {
+                                        //myShot.SetTarget(target);
+                                    }
+                                    attackCD = attackSpeed;
                                 }
-                                else
-                                {
-                                    //myShot.SetTarget(target);
-                                }
-                                attackCD = attackSpeed;
                             }
                         }
+                        if (targetFound) break;
                     }
-                    if (targetFound) break;
-                }
 
+                }
+                if (!targetFound)
+                {
+                    Roam(gameTime);
+                }
+            base.UpdateActive(gameTime);
             }
-            if (!targetFound)
+            else
             {
-                Roam(gameTime);
+                Console.Write("Stunned");
             }
 
 
@@ -101,12 +114,30 @@ namespace ExtendedTest.GameObjects.NPCs
             {
                 attackCD -= gameTime.ElapsedGameTime.TotalSeconds;
             }
-            base.UpdateActive(gameTime);
+            
+
+            if(_StunTime > 0)
+            {
+                _StunTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                _Invuln = false;
+                _Stunned = false;
+                _MyColor = Color.White;
+            }
+
+
         }
 
         public virtual void ReceiveDamage(int amt)
         {
+            if (_Invuln) return;
             _HP -= amt;
+            _StunTime = 0.3;
+            _Invuln = true;
+            _Stunned = true;
+            _MyColor = Color.Red;
             if (_HP <= 0)
             {
                 Die();
@@ -135,7 +166,7 @@ namespace ExtendedTest.GameObjects.NPCs
             base.UpdateDead(gameTime);
         }
 
-        public void AddTarget(Attackable target)
+        public void AddTarget(Sprite target)
         {
             _TargetList.Add(target);
             this.Agressive = true;
@@ -155,7 +186,7 @@ namespace ExtendedTest.GameObjects.NPCs
             this.Agressive = false;
         }
 
-        private void HuntTarget(NPC target)
+        private void HuntTarget(Sprite target)
         {
             this.SetDestination(target._Position);
         }

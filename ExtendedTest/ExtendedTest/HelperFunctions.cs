@@ -46,5 +46,15 @@ namespace ExtendedTest
             points.Add(bottomRight);
             return points;
         }
+
+        public static Point VectorToPoint(Vector2 vec)
+        {
+            return new Point((int)vec.X, (int)vec.Y);
+        }
+
+        public static Vector2 PointToVector(Point p)
+        {
+            return new Vector2(p.X, p.Y);
+        }
     }
 }

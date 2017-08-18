@@ -23,10 +23,12 @@ namespace ExtendedTest
         public int _AttackCD { get; private set; }
         public int _AttackSpeed { get; private set; }
         public float _Speed { get; private set; }
+        public bool _PlayerAttacking { get; set; }
+
+        private bool playerAttacking;
 
         public Managers.PlayerManager.PlayerState _MyState = Managers.PlayerManager.PlayerState.kStateIdle;
-
-        private Vector2 swordAnchor;
+        
         public Vector2 _SwordAnchor
         {
             get
@@ -35,7 +37,7 @@ namespace ExtendedTest
                 float y = _Position.Y;
                 Vector2 newPos;
 
-                if(comboNum != 3)
+                if(comboNum != 5)
                 {
                     if(_Direction == Direction.kDirectionDown)
                     {
@@ -75,12 +77,13 @@ namespace ExtendedTest
 
                 return newPos;
             }
-            set => swordAnchor = value;
         }
+
 
         int comboNum = 1;
         double comboCD = 0f;
-        
+        double comboAdvanceCD = 0.1;
+        public Sprite swordTip;
         public Player()
         {
             this.startHP = 10;
@@ -95,6 +98,7 @@ namespace ExtendedTest
             sword.Deactivate();
             _Tag = SpriteType.kPlayerType;
             AddChild(sword);
+            swordTip = new Sprite();
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -102,7 +106,10 @@ namespace ExtendedTest
             base.LoadContent(path, content);
             SetupAnimation(2, 10, 3, true);
             sword.LoadContent("Art/Sword", content);
-            sword.ToggleCorners();
+            //sword.ToggleCorners();
+            swordTip.LoadContent("Art/Collision", content);
+            swordTip.frameHeight = 16;
+            swordTip.frameWidth = 16;
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -115,21 +122,40 @@ namespace ExtendedTest
             {
                 comboNum = 1;
                 _Rotation = 0;
+                _PlayerAttacking = false;
             }
-            if(comboNum == 3)
+            if(comboNum == 5)
             {
                 this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
             }
             base.UpdateActive(gameTime);
+
+            if(sword._CurrentState == SpriteState.kStateActive)
+            {
+                swordTip._CurrentState = SpriteState.kStateActive;
+                swordTip._Position = sword._SwordTip;
+            }
+            else
+            {
+                swordTip._CurrentState = SpriteState.kStateInActive;
+            }
+
+            if(comboAdvanceCD > 0)
+            {
+                comboAdvanceCD -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
         }
 
         public void Attack()
         {
+            if (comboAdvanceCD > 0) return;
+            _PlayerAttacking = true;
             Vector2 swordPos;
             if(comboCD > 0)
             {
                 comboNum++;
-                if (comboNum == 4)
+                if (comboNum == 6)
                 {
                     comboNum = 1;
                 }
@@ -139,6 +165,7 @@ namespace ExtendedTest
                 comboNum = 1;
             }
             comboCD = 0.42;
+            comboAdvanceCD = 0.2;
             if(comboNum == 1)
             {
                 _Rotation = 0f;
@@ -188,7 +215,57 @@ namespace ExtendedTest
                     Console.WriteLine("Sword Error!");
                 }
             }
-            else if(comboNum == 3)
+            else if (comboNum == 3)
+            {
+                _Rotation = 0f;
+                if (_Direction == Direction.kDirectionUp)
+                {
+                    sword.Attack1(Sword.SwordPoint.kNorth);
+                }
+                else if (_Direction == Direction.kDirectionDown)
+                {
+                    sword.Attack1(Sword.SwordPoint.kSouth);
+                }
+                else if (_Direction == Direction.kDirectionLeft)
+                {
+                    sword.Attack1(Sword.SwordPoint.kWest);
+                }
+                else if (_Direction == Direction.kDirectionRight)
+                {
+                    sword.Attack1(Sword.SwordPoint.kEast);
+                }
+                else
+                {
+                    Console.WriteLine("Sword Error!");
+                }
+
+            }
+            else if (comboNum == 4)
+            {
+                _Rotation = 0f;
+                if (_Direction == Direction.kDirectionUp)
+                {
+                    sword.Attack2(Sword.SwordPoint.kNorth);
+                }
+                else if (_Direction == Direction.kDirectionDown)
+                {
+                    sword.Attack2(Sword.SwordPoint.kSouth);
+                }
+                else if (_Direction == Direction.kDirectionLeft)
+                {
+                    sword.Attack2(Sword.SwordPoint.kWest);
+                }
+                else if (_Direction == Direction.kDirectionRight)
+                {
+                    sword.Attack2(Sword.SwordPoint.kEast);
+                }
+                else
+                {
+                    Console.WriteLine("Sword Error!");
+                }
+
+            }
+            else if(comboNum == 5)
             {
                 sword.Attack3();
             }
@@ -264,6 +341,12 @@ namespace ExtendedTest
                 _MyState = action;
                 ChangeAnimation((int)_MyState);
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            //swordTip.Draw(spriteBatch);
         }
     }
 }

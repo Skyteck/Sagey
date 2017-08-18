@@ -7,13 +7,18 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ExtendedTest.GameObjects.NPCs.Monsters
 {
-    public class Slime : Attackable
+    public class Slime : NPC
     {
-        public Slime(Managers.NPCManager manager, Managers.CombatManager cbManager) : base(manager, cbManager)
+        public Slime(Managers.NPCManager manager) : base(manager)
         {
             attack = 6;
             defense = 5;
             attackRange = 256;
+            _HP = 1;
+            startHP = 1;
+            _CanFight = true;
+            _Speed = 2f;
+            this._AttackStyle = AttackStyle.kMeleeStyle;
         }
 
         public override void LoadContent(string path, ContentManager content)

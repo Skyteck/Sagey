@@ -9,21 +9,21 @@ namespace ExtendedTest.Managers
 {
     public class CombatManager
     {
+        //PlayerManager _PlayerManager;
+        //NPCManager _NPCManager;
+        //public CombatManager()
+        //{
+        //}
 
-        public CombatManager()
-        {
-
-        }
-
-        public void PerformAttack(Attackable attacker, Attackable receiver)
-        {
-            int amt = attacker.attack - receiver.defense;
-            //attacker attack higher than defense
-            if(amt>= 0)
-            {
-                receiver.ReceiveDamage(amt);
-                attacker.attackCD = attacker.attackSpeed;
-            }
-        }
+        //public void PerformAttack(Attackable attacker, Attackable receiver)
+        //{
+        //    int amt = attacker.attack - receiver.defense;
+        //    //attacker attack higher than defense
+        //    if(amt>= 0)
+        //    {
+        //        receiver.ReceiveDamage(amt);
+        //        attacker.attackCD = attacker.attackSpeed;
+        //    }
+        //}
     }
 }
