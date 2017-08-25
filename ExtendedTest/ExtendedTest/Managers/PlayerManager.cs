@@ -15,7 +15,6 @@ namespace ExtendedTest.Managers
         Player _Player;
         WorldObject _CurrentWOTarget;
         //Managers
-        CombatManager _CombatManager;
         InventoryManager _InventoryManager;
         KeyboardState _PrevKBState;
         WorldObjectManager _WorldObjectManager;
@@ -71,10 +70,9 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public PlayerManager(Player p, InventoryManager IM, CombatManager CM, WorldObjectManager WOM, NPCManager NPCM, TilemapManager tm)
+        public PlayerManager(Player p, InventoryManager IM, WorldObjectManager WOM, NPCManager NPCM, TilemapManager tm)
         {
             _Player = p;
-            _CombatManager = CM;
             _InventoryManager = IM;
             _WorldObjectManager = WOM;
             _NPCManager = NPCM;
@@ -110,6 +108,7 @@ namespace ExtendedTest.Managers
                 CheckSwordCollision();
             }
 
+            CheckArrowCollision();
             _PlayerPos = _Player._Position;
         }
 
@@ -121,6 +120,20 @@ namespace ExtendedTest.Managers
                 Console.WriteLine(npcHit.Name);
                 npcHit.ReceiveDamage(1);
 
+            }
+        }
+
+        private void CheckArrowCollision()
+        {
+            foreach(Projectile arrow in _Player._ActiveArrows)
+            {
+                NPC npcHit = _NPCManager.CheckAttacks(arrow._ProjectileTip);
+                if (npcHit != null)
+                {
+                    arrow.Deactivate();
+                    npcHit.ReceiveDamage(1);
+
+                }
             }
         }
 
@@ -218,6 +231,11 @@ namespace ExtendedTest.Managers
             if (kbState.IsKeyDown(Keys.V) && _PrevKBState.IsKeyUp(Keys.V))
             {
                 _Player.Attack();
+            }
+
+            if (kbState.IsKeyDown(Keys.B) && _PrevKBState.IsKeyUp(Keys.B))
+            {
+                _Player.RangedAttack();
             }
 
             //if (kbState.IsKeyDown(Keys.J) && _PrevKBState.IsKeyUp(Keys.J))

@@ -34,7 +34,6 @@ namespace ExtendedTest
         Managers.TilemapManager _MapManager;
         public Managers.NPCManager _NPCManager;
         Managers.WorldObjectManager _GameObjectManager;
-        Managers.CombatManager _CBManager;
         Managers.UIManager _UIManager;
         Managers.ChemistryManager _ChemistryManager;
         Managers.ItemManager _ItemManager;
@@ -68,14 +67,13 @@ namespace ExtendedTest
             _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(_ItemManager);
             _BankManager = new Managers.BankManager(_ItemManager);
-            _CBManager = new Managers.CombatManager();
             _MapManager = new Managers.TilemapManager(_NPCManager, _GameObjectManager);
-            _NPCManager = new Managers.NPCManager(_MapManager, _CBManager,  Content, player);
+            _NPCManager = new Managers.NPCManager(_MapManager,  Content, player);
             _GameObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
             _UIManager = new Managers.UIManager(_InvenManager);
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _GameObjectManager, _NPCManager, Content, _ItemManager);
 
-            _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _CBManager, _GameObjectManager, _NPCManager, _MapManager);
+            _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _GameObjectManager, _NPCManager, _MapManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();

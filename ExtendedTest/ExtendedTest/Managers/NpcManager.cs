@@ -16,18 +16,16 @@ namespace ExtendedTest.Managers
         public List<NPC> _SpriteListDead;
         public TilemapManager _TilemapManager;
         ContentManager _Content;
-        CombatManager _CBmanager;
         Player thePlayer;
         List<Projectile> _ProjectileList;
 
-        public NPCManager(TilemapManager tMapManager, CombatManager cbManager ,ContentManager content, Player player)
+        public NPCManager(TilemapManager tMapManager ,ContentManager content, Player player)
         {
             _SpriteListActive = new List<NPC>();
             _SpriteListDead = new List<NPC>();
             _ProjectileList = new List<Projectile>();
             _TilemapManager = tMapManager;
             _Content = content;
-            _CBmanager = cbManager;
             thePlayer = player;
         }
 

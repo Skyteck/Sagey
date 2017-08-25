@@ -84,6 +84,11 @@ namespace ExtendedTest
         double comboCD = 0f;
         double comboAdvanceCD = 0.1;
         public Sprite swordTip;
+
+        Texture2D arrowTex;
+        Texture2D mageTex;
+        public List<Projectile> _ActiveArrows;
+        List<Projectile> _DeadArrows;
         public Player()
         {
             this.startHP = 10;
@@ -99,17 +104,31 @@ namespace ExtendedTest
             _Tag = SpriteType.kPlayerType;
             AddChild(sword);
             swordTip = new Sprite();
+            _ActiveArrows = new List<Projectile>();
+            _DeadArrows = new List<Projectile>();
+            for(int i = 0; i < 50; i++)
+            {
+                Projectile arrow = new Projectile();
+                arrow._CurrentState = SpriteState.kStateInActive;
+                _DeadArrows.Add(arrow);
+                AddChild(arrow);
+            }
         }
 
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
+            arrowTex = content.Load<Texture2D>("Art/Sword");
             SetupAnimation(2, 10, 3, true);
             sword.LoadContent("Art/Sword", content);
             //sword.ToggleCorners();
             swordTip.LoadContent("Art/Collision", content);
             swordTip.frameHeight = 16;
             swordTip.frameWidth = 16;
+            foreach(Projectile arrow in _DeadArrows)
+            {
+                arrow.LoadContent("Art/Sword", content);
+            }
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -128,7 +147,6 @@ namespace ExtendedTest
             {
                 this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
             }
-            base.UpdateActive(gameTime);
 
             if(sword._CurrentState == SpriteState.kStateActive)
             {
@@ -145,6 +163,15 @@ namespace ExtendedTest
                 comboAdvanceCD -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
+            List<Projectile> allArrows = new List<Projectile>();
+            allArrows.AddRange(_ActiveArrows);
+            allArrows.AddRange(_DeadArrows);
+            _ActiveArrows.Clear();
+            _DeadArrows.Clear();
+            _ActiveArrows = allArrows.FindAll(x => x._CurrentState == SpriteState.kStateActive);
+            _DeadArrows = allArrows.FindAll(x => x._CurrentState == SpriteState.kStateInActive);
+
+            base.UpdateActive(gameTime);
         }
 
         public void Attack()
@@ -269,6 +296,254 @@ namespace ExtendedTest
             {
                 sword.Attack3();
             }
+        }
+
+        internal void RangedAttack()
+        {
+            if (comboAdvanceCD > 0) return;
+            _PlayerAttacking = true;
+            if (comboCD > 0)
+            {
+                comboNum++;
+                if (comboNum == 6)
+                {
+                    comboNum = 1;
+                }
+            }
+            else
+            {
+                comboNum = 1;
+            }
+            comboCD = 0.42;
+            comboAdvanceCD = 0.2;
+            if (comboNum == 1)
+            {
+                //loop through dead arrows and activate one.
+                foreach (Projectile arrow in _DeadArrows)
+                {
+                    if (arrow._CurrentState == SpriteState.kStateActive) continue;
+                    arrow.Activate(this._Position);
+                    float rad = 0;
+
+                    if (this._Direction == Direction.kDirectionRight)
+                    {
+                        arrow.setDirection(new Vector2(1, 0));
+                    }
+                    else if (this._Direction == Direction.kDirectionLeft)
+                    {
+                        arrow.setDirection(new Vector2(-1, 0));
+                    }
+                    else if (this._Direction == Direction.kDirectionDown)
+                    {
+                        arrow.setDirection(new Vector2(0, 1));
+                    }
+                    else if (this._Direction == Direction.kDirectionUp)
+                    {
+                        arrow.setDirection(new Vector2(0, -1));
+                    }
+                    break;
+                }
+
+            }
+            else if(comboNum == 2)
+            {
+                int arrowsShot = 0;
+                //loop through dead arrows and activate one.
+                foreach (Projectile arrow in _DeadArrows)
+                {
+                    if (arrow._CurrentState == SpriteState.kStateActive)
+                    {
+                        continue;
+                    }
+                    arrow.Activate(this._Position);
+                    float rad = 0;
+
+                    if(arrowsShot == 0)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, 0));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, 0));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(0, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(0, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    else if(arrowsShot == 1)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, -1));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, -1));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(-1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(-1, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    else if (arrowsShot == 2)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(1, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    if(arrowsShot == 3)
+                    {
+                        break;
+                    }
+                }
+            }
+            else if(comboNum == 3)
+            {
+                int arrowsShot = 0;
+                //loop through dead arrows and activate one.
+                foreach (Projectile arrow in _DeadArrows)
+                {
+                    if (arrow._CurrentState == SpriteState.kStateActive)
+                    {
+                        continue;
+                    }
+                    arrow.Activate(this._Position);
+                    float rad = 0;
+
+                    if (arrowsShot == 0)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, 0));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, 0));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(0, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(0, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    else if (arrowsShot == 1)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, -1));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, -1));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(-1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(-1, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    else if (arrowsShot == 2)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(1, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(1, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    else if (arrowsShot == 3)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, 0.5f));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, 0.5f));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(0.5f, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(0.5f, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    else if (arrowsShot == 4)
+                    {
+                        if (this._Direction == Direction.kDirectionRight)
+                        {
+                            arrow.setDirection(new Vector2(1, -0.5f));
+                        }
+                        else if (this._Direction == Direction.kDirectionLeft)
+                        {
+                            arrow.setDirection(new Vector2(-1, -0.5f));
+                        }
+                        else if (this._Direction == Direction.kDirectionDown)
+                        {
+                            arrow.setDirection(new Vector2(-0.5f, 1));
+                        }
+                        else if (this._Direction == Direction.kDirectionUp)
+                        {
+                            arrow.setDirection(new Vector2(-0.5f, -1));
+                        }
+                        arrowsShot++;
+                    }
+                    if (arrowsShot == 5)
+                    {
+                        break;
+                    }
+                }
+            }
+            //set it's ehading to correct direction
         }
 
         //    //private Sprite collisionCheck(List<Character> gameObjectList)

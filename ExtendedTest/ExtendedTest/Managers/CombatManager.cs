@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest.Managers
 {
-    public class CombatManager
+    public static class CombatManager
     {
         //PlayerManager _PlayerManager;
         //NPCManager _NPCManager;
