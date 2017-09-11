@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.GameObjects.Objects.Gatherables
+namespace ExtendedTest.GameObjects.Gatherables
 {
     class Tree : Gatherable
     {
-        int hits = 0;
         int ItemGiveCount = 3; 
         public enum TreeType
         {
@@ -25,13 +24,13 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             switch(treeType)
             {
                 case TreeType.kNormalTree:
-                    difficulty = 600;
+                    difficulty = 10;
                     break;
                 case TreeType.kOakTree:
-                    difficulty = 1200;
+                    difficulty = 12;
                     break;
                 case TreeType.kCedarTree:
-                    difficulty = 1800;
+                    difficulty = 18;
                     break;                    
                 default:
                     difficulty = 9001;
@@ -41,25 +40,38 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             ItemGiveCount = ran.Next(1, 7);
 
             this._Tag = Sprite.SpriteType.kTreeType;
-            this.myWorldObjectTag = WorldObjectTag.kTreeTag;
+            this.MyWorldObjectTag = WorldObjectTag.kTreeTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
 
-            OutputItem output = new OutputItem();
+            Items.ItemBundle output = new Items.ItemBundle();
             output.output = Item.ItemType.kItemLog;
             output.amount = 1;
-            output.odds = 100;
+            output.odds = 95;
             for(int i = 0; i < output.odds; i++)
             {
                 OutputItems.Add(output);
             }
-        }
 
-        public override void Revive()
-        {
-            base.Revive();
+            output = new Items.ItemBundle();
+            output.output = Item.ItemType.kItemLog;
+            output.amount = 2;
+            output.odds = 1;
+            for (int i = 0; i < output.odds; i++)
+            {
+                OutputItems.Add(output);
+            }
 
-            Random ran = new Random();
-            ItemGiveCount = ran.Next(1, 7);
+            if (OutputItems.Count <100)
+            {
+                Items.ItemBundle noneBundle = new Items.ItemBundle();
+                noneBundle.output = Item.ItemType.kItemNone;
+                noneBundle.amount = 1;
+                output.odds = 100 - OutputItems.Count;
+                for(int i = 0; i < output.odds; i++)
+                {
+                    OutputItems.Add(noneBundle);
+                }
+            }
         }
     }
 }

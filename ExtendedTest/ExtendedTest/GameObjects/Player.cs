@@ -113,6 +113,13 @@ namespace ExtendedTest
                 _DeadArrows.Add(arrow);
                 AddChild(arrow);
             }
+            Animation idle = new Animation("Idle", 64, 64, 2, 2);
+            AddAnimation(idle);
+            Animation walk = new Animation("Walk", 64, 64, 30, 2);
+            AddAnimation(walk);
+            Animation WC = new Animation("WC", 64, 64, 30, 2);
+            AddAnimation(WC);
+
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -172,6 +179,7 @@ namespace ExtendedTest
             _DeadArrows = allArrows.FindAll(x => x._CurrentState == SpriteState.kStateInActive);
 
             base.UpdateActive(gameTime);
+            CheckAnimations();
         }
 
         public void Attack()
@@ -545,79 +553,25 @@ namespace ExtendedTest
             }
             //set it's ehading to correct direction
         }
-
-        //    //private Sprite collisionCheck(List<Character> gameObjectList)
-        //    //{
-        //    //    foreach (Character sprite in gameObjectList)
-        //    //    {
-        //    //        if (sprite._CurrentState == SpriteState.kStateActive)
-        //    //        {
-        //    //            if (_BoundingBox.Intersects(sprite._BoundingBox))
-        //    //            {
-        //    //                if(movingX)
-        //    //                {
-        //    //                    if((_BoundingBox.Right > sprite._BoundingBox.Left) && (_BoundingBox.Left < sprite._BoundingBox.Left))
-        //    //                    {
-        //    //                        Console.WriteLine("On player right?");
-        //    //                    }
-        //    //                    else if ((_BoundingBox.Left < sprite._BoundingBox.Right) && (_BoundingBox.Right > sprite._BoundingBox.Right))
-        //    //                    {
-        //    //                        Console.WriteLine("On player left?");
-        //    //                    }
-        //    //                }
-
-        //    //                if(movingY)
-        //    //                {
-        //    //                    if ((_BoundingBox.Bottom > sprite._BoundingBox.Top) && (_BoundingBox.Top < sprite._BoundingBox.Top))
-        //    //                    {
-        //    //                        Console.WriteLine("On player bottom?");
-        //    //                    }
-        //    //                    else if ((_BoundingBox.Top < sprite._BoundingBox.Bottom) && (_BoundingBox.Bottom > sprite._BoundingBox.Bottom))
-        //    //                    {
-        //    //                        Console.WriteLine("On player top?");
-        //    //                    }
-        //    //                }
-
-        //    //                return sprite;
-        //    //            }
-        //    //        }
-        //    //    }
-        //    //    return null;
-        //    //}
-
-        //    private void Gather(GameObjects.Objects.Gatherables.Gatherable thing)
-        //    {
-        //        Item.ItemType itemType = thing.GetGathered();
-        //        if (itemType != Item.ItemType.kItemNone && itemType != Item.ItemType.kItemError)
-        //        {
-        //            invenManager.AddItem(itemType);
-        //            this.ChangeState(CurrentState.kStateWC);
-        //            if (this._Target._CurrentState == SpriteState.kStateInActive)
-        //            {
-        //                this._Target = null;
-        //            }
-        //        }
-        //    }
-
-        //    public void stopAction()
-        //    {
-        //        this.ChangeState(CurrentState.kStateIdle);
-        //    }
-
-        //    public void SetTarget(Sprite target)
-        //    {
-        //        this._Target = target;
-        //    }
-
-        public void ChangeState(Managers.PlayerManager.PlayerState action)
+        
+        public void CheckAnimations()
         {
-            if (_MyState != action)
+            switch(_MyState)
             {
-                _MyState = action;
-                ChangeAnimation((int)_MyState);
+                case Managers.PlayerManager.PlayerState.kStateIdle:
+                    ChangeAnimation("Idle");
+                    break;
+                case Managers.PlayerManager.PlayerState.kStateWalk:
+                    ChangeAnimation("Walk");
+                    break;
+                case Managers.PlayerManager.PlayerState.kStateWC:
+                    ChangeAnimation("WC");
+                    break;
+                default:
+                    ChangeAnimation("Idle");
+                    break;
             }
         }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);

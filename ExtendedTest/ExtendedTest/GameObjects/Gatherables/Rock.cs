@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
+using ExtendedTest.GameObjects.Items;
 
-namespace ExtendedTest.GameObjects.Objects.Gatherables
+namespace ExtendedTest.GameObjects.Gatherables
 {
     class Rock : Gatherable
     {
-        int hits = 0;
-
         public enum RockType
         {
             kNormalRock,
@@ -27,13 +26,13 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             switch(rockType)
             {
                 case RockType.kNormalRock:
-                    difficulty = 300;
+                    difficulty = 5;
                     break;
                 case RockType.kClayRock:
-                    difficulty = 600;
+                    difficulty = 2;
                     break;
                 case RockType.kIronRock:
-                    difficulty = 900;
+                    difficulty = 10;
                     break;
                     
                 default:
@@ -42,15 +41,32 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             }
             
             this._Tag = Sprite.SpriteType.kRockType;
-            this.myWorldObjectTag = WorldObjectTag.kRockTag;
+            this.MyWorldObjectTag = WorldObjectTag.kRockTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
 
 
-            OutputItem output = new OutputItem();
+            ItemBundle output = new ItemBundle();
             output.output = Item.ItemType.kItemOre;
             output.amount = 1;
             output.odds = 100;
-            OutputItems.Add(output);
+
+
+            for (int i = 0; i < output.odds; i++)
+            {
+                OutputItems.Add(output);
+            }
+
+            if (OutputItems.Count < 100)
+            {
+                Items.ItemBundle noneBundle = new Items.ItemBundle();
+                noneBundle.output = Item.ItemType.kItemNone;
+                noneBundle.amount = 1;
+                output.odds = 100 - OutputItems.Count;
+                for (int i = 0; i < output.odds; i++)
+                {
+                    OutputItems.Add(noneBundle);
+                }
+            }
         }        
     }
 }

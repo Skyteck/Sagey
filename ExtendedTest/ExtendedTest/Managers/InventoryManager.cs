@@ -29,10 +29,8 @@ namespace ExtendedTest.Managers
         public void AddItem(Item.ItemType itemType, int amount = 1)
         {
             //find if the item already exists in a slot
-            if(itemType == Item.ItemType.kItemNone)
-            {
-                return;
-            }
+            if (itemType == Item.ItemType.kItemNone) return;
+
             Item itemToAdd = _ItemManager.GetItem(itemType);
 
             if(itemToAdd == null)
@@ -65,6 +63,11 @@ namespace ExtendedTest.Managers
                     //error adding item message;
                 }
             }
+        }
+
+        public void AddItem(GameObjects.Items.ItemBundle bundle)
+        {
+            AddItem(bundle.output, bundle.amount);
         }
 
         public void RemoveItem(Item.ItemType itemType, int amount = 1)

@@ -19,6 +19,7 @@ namespace ExtendedTest.GameObjects.NPCs.Monsters
             _CanFight = true;
             _Speed = 2f;
             this._AttackStyle = AttackStyle.kMeleeStyle;
+            SetStatus(Enums.EffectTypes.kEffectBurn);
         }
 
         public override void LoadContent(string path, ContentManager content)

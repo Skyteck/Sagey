@@ -33,12 +33,13 @@ namespace ExtendedTest
         Managers.InventoryManager _InvenManager;
         Managers.TilemapManager _MapManager;
         public Managers.NPCManager _NPCManager;
-        Managers.WorldObjectManager _GameObjectManager;
+        Managers.WorldObjectManager _WorldObjectManager;
         Managers.UIManager _UIManager;
         Managers.ChemistryManager _ChemistryManager;
         Managers.ItemManager _ItemManager;
         Managers.PlayerManager _PlayerManager;
         Managers.BankManager _BankManager;
+        Managers.GatherableManager _GatherableManager;
 
 
         //UI        
@@ -67,13 +68,14 @@ namespace ExtendedTest
             _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(_ItemManager);
             _BankManager = new Managers.BankManager(_ItemManager);
-            _MapManager = new Managers.TilemapManager(_NPCManager, _GameObjectManager);
+            _MapManager = new Managers.TilemapManager(_NPCManager, _WorldObjectManager);
             _NPCManager = new Managers.NPCManager(_MapManager,  Content, player);
-            _GameObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
+            _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
+            _GatherableManager = new Managers.GatherableManager(_MapManager, _InvenManager, Content, player);
             _UIManager = new Managers.UIManager(_InvenManager);
-            _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _GameObjectManager, _NPCManager, Content, _ItemManager);
+            _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _WorldObjectManager, _NPCManager, Content, _ItemManager);
 
-            _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _GameObjectManager, _NPCManager, _MapManager);
+            _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _WorldObjectManager, _NPCManager, _MapManager, _GatherableManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();
@@ -98,7 +100,7 @@ namespace ExtendedTest
             font = Content.Load<SpriteFont>("Fonts/Fipps");
             _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
-
+            //Effect PixelShader = Content.Load<Effect>("Effects/PXS");
             //check if save exists
 
             //else start a new save
@@ -254,7 +256,16 @@ namespace ExtendedTest
                 foreach (TmxObject thing in ObjectList)
                 {
                     Vector2 newPos = new Vector2((int)thing.X + testMap._Postion.X, (int)thing.Y + testMap._Postion.Y);
-                    _GameObjectManager.CreateObject(thing, newPos);
+                    //_WorldObjectManager.CreateObject(thing, newPos);
+                    if(thing.Type == "Dirt")
+                    {
+                        _WorldObjectManager.CreateObject(thing, newPos);
+                    }
+                    else
+                    {
+                        _GatherableManager.CreateGatherable(thing, newPos);
+
+                    }
                 }
             }
         }
@@ -310,7 +321,8 @@ namespace ExtendedTest
                 }
 
                 _NPCManager.UpdateNPCs(gameTime);
-                _GameObjectManager.Update(gameTime);
+                _WorldObjectManager.Update(gameTime);
+                _GatherableManager.Update(gameTime);
 
                 if(!kbHandler.typingMode)
                 {
@@ -479,8 +491,8 @@ namespace ExtendedTest
 
             _NPCManager.DrawNPCs(spriteBatch);
 
-            _GameObjectManager.Draw(spriteBatch);
-
+            _WorldObjectManager.Draw(spriteBatch);
+            _GatherableManager.Draw(spriteBatch);
             _UIManager.Draw(spriteBatch);
 
             //Vector2 invenBgpos = _UIManager.getUIElement("Inventory")._TopLeft;

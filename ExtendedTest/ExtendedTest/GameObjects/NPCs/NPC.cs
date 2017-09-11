@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ExtendedTest
 {
@@ -13,7 +14,7 @@ namespace ExtendedTest
     /// For example the player's destination is set by clicking on the world. NPCs use their logic to determien their destination
     /// findPath gets things where they need to be.
     /// </summary>
-    public class NPC : AnimatedSprite
+    public class NPC : Sprite
     {
         public List<NPC> parentList;
 
@@ -74,6 +75,8 @@ namespace ExtendedTest
         public bool _Invuln = false;
         public double _StunTime = 0;
 
+        private Texture2D effectTex;
+        private Enums.EffectTypes _CurrentEffect = Enums.EffectTypes.kEffectNone;
         public enum AttackStyle
         {
             kMeleeStyle,
@@ -88,12 +91,15 @@ namespace ExtendedTest
             ParentManager = nm;
             myPath = new List<Tile>();
             _TargetList = new List<Sprite>();
+            Animation idle = new Animation("Idle", 64, 64, 1, 1);
+            //AddAnimation(idle);
         }
 
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
-            SetupAnimation(1, 1, 1, false);
+            //SetupAnimation(1, 1, 1, false);
+            effectTex = content.Load<Texture2D>("Art/Effect");
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -106,6 +112,7 @@ namespace ExtendedTest
             {
                 UpdateCombat(gameTime);
             }
+
             base.UpdateActive(gameTime);
         }
 
@@ -228,8 +235,7 @@ namespace ExtendedTest
             BottomBoundary = by + ty;
         }
 
-        #region Combat Stuff
-
+ #region Combat Stuff
 
         private void UpdateCombat(GameTime gameTime)
         {
@@ -341,6 +347,70 @@ namespace ExtendedTest
         {
             _TargetList.Clear();
             this.Agressive = false;
+        }
+
+        public void SetStatus(Enums.EffectTypes effectType)
+        {
+            _CurrentEffect = effectType;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            //if(_CurrentEffect != Enums.EffectTypes.kEffectNone)
+            //{
+            //    switch (_CurrentEffect)
+            //    {
+            //        case Enums.EffectTypes.kEffectPoison:
+            //            {
+            //                _MyColor = Color.Green;
+            //                break;
+            //            }
+            //        case Enums.EffectTypes.kEffectBurn:
+            //            {
+            //                _MyColor = Color.OrangeRed;
+            //                break;
+            //            }
+            //        case Enums.EffectTypes.kEffectFreeze:
+            //            {
+            //                _MyColor = Color.AliceBlue;
+            //                break;
+            //            }
+            //        case Enums.EffectTypes.kEffectStun:
+            //            {
+            //                _MyColor = Color.Yellow;
+            //                break;
+            //            }
+            //    }
+            //}
+                base.Draw(spriteBatch);
+            // draw the effectTex to show status effect
+            if (_CurrentEffect != Enums.EffectTypes.kEffectNone)
+            {
+                Rectangle eR = new Rectangle((int)_TopLeft.X, (int)_TopLeft.Y, frameWidth, frameHeight);
+                switch (_CurrentEffect)
+                {
+                    case Enums.EffectTypes.kEffectPoison:
+                        {
+                            spriteBatch.Draw(effectTex, eR, Color.Green);
+                            break;
+                        }
+                    case Enums.EffectTypes.kEffectBurn:
+                        {
+                            spriteBatch.Draw(effectTex, eR, Color.OrangeRed);
+                            break;
+                        }
+                    case Enums.EffectTypes.kEffectFreeze:
+                        {
+                            spriteBatch.Draw(effectTex, eR, Color.AliceBlue);
+                            break;
+                        }
+                    case Enums.EffectTypes.kEffectStun:
+                        {
+                            spriteBatch.Draw(effectTex, eR, Color.Yellow);
+                            break;
+                        }
+                }
+            }
         }
     }
 #endregion

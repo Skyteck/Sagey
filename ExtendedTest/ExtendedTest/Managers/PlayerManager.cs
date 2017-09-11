@@ -1,4 +1,4 @@
-﻿using ExtendedTest.GameObjects.Objects.Gatherables;
+﻿using ExtendedTest.GameObjects.Gatherables;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,17 +13,23 @@ namespace ExtendedTest.Managers
     public class PlayerManager
     {
         Player _Player;
-        WorldObject _CurrentWOTarget;
         //Managers
         InventoryManager _InventoryManager;
         KeyboardState _PrevKBState;
         WorldObjectManager _WorldObjectManager;
+        GatherableManager _GatherManager;
         NPCManager _NPCManager;
         TilemapManager _MapManager;
         public Vector2 _PlayerPos;
 
         private bool bankerGo = false;
         public bool _BankerGo { get => bankerGo; set => bankerGo = value; }
+
+
+        //Gathering variables
+        Gatherable _CurrentGatherTarget;
+        double _GatherTimer = 0;
+
         public enum PlayerState
         {
             kStateIdle = 0,
@@ -70,40 +76,48 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public PlayerManager(Player p, InventoryManager IM, WorldObjectManager WOM, NPCManager NPCM, TilemapManager tm)
+        public PlayerManager(Player p, InventoryManager IM, WorldObjectManager WOM, NPCManager NPCM, TilemapManager tm, GatherableManager gm)
         {
             _Player = p;
             _InventoryManager = IM;
             _WorldObjectManager = WOM;
             _NPCManager = NPCM;
             _MapManager = tm;
+            _GatherManager = gm;
         }
 
         public void Update(GameTime gt)
         {
             _PlayerPos = _Player._Position;
+            _Player._MyState = PlayerState.kStateIdle;
             Vector2 currentPos = _Player._Position;
             ProcessKeyboard(gt);
             if(CheckCollision())
             {
                 _Player._Position = currentPos;
             }
-            _Player.UpdateActive(gt);
 
-            if(_CurrentWOTarget != null)
+
+            _GatherTimer -= gt.ElapsedGameTime.TotalSeconds;
+
+            if(_CurrentGatherTarget != null)
             {
-                if(_CurrentWOTarget._CurrentState != Sprite.SpriteState.kStateInActive)
+                _Player._MyState = PlayerState.kStateWC;
+                if(_GatherTimer <= 0)
                 {
-                    ProcessWorldObject(_CurrentWOTarget);
+                    Item.ItemType item = _GatherManager.GatherItem(_CurrentGatherTarget);
+                    _InventoryManager.AddItem(item);
+                    _GatherTimer = 1;
                 }
-                else
+                if(_CurrentGatherTarget._CurrentState == Sprite.SpriteState.kStateInActive)
                 {
                     ClearTargets();
-                    ChangePlayerState(PlayerState.kStateIdle);
                 }
             }
+            
+            _Player.UpdateActive(gt);
 
-            if(_Player._PlayerAttacking)
+            if (_Player._PlayerAttacking)
             {
                 CheckSwordCollision();
             }
@@ -160,6 +174,10 @@ namespace ExtendedTest.Managers
             if (hit == null)
             {
                 hit = _WorldObjectManager.checkCollision(_Player._BoundingBox);
+            }
+            if(hit == null)
+            {
+                hit = _GatherManager.CheckCollision(_Player._WorldBoundingBox);
             }
             if(hit != null)
             {
@@ -224,7 +242,7 @@ namespace ExtendedTest.Managers
                 }
                 else
                 {
-                    _CurrentWOTarget = _WorldObjectManager.checkCollision(CheckRect);
+                    _CurrentGatherTarget = _GatherManager.CheckCollision(CheckRect);
                 }
             }
 
@@ -246,6 +264,7 @@ namespace ExtendedTest.Managers
             if (moved)
             {
                 ClearTargets();
+                _Player._MyState = PlayerState.kStateWalk;
             }
             _PrevKBState = kbState;
         }
@@ -255,7 +274,6 @@ namespace ExtendedTest.Managers
             if(woHit.IsGatherable)
             {
                 Gather(woHit as Gatherable);
-                ChangePlayerState(PlayerState.kStateWC);
             }
         }
 
@@ -280,12 +298,6 @@ namespace ExtendedTest.Managers
             _Player.Draw(SB);
         }
 
-        public void ChangePlayerState(PlayerState state)
-        {
-            _PlayerState = state;
-            _Player.ChangeState(state);
-        }
-
         public void SetPosition(float x, float y)
         {
             _Player._Position.X = x;
@@ -295,7 +307,7 @@ namespace ExtendedTest.Managers
 
         public void ClearTargets()
         {
-            _CurrentWOTarget = null;
+            _CurrentGatherTarget = null;
             _BankerGo = false;
         }
     }

@@ -31,6 +31,7 @@ namespace ExtendedTest
         public float _Rotation = 0.0f;
         public float _Opacity = 1.0f;
         public string Name;
+        public bool _IsMoving = false;
 
         ////Collision helper:
         //List<Sprite> corners;

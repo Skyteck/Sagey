@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.GameObjects.Objects.Gatherables
+namespace ExtendedTest.GameObjects.Gatherables
 {
     class FishingHole : Gatherable
     {
-        int hits = 0;
         int fishCount = 3; 
         public enum FishingType
         {
@@ -25,13 +24,13 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             switch(fishingType)
             {
                 case FishingType.kNetType:
-                    difficulty = 200;
+                    difficulty = 2;
                     break;
                 case FishingType.kBaitType:
-                    difficulty = 600;
+                    difficulty = 6;
                     break;
                 case FishingType.kFlyFishType:
-                    difficulty = 900;
+                    difficulty = 9;
                     break;                    
                 default:
                     difficulty = 90000001;
@@ -41,23 +40,32 @@ namespace ExtendedTest.GameObjects.Objects.Gatherables
             fishCount = ran.Next(1, 7);
 
             this._Tag = Sprite.SpriteType.kFishingType;
-            this.myWorldObjectTag = WorldObjectTag.kFishingHoleTag;
+            this.MyWorldObjectTag = WorldObjectTag.kFishingHoleTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
 
 
-            OutputItem output = new OutputItem();
+            Items.ItemBundle output = new Items.ItemBundle();
             output.output = Item.ItemType.kItemFish;
             output.amount = 1;
             output.odds = 100;
-            OutputItems.Add(output);
-        }
 
-        public override void Revive()
-        {
-            base.Revive();
 
-            Random ran = new Random();
-            fishCount = ran.Next(1, 7);
+            for (int i = 0; i < output.odds; i++)
+            {
+                OutputItems.Add(output);
+            }
+
+            if (OutputItems.Count < 100)
+            {
+                Items.ItemBundle noneBundle = new Items.ItemBundle();
+                noneBundle.output = Item.ItemType.kItemNone;
+                noneBundle.amount = 1;
+                output.odds = 100 - OutputItems.Count;
+                for (int i = 0; i < output.odds; i++)
+                {
+                    OutputItems.Add(noneBundle);
+                }
+            }
         }
     }
 }

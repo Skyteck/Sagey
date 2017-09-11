@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
-using ExtendedTest.GameObjects.Objects.Gatherables;
+using ExtendedTest.GameObjects.Gatherables;
 
 namespace ExtendedTest.Managers
 {
@@ -15,6 +15,7 @@ namespace ExtendedTest.Managers
     {
         List<WorldObject> objectList;
         List<WorldObject> objectListInactive;
+        List<WorldObject> detectorList;
         InventoryManager _InventoryManager;
         ContentManager Content;
         TilemapManager _TilemapManager;
@@ -27,6 +28,7 @@ namespace ExtendedTest.Managers
         {
             ObjectList = new List<WorldObject>();
             objectListInactive = new List<WorldObject>();
+            detectorList = new List<WorldObject>();
             _InventoryManager = invenManager;
             Content = content;
             thePlayer = player;
@@ -35,33 +37,29 @@ namespace ExtendedTest.Managers
 
         public void CreateObject(TmxObject thing, Vector2 pos)
         {
-            if (thing.Type.Equals("tree"))
+            if (thing.Type.Equals("Dirt"))
             {
-                Tree anotherTree = new Tree(Tree.TreeType.kNormalTree);
-                anotherTree.LoadContent("Art/tree", Content);
-                anotherTree._Position = _TilemapManager.findTile(pos).tileCenter;
-                anotherTree.parentList = ObjectList;
-                anotherTree.Name = thing.Name;
-                ObjectList.Add(anotherTree);
-
-            }
-            else if (thing.Type.Equals("rock"))
-            {
-                Rock anotherRock = new Rock(Rock.RockType.kNormalRock);
-                anotherRock.LoadContent("Art/" + thing.Type, Content);
-                anotherRock._Position = _TilemapManager.findTile(pos).tileCenter;
-                anotherRock.parentList = ObjectList;
-                anotherRock.Name = thing.Name;
-                ObjectList.Add(anotherRock);
-            }
-            else if (thing.Type.Equals("FishingHole"))
-            {
-                FishingHole anotherFish = new FishingHole(FishingHole.FishingType.kNetType);
-                anotherFish.LoadContent("Art/" + thing.Type, Content);
+                GameObjects.Objects.DirtPatch anotherFish = new GameObjects.Objects.DirtPatch();
+                anotherFish.LoadContent("Art/ClearBox", Content);
                 anotherFish._Position = _TilemapManager.findTile(pos).tileCenter;
-                anotherFish.parentList = ObjectList;
+                anotherFish.ParentList = ObjectList;
                 anotherFish.Name = thing.Name;
+                anotherFish.DoThing(new GameObjects.Gatherables.Plants.StrawberryPlant());
                 ObjectList.Add(anotherFish);
+            }
+        }
+
+        public void CreateObject(Sprite.SpriteType objectType, Vector2 position)
+        {
+            if (objectType == Sprite.SpriteType.kFireType)
+            {
+                Fire fire = new Fire();
+                fire.LoadContent("Art/Fire", Content);
+                fire._Position = _TilemapManager.findTile(position).tileCenter;
+                fire.ParentList = ObjectList;
+                fire.Name = "Fire";
+                ObjectList.Add(fire);
+
             }
         }
 
@@ -70,8 +68,13 @@ namespace ExtendedTest.Managers
             List<WorldObject> combinedList = new List<WorldObject>();
             combinedList.AddRange(objectList);
             combinedList.AddRange(objectListInactive);
+            objectList.Clear();
+            objectListInactive.Clear();
+            detectorList.Clear();
             objectList = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateActive);
             objectListInactive = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateInActive);
+
+            detectorList = objectList.FindAll(x => x._Detector == true);
 
             foreach (WorldObject sprite in ObjectList)
             {
@@ -82,6 +85,7 @@ namespace ExtendedTest.Managers
             {
                 sprite.UpdateDead(gameTime);
             }
+
         }
 
         public WorldObject CheckClicks(Vector2 pos)
@@ -96,31 +100,10 @@ namespace ExtendedTest.Managers
             return null;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach(Sprite sprite in ObjectList)
-            {
-                sprite.Draw(spriteBatch);
-            }
-        }
-
-        public void CreateObject(Sprite.SpriteType objectType, Vector2 position)
-        {
-            if (objectType == Sprite.SpriteType.kFireType)
-            {
-                Fire fire = new Fire();
-                fire.LoadContent("Art/Fire", Content);
-                fire._Position = _TilemapManager.findTile(position).tileCenter;
-                fire.parentList = ObjectList;
-                fire.Name = "Fire";
-                ObjectList.Add(fire);
-
-            }
-        }
-
         public WorldObject checkCollision(Rectangle rect)
         {
-            foreach(WorldObject thing in objectList)
+            List<WorldObject> checkList = objectList.FindAll(x => x._Detector == false);
+            foreach(WorldObject thing in checkList)
             {
                 if(thing._BoundingBox.Intersects(rect))
                 {
@@ -128,6 +111,26 @@ namespace ExtendedTest.Managers
                 }
             }
             return null;
+        }
+
+        public WorldObject checkDetectors(Rectangle rect)
+        {
+            foreach (WorldObject thing in detectorList)
+            {
+                if (thing._BoundingBox.Intersects(rect))
+                {
+                    return thing;
+                }
+            }
+            return null;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach(Sprite sprite in ObjectList)
+            {
+                sprite.Draw(spriteBatch);
+            }
         }
     }
 }

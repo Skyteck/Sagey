@@ -18,15 +18,21 @@ namespace ExtendedTest
         int animStateNum = 0;
         private float timeElapsed = 0;
         bool animationDone = false;
-
+        List<Animation> _AnimList;
+        Animation _ActiveAnim = null;
         public AnimatedSprite()
         {
-
+            _AnimList = new List<Animation>();
         }
 
         public override void LoadContent(string path, ContentManager content)
         {
+            for(int i = 0; i < _AnimList.Count; i++)
+            {
+                _AnimList[i].Setup(i);
+            }
             base.LoadContent(path, content);
+            _ActiveAnim = _AnimList[0];
         }
 
         public void SetupAnimation(int frames, int fps, int states, bool looping)
@@ -47,33 +53,49 @@ namespace ExtendedTest
 
         public void Animate()
         {
-            float TPF = 1.0f / FPS;
+
+            float TPF = 1.0f / _ActiveAnim._FPS;
             if (timeElapsed >= TPF)
             {
                 frameNum++;
-                if (animLooping && frameNum > Frames)
+                if(frameNum > _ActiveAnim._Frames)
                 {
-                    frameNum = 0;
+                    if(_ActiveAnim._Loops)
+                    {
+                        frameNum = 0;
+                    }
+                    else
+                    {
+                        animationDone = true;
+                        ChangeAnimation(_ActiveAnim._NextAnim._Name);
+                    }
                 }
-                else
-                {
-                    animationDone = true;
-                }
-                frameNum %= Frames;
+                frameNum %= _ActiveAnim._Frames;
                 timeElapsed -= TPF;
             }
         }
 
-        public void ChangeAnimation(int animNum)
+        public void ChangeAnimation(String animName)
         {
-            animStateNum = animNum;
+            if(animName != _ActiveAnim._Name)
+            {
+                _ActiveAnim = _AnimList.Find(x => x._Name == animName);
+                frameNum = 0;
+            }
+        }
+
+        public void AddAnimation(Animation anim)
+        {
+            anim._AnimNum = animStateNum;
+            _AnimList.Add(anim);
+            animStateNum++;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (_Draw)
             {
-                Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * animStateNum), frameWidth, frameHeight);
+                Rectangle sr = _ActiveAnim._FramesList[frameNum];
                 Draw(spriteBatch, sr);
             }
         }

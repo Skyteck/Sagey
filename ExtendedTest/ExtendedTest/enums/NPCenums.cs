@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest.Enums
 {
-    class Enums
-    {
         public enum MonsterTypes
         {
             kMonsterSlime,
@@ -21,5 +19,13 @@ namespace ExtendedTest.Enums
             kGatherEnergy,
             kGatherFIshingHole
         }
-    }
+
+        public enum EffectTypes
+        {
+            kEffectStun,
+            kEffectFreeze,
+            kEffectBurn,
+            kEffectPoison,
+            kEffectNone
+        }
 }
