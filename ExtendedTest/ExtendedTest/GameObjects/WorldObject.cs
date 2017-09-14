@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExtendedTest
 {
-    public class WorldObject : Sprite
+    public class WorldObject : AnimatedSprite
     {
         private int difficulty;
         private List<WorldObject> parentList;

@@ -115,9 +115,9 @@ namespace ExtendedTest
             }
             Animation idle = new Animation("Idle", 64, 64, 2, 2);
             AddAnimation(idle);
-            Animation walk = new Animation("Walk", 64, 64, 30, 2);
+            Animation walk = new Animation("Walk", 64, 64, 2, 2);
             AddAnimation(walk);
-            Animation WC = new Animation("WC", 64, 64, 30, 2);
+            Animation WC = new Animation("WC", 64, 64, 2, 2);
             AddAnimation(WC);
 
         }

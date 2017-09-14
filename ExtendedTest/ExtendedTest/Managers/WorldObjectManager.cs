@@ -19,6 +19,7 @@ namespace ExtendedTest.Managers
         InventoryManager _InventoryManager;
         ContentManager Content;
         TilemapManager _TilemapManager;
+        GatherableManager _GatherableManager;
 
         readonly Player thePlayer;
 
@@ -35,6 +36,11 @@ namespace ExtendedTest.Managers
             _TilemapManager = mapManager;
         }
 
+        public void SetGatherManager(GatherableManager gm)
+        {
+            _GatherableManager = gm;
+        }
+
         public void CreateObject(TmxObject thing, Vector2 pos)
         {
             if (thing.Type.Equals("Dirt"))
@@ -44,7 +50,6 @@ namespace ExtendedTest.Managers
                 anotherFish._Position = _TilemapManager.findTile(pos).tileCenter;
                 anotherFish.ParentList = ObjectList;
                 anotherFish.Name = thing.Name;
-                anotherFish.DoThing(new GameObjects.Gatherables.Plants.StrawberryPlant());
                 ObjectList.Add(anotherFish);
             }
         }
@@ -123,6 +128,15 @@ namespace ExtendedTest.Managers
                 }
             }
             return null;
+        }
+
+        public void PlantAll()
+        {
+            List<WorldObject> dd = objectList.FindAll(x => x.MyWorldObjectTag == WorldObject.WorldObjectTag.kDirtTag);
+            foreach(WorldObject wo in dd)
+            {
+                (wo as GameObjects.Objects.DirtPatch).DoThing(_GatherableManager.FindPlant(Plant.PlantType.kStrawBerryType));
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

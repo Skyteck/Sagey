@@ -12,8 +12,7 @@ namespace ExtendedTest.GameObjects.Gatherables.Plants
         {
             MyPlantType = PlantType.kStrawBerryType;
             _GrowTime = 10;
-            SetHarvestTime(_GrowTime);
-            this.Name = "Strawberry Plant";
+            this.Name = "StrawberryPlant";
         }
     }
 
@@ -23,8 +22,7 @@ namespace ExtendedTest.GameObjects.Gatherables.Plants
         {
             MyPlantType = PlantType.kPotatoPlant;
             _GrowTime = 10;
-            SetHarvestTime(_GrowTime);
-            this.Name = "Potato Plant";
+            this.Name = "PotatoPlant";
         }
     }
 
@@ -34,8 +32,7 @@ namespace ExtendedTest.GameObjects.Gatherables.Plants
         {
             MyPlantType = PlantType.kCornPlant;
             _GrowTime = 30;
-            SetHarvestTime(_GrowTime);
-            this.Name = "Corn Plant";
+            this.Name = "CornPlant";
         }
     }
 }

@@ -18,6 +18,7 @@ namespace ExtendedTest.Managers
         InventoryManager _InventoryManager;
         ContentManager Content;
         TilemapManager _TilemapManager;
+        List<Plant> PlantList;
 
         readonly Player thePlayer;
         
@@ -25,10 +26,23 @@ namespace ExtendedTest.Managers
         {
             _GatherableListActive = new List<Gatherable>();
             _GatherableListInActive = new List<Gatherable>();
+            PlantList = new List<Plant>();
             _InventoryManager = invenManager;
             Content = content;
             thePlayer = player;
             _TilemapManager = mapManager;
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            PlantList.Add(new GameObjects.Gatherables.Plants.StrawberryPlant());
+            //PlantList.Add(new GameObjects.Gatherables.Plants.PotatoPlant());
+            //PlantList.Add(new GameObjects.Gatherables.Plants.CornPlant());
+
+            foreach(Plant plant in PlantList)
+            {
+                plant.LoadContent("Art/"+plant.Name, content);
+            }
         }
 
         public void CreateGatherable(TmxObject thing, Vector2 pos)
@@ -123,6 +137,10 @@ namespace ExtendedTest.Managers
             }
         }
 
+        public Plant FindPlant(Plant.PlantType type)
+        {
+            return PlantList.Find(x => x.MyPlantType == type);
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -130,6 +148,12 @@ namespace ExtendedTest.Managers
             {
                 sprite.Draw(spriteBatch);
             }
+        }
+
+        public Plant GetPlant(Plant.PlantType type)
+        {
+            GameObjects.Gatherables.Plants.StrawberryPlant p = (GameObjects.Gatherables.Plants.StrawberryPlant)FindPlant(Plant.PlantType.kStrawBerryType);
+            return p;
         }
     }
 }

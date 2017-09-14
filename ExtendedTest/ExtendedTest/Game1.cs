@@ -76,6 +76,7 @@ namespace ExtendedTest
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _WorldObjectManager, _NPCManager, Content, _ItemManager);
 
             _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _WorldObjectManager, _NPCManager, _MapManager, _GatherableManager);
+            _WorldObjectManager.SetGatherManager(_GatherableManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
             base.Initialize();
@@ -100,6 +101,8 @@ namespace ExtendedTest
             font = Content.Load<SpriteFont>("Fonts/Fipps");
             _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
+            _GatherableManager.LoadContent(Content);
+            _WorldObjectManager.PlantAll();
             //Effect PixelShader = Content.Load<Effect>("Effects/PXS");
             //check if save exists
 

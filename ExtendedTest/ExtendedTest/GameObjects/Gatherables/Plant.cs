@@ -5,16 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace ExtendedTest.GameObjects
+namespace ExtendedTest.GameObjects.Gatherables
 {
-    public class Plant : Gatherables.Gatherable
+    public class Plant : Gatherable
     {
         public int _GrowTime;
         public double _CurrentTime;
         public int _Stage;
         public bool _Harvestable = false;
-        public DateTime _PlantTime;
-        public DateTime _HarvestTime;
         public enum PlantType
         {
             kStrawBerryType,
@@ -29,15 +27,22 @@ namespace ExtendedTest.GameObjects
 
         public Plant()
         {
-            _PlantTime = DateTime.UtcNow;
+            //_PlantTime = DateTime.UtcNow;
+            Animation planted = new Animation("Planted", 64, 64, 1, 1);
+            AddAnimation(planted);
+            Animation grown = new Animation("Grown", 64, 64, 1, 1);
+            AddAnimation(grown);
         }
 
         public override void UpdateActive(GameTime gameTime)
         {
             if(!_Harvestable)
             {
-                if(DateTime.UtcNow > _HarvestTime)
+                _CurrentTime += gameTime.ElapsedGameTime.TotalSeconds;
+
+                if(_CurrentTime >= _GrowTime)
                 {
+                    ChangeAnimation("Grown");
                     _Harvestable = true;
                     Console.WriteLine(this.Name + " at " + this._Position + " Finished growing!");
 
@@ -47,11 +52,16 @@ namespace ExtendedTest.GameObjects
             base.UpdateActive(gameTime);
         }
 
-        public void SetHarvestTime(int GrowTime)
+        public void GetPlanted()
         {
-            _HarvestTime = _PlantTime;   
-            _HarvestTime = _HarvestTime.AddSeconds(GrowTime);
+            _CurrentTime = 0;
+            ChangeAnimation("Planted");
         }
+        //public void SetHarvestTime(int GrowTime)
+        //{
+        //    _HarvestTime = _PlantTime;   
+        //    _HarvestTime = _HarvestTime.AddSeconds(GrowTime);
+        //}
         
     }
 }

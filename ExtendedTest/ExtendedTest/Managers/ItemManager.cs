@@ -97,7 +97,7 @@ namespace ExtendedTest.Managers
             {
                 if (selected)
                 {
-                    newTex = _Content.Load<Texture2D>("Art/" + itemName + "Selected");
+                    newTex = _Content.Load<Texture2D>("Art/"+ itemName + "Selected");
                 }
                 else
                 {

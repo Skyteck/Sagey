@@ -27,11 +27,20 @@ namespace ExtendedTest
 
         public override void LoadContent(string path, ContentManager content)
         {
-            for(int i = 0; i < _AnimList.Count; i++)
-            {
-                _AnimList[i].Setup(i);
-            }
             base.LoadContent(path, content);
+            if(_AnimList.Count>0)
+            {
+                for(int i = 0; i < _AnimList.Count; i++)
+                {
+                    _AnimList[i].Setup(i);
+                }
+            }
+            else
+            {
+                _ActiveAnim = new Animation("Idle", this._Texture.Width, this._Texture.Height, 1, 1);
+                AddAnimation(_ActiveAnim);
+                _ActiveAnim.Setup(0);
+            }
             _ActiveAnim = _AnimList[0];
         }
 
