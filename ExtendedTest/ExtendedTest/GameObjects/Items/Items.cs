@@ -73,4 +73,15 @@ namespace ExtendedTest.Items
             this._Name = "FishStick";
         }
     }
+
+    class Strawberry : Item
+    {
+        public Strawberry()
+        {
+            this._Type = ItemType.kStrawberry;
+            this._Weight = 2;
+            this._SaleValue = 1;
+            this._Name = "Strawberry";
+        }
+    }
 }

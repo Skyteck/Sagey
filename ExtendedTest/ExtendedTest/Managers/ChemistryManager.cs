@@ -44,7 +44,7 @@ namespace ExtendedTest.Managers
         {
             foreach (Recipe recipe in RecipeList)
             {
-                recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.output));
+                recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.output)+"Item");
             }
         }
 

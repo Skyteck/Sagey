@@ -102,7 +102,6 @@ namespace ExtendedTest
             _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
             _GatherableManager.LoadContent(Content);
-            _WorldObjectManager.PlantAll();
             //Effect PixelShader = Content.Load<Effect>("Effects/PXS");
             //check if save exists
 
@@ -233,7 +232,6 @@ namespace ExtendedTest
             _UIManager.UIPanels.Add(bankPanel);
 
             mouseCursor = new Sprite();
-            mouseCursor.LoadContent("Art/log", Content);
             mouseCursor.Name = "Cursor";
         }
 
@@ -449,7 +447,12 @@ namespace ExtendedTest
 
             }
 
-            if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
+            if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released)
+            {
+                //_GatherableManager.CreatePlant(GameObjects.Gatherables.Plant.PlantType.kStrawBerryType, new Vector2(0,0));
+            }
+
+                if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
             {
                 camera.Scale += 0.2f;
                 if (camera.Scale > 2f)
@@ -501,7 +504,7 @@ namespace ExtendedTest
             //Vector2 invenBgpos = _UIManager.getUIElement("Inventory")._TopLeft;
             //_InvenManager.Draw(spriteBatch, invenBgpos);
 
-            mouseCursor.Draw(spriteBatch);
+            //mouseCursor.Draw(spriteBatch);
 
             spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
             //spriteBatch.DrawString(font, player._HP.ToString(), camera.ToWorld(new Vector2(200, 200)), Color.White);

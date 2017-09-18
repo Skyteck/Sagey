@@ -105,7 +105,7 @@ namespace ExtendedTest.Managers
             return null;
         }
 
-        public WorldObject checkCollision(Rectangle rect)
+        public WorldObject CheckCollision(Rectangle rect)
         {
             List<WorldObject> checkList = objectList.FindAll(x => x._Detector == false);
             foreach(WorldObject thing in checkList)
@@ -118,7 +118,7 @@ namespace ExtendedTest.Managers
             return null;
         }
 
-        public WorldObject checkDetectors(Rectangle rect)
+        public WorldObject CheckDetectors(Rectangle rect)
         {
             foreach (WorldObject thing in detectorList)
             {
@@ -129,16 +129,7 @@ namespace ExtendedTest.Managers
             }
             return null;
         }
-
-        public void PlantAll()
-        {
-            List<WorldObject> dd = objectList.FindAll(x => x.MyWorldObjectTag == WorldObject.WorldObjectTag.kDirtTag);
-            foreach(WorldObject wo in dd)
-            {
-                (wo as GameObjects.Objects.DirtPatch).DoThing(_GatherableManager.FindPlant(Plant.PlantType.kStrawBerryType));
-            }
-        }
-
+        
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach(Sprite sprite in ObjectList)

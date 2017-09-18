@@ -32,7 +32,7 @@ namespace ExtendedTest.Managers
 
             foreach (Item item in ItemList)
             {
-                item.itemtexture = GetTexture(item._Name);
+                item.itemtexture = GetTexture(item._Name + "Item");
             }
 
             //    string GiveUp = File.ReadAllText(@"Content\JSON\Items2.json");

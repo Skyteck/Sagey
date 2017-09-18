@@ -173,7 +173,7 @@ namespace ExtendedTest.Managers
             Sprite hit = _NPCManager.CheckCollisions(_Player._BoundingBox);
             if (hit == null)
             {
-                hit = _WorldObjectManager.checkCollision(_Player._BoundingBox);
+                hit = _WorldObjectManager.CheckCollision(_Player._BoundingBox);
             }
             if(hit == null)
             {
@@ -229,6 +229,7 @@ namespace ExtendedTest.Managers
                 _Player._Rotation = 0f;
             }
 
+
             _Player._Position = newPos;
             if ( kbState.IsKeyDown(Keys.Space) && _PrevKBState.IsKeyUp(Keys.Space))
             {
@@ -254,6 +255,18 @@ namespace ExtendedTest.Managers
             if (kbState.IsKeyDown(Keys.B) && _PrevKBState.IsKeyUp(Keys.B))
             {
                 _Player.RangedAttack();
+            }
+
+            if(kbState.IsKeyDown(Keys.L) && _PrevKBState.IsKeyUp(Keys.L))
+            {
+                //check collision to see if dirt patch hit
+                WorldObject woHit = _WorldObjectManager.CheckDetectors(CheckRect);
+                if(woHit != null)
+                {
+                    //go back to make sure it's a dirt patch that was hit.
+                    _GatherManager.CreatePlant(Plant.PlantType.kStrawBerryType, woHit._Position);
+                }
+                // if a dirt patch was hit, tell the gatherable manager to create strawberry at the dirt patch location
             }
 
             //if (kbState.IsKeyDown(Keys.J) && _PrevKBState.IsKeyUp(Keys.J))

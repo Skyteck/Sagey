@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ExtendedTest.GameObjects.Gatherables
 {
@@ -39,7 +40,7 @@ namespace ExtendedTest.GameObjects.Gatherables
             if(!_Harvestable)
             {
                 _CurrentTime += gameTime.ElapsedGameTime.TotalSeconds;
-
+                
                 if(_CurrentTime >= _GrowTime)
                 {
                     ChangeAnimation("Grown");
@@ -57,11 +58,5 @@ namespace ExtendedTest.GameObjects.Gatherables
             _CurrentTime = 0;
             ChangeAnimation("Planted");
         }
-        //public void SetHarvestTime(int GrowTime)
-        //{
-        //    _HarvestTime = _PlantTime;   
-        //    _HarvestTime = _HarvestTime.AddSeconds(GrowTime);
-        //}
-        
     }
 }

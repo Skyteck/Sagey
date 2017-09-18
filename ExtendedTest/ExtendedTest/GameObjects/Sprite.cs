@@ -78,7 +78,7 @@ namespace ExtendedTest
             }
         }
 
-        public Vector2 _TopLeft
+        public virtual Vector2 _TopLeft
         {
             get
             {

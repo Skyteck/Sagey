@@ -31,7 +31,8 @@ namespace ExtendedTest
             kItemMatches,
             kItemFishStick,
             kItemNone,
-            kItemError
+            kItemError,
+            kStrawberry
         }
 
         private ItemType type = ItemType.kItemNone;

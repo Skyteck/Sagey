@@ -17,30 +17,5 @@ namespace ExtendedTest.GameObjects.Objects
             MyWorldObjectTag = WorldObjectTag.kDirtTag;
             _Detector = true;
         }
-
-        public override void UpdateActive(GameTime gameTime)
-        {
-            base.UpdateActive(gameTime);
-
-            if(MyPlant != null)
-            {
-                MyPlant.Update(gameTime);
-            }
-        }
-
-        public void DoThing(GameObjects.Gatherables.Plant plant)
-        {
-            MyPlant = plant;
-            MyPlant._Position = this._Position;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-            if(MyPlant != null)
-            {
-                MyPlant.Draw(spriteBatch);
-            }
-        }
     }
 }

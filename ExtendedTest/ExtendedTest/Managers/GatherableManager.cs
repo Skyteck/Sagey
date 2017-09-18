@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 using ExtendedTest.GameObjects.Gatherables;
+using ExtendedTest.GameObjects.Gatherables.Plants;
 
 namespace ExtendedTest.Managers
 {
@@ -36,12 +37,13 @@ namespace ExtendedTest.Managers
         public void LoadContent(ContentManager content)
         {
             PlantList.Add(new GameObjects.Gatherables.Plants.StrawberryPlant());
+            Content = content;
             //PlantList.Add(new GameObjects.Gatherables.Plants.PotatoPlant());
             //PlantList.Add(new GameObjects.Gatherables.Plants.CornPlant());
 
             foreach(Plant plant in PlantList)
             {
-                plant.LoadContent("Art/"+plant.Name, content);
+                plant.LoadContent("Art/" + plant.Name, content);
             }
         }
 
@@ -74,6 +76,21 @@ namespace ExtendedTest.Managers
                 anotherFish.Name = thing.Name;
                 _GatherableListActive.Add(anotherFish);
                 _GatherableListActive.Add(anotherFish);
+            }
+        }
+
+        public void CreatePlant(Plant.PlantType type, Vector2 pos)
+        {
+            switch(type)
+            {
+                case Plant.PlantType.kStrawBerryType:
+                    StrawberryPlant newPlant = new StrawberryPlant();
+                    newPlant.LoadContent("Art/" + newPlant.Name, Content);
+                    newPlant._Position = pos;
+                    _GatherableListActive.Add(newPlant);
+                    break;
+                default:
+                    break;
             }
         }
 

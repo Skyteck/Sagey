@@ -20,6 +20,31 @@ namespace ExtendedTest
         bool animationDone = false;
         List<Animation> _AnimList;
         Animation _ActiveAnim = null;
+
+        public override Vector2 _TopLeft
+        {
+            get
+            {
+                return new Vector2((int)_Position.X - (_ActiveAnim._FrameWidth / 2), ((int)_Position.Y - (_ActiveAnim._FrameHeight / 2)));
+            }
+        }
+
+        public override Rectangle _BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)_TopLeft.X, ((int)_TopLeft.Y), _ActiveAnim._FrameWidth, _ActiveAnim._FrameHeight);
+            }
+        }
+
+        public override Vector2 _Center
+        {
+            get
+            {
+                return new Vector2(_ActiveAnim._FrameWidth / 2, _ActiveAnim._FrameHeight / 2);
+            }
+        }
+
         public AnimatedSprite()
         {
             _AnimList = new List<Animation>();
