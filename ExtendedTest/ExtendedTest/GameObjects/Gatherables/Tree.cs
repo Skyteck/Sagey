@@ -24,16 +24,16 @@ namespace ExtendedTest.GameObjects.Gatherables
             switch(treeType)
             {
                 case TreeType.kNormalTree:
-                    difficulty = 10;
+                    _Difficulty = 10;
                     break;
                 case TreeType.kOakTree:
-                    difficulty = 12;
+                    _Difficulty = 12;
                     break;
                 case TreeType.kCedarTree:
-                    difficulty = 18;
+                    _Difficulty = 18;
                     break;                    
                 default:
-                    difficulty = 9001;
+                    _Difficulty = 9001;
                     break;
             }
             Random ran = new Random();
@@ -47,31 +47,15 @@ namespace ExtendedTest.GameObjects.Gatherables
             output.output = Item.ItemType.kItemLog;
             output.amount = 1;
             output.odds = 95;
-            for(int i = 0; i < output.odds; i++)
-            {
-                OutputItems.Add(output);
-            }
 
+            OutputItems.Add(output);
             output = new Items.ItemBundle();
             output.output = Item.ItemType.kItemLog;
             output.amount = 2;
             output.odds = 1;
-            for (int i = 0; i < output.odds; i++)
-            {
-                OutputItems.Add(output);
-            }
 
-            if (OutputItems.Count <100)
-            {
-                Items.ItemBundle noneBundle = new Items.ItemBundle();
-                noneBundle.output = Item.ItemType.kItemNone;
-                noneBundle.amount = 1;
-                output.odds = 100 - OutputItems.Count;
-                for(int i = 0; i < output.odds; i++)
-                {
-                    OutputItems.Add(noneBundle);
-                }
-            }
+            OutputItems.Add(output);
+            SetupDrops();
         }
     }
 }

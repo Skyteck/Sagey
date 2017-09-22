@@ -54,19 +54,19 @@ namespace ExtendedTest.Managers
             {
                 if (_Player._Direction == Sprite.Direction.kDirectionDown)
                 {
-                    return new Rectangle((int)_Player._Position.X - 32, (int)_Player._Position.Y + 32, 64, 32);
+                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y + 32, 58, 32);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionUp)
                 {
-                    return new Rectangle((int)_Player._Position.X - 32, (int)_Player._Position.Y - 64, 64, 32);
+                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y - 64, 58, 32);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionLeft)
                 {
-                    return new Rectangle((int)_Player._Position.X - 64, (int)_Player._Position.Y - 32, 32, 642);
+                    return new Rectangle((int)_Player._Position.X - 64, (int)_Player._Position.Y - 26, 32, 58);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionRight)
                 {
-                    return new Rectangle((int)_Player._Position.X + 32, (int)_Player._Position.Y - 32, 32, 64);
+                    return new Rectangle((int)_Player._Position.X + 32, (int)_Player._Position.Y - 32, 32, 58);
                 }
                 else
                 {
@@ -75,6 +75,8 @@ namespace ExtendedTest.Managers
                 }
             }
         }
+
+        public Sprite _FrontSprite;
 
         public PlayerManager(Player p, InventoryManager IM, WorldObjectManager WOM, NPCManager NPCM, TilemapManager tm, GatherableManager gm)
         {
@@ -105,8 +107,7 @@ namespace ExtendedTest.Managers
                 _Player._MyState = PlayerState.kStateWC;
                 if(_GatherTimer <= 0)
                 {
-                    Item.ItemType item = _GatherManager.GatherItem(_CurrentGatherTarget);
-                    _InventoryManager.AddItem(item);
+                    Gather(_CurrentGatherTarget);
                     _GatherTimer = 1;
                 }
                 if(_CurrentGatherTarget._CurrentState == Sprite.SpriteState.kStateInActive)
@@ -123,7 +124,36 @@ namespace ExtendedTest.Managers
             }
 
             CheckArrowCollision();
+            _FrontSprite = CheckPlayerFront();
             _PlayerPos = _Player._Position;
+        }
+
+        private Sprite CheckPlayerFront()
+        {
+            //This is for interacting with NPCs or other objects.
+            //first check if we talked to an NPC;
+            Sprite spHit = null;
+            spHit = _NPCManager.CheckCollisions(CheckRect);
+            if (spHit != null)
+            {
+                return spHit;
+            }
+            if (spHit == null)
+            {
+                spHit = _GatherManager.CheckCollision(CheckRect);
+                if(spHit != null)
+                {
+                    return spHit;
+                }
+            }
+
+            spHit = _WorldObjectManager.CheckDetectors(CheckRect);
+            if (spHit != null)
+            {
+                //go back to make sure it's a dirt patch that was hit.
+                return spHit;
+            }
+            return spHit;
         }
 
         private void CheckSwordCollision()
@@ -173,11 +203,11 @@ namespace ExtendedTest.Managers
             Sprite hit = _NPCManager.CheckCollisions(_Player._BoundingBox);
             if (hit == null)
             {
-                hit = _WorldObjectManager.CheckCollision(_Player._BoundingBox);
+                hit = _WorldObjectManager.CheckWalkable(_Player._BoundingBox);
             }
             if(hit == null)
             {
-                hit = _GatherManager.CheckCollision(_Player._WorldBoundingBox);
+                hit = _GatherManager.CheckWalkable(_Player._WorldBoundingBox);
             }
             if(hit != null)
             {
@@ -231,13 +261,14 @@ namespace ExtendedTest.Managers
 
 
             _Player._Position = newPos;
-            if ( kbState.IsKeyDown(Keys.Space) && _PrevKBState.IsKeyUp(Keys.Space))
+
+            if (kbState.IsKeyDown(Keys.Space) && _PrevKBState.IsKeyUp(Keys.Space))
             {
                 //This is for interacting with NPCs or other objects.
                 //first check if we talked to an NPC;
 
                 NPC npcHit = _NPCManager.CheckCollisions(CheckRect);
-                if(npcHit != null)
+                if (npcHit != null)
                 {
                     ProcessNPC(npcHit);
                 }
@@ -261,7 +292,7 @@ namespace ExtendedTest.Managers
             {
                 //check collision to see if dirt patch hit
                 WorldObject woHit = _WorldObjectManager.CheckDetectors(CheckRect);
-                if(woHit != null)
+                if (woHit != null)
                 {
                     //go back to make sure it's a dirt patch that was hit.
                     _GatherManager.CreatePlant(Plant.PlantType.kStrawBerryType, woHit._Position);
@@ -292,8 +323,8 @@ namespace ExtendedTest.Managers
 
         private void Gather(Gatherable gatherable)
         {
-            Item.ItemType itemGet = gatherable.GetGathered();
-            if(itemGet != Item.ItemType.kItemNone)
+            GameObjects.Items.ItemBundle itemGet = _GatherManager.GatherItem(gatherable);
+            if(itemGet.output != Item.ItemType.kItemNone)
             {
                 _InventoryManager.AddItem(itemGet);
             }

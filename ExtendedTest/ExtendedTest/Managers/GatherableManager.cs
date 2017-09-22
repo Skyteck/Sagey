@@ -140,17 +140,31 @@ namespace ExtendedTest.Managers
             return null;
         }
 
-        public Item.ItemType GatherItem(Gatherable thing)
+        public Gatherable CheckWalkable(Rectangle rect)
+        {
+
+            List<Gatherable> checkList = _GatherableListActive.FindAll(x => x._Walkable == false);
+            foreach (Gatherable thing in checkList)
+            {
+                if (thing._BoundingBox.Intersects(rect))
+                {
+                    return thing;
+                }
+            }
+            return null;
+        }
+
+        public GameObjects.Items.ItemBundle GatherItem(Gatherable thing)
         {
             Random ran = new Random();
-            int randomNumber = ran.Next(0, thing.difficulty);
+            int randomNumber = ran.Next(0, thing._Difficulty);
             if (randomNumber == 0)
             {
                 return thing.GetGathered();
             }
             else
             {
-                return Item.ItemType.kItemNone;
+                return new GameObjects.Items.ItemBundle();
             }
         }
 

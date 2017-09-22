@@ -17,5 +17,6 @@ namespace ExtendedTest.GameObjects.Objects
             MyWorldObjectTag = WorldObjectTag.kDirtTag;
             _Detector = true;
         }
+        
     }
 }

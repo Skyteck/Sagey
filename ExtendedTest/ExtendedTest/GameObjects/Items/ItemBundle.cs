@@ -8,7 +8,7 @@
 
         public ItemBundle()
         {
-
+            output = Item.ItemType.kItemNone;
         }
     }
 }

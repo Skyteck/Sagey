@@ -45,7 +45,8 @@ namespace ExtendedTest
         //UI        
         Vector2 mouseClickPos;
         Sprite mouseCursor;
-
+        Texture2D _SelectTex;
+        Sprite _SelectedSprite = null;
         bool BankMode = false;
         public Game1()
         {
@@ -79,6 +80,8 @@ namespace ExtendedTest
             _WorldObjectManager.SetGatherManager(_GatherableManager);
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
+
+            _SelectedSprite = new Sprite();
             base.Initialize();
         }
 
@@ -102,7 +105,8 @@ namespace ExtendedTest
             _ItemManager.LoadItems("Content/JSON/Items.json");
             _ChemistryManager.LoadIcons();
             _GatherableManager.LoadContent(Content);
-            //Effect PixelShader = Content.Load<Effect>("Effects/PXS");
+
+            _SelectTex = Content.Load<Texture2D>("Art/WhiteTexture");
             //check if save exists
 
             //else start a new save
@@ -217,6 +221,8 @@ namespace ExtendedTest
             inventoryBG._Opacity = 0.6f;
             _UIManager.UIPanels.Add(inventoryBG);
 
+            _UIManager.TogglePanel("Inventory");
+
             GameObjects.UIObjects.CraftingPanel craftingPanel = new GameObjects.UIObjects.CraftingPanel(_ChemistryManager);
             craftingPanel.LoadContent("Art/inventoryBG", Content);
             craftingPanel._Position = new Vector2(450, 450);
@@ -271,7 +277,6 @@ namespace ExtendedTest
             }
         }
 
-
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
@@ -309,7 +314,11 @@ namespace ExtendedTest
                 //    //kbHandler.Input = string.Empty;
                 //}
                 _PlayerManager.Update(gameTime);
-
+                _SelectedSprite = null;
+                if(_PlayerManager._FrontSprite != null)
+                {
+                    _SelectedSprite = _PlayerManager._FrontSprite;
+                }
                 if(_PlayerManager._BankerGo)
                 {
                     _UIManager.ShowPanel("Bank");
@@ -505,12 +514,25 @@ namespace ExtendedTest
             //_InvenManager.Draw(spriteBatch, invenBgpos);
 
             //mouseCursor.Draw(spriteBatch);
-
+            DrawSelectRect(spriteBatch);
             spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
             //spriteBatch.DrawString(font, player._HP.ToString(), camera.ToWorld(new Vector2(200, 200)), Color.White);
-
+            
             base.Draw(gameTime);
             spriteBatch.End();
+        }
+
+        private void DrawSelectRect(SpriteBatch sb)
+        {
+            if(_SelectedSprite != null)
+            {
+                int border = 3;
+                Rectangle rect = _SelectedSprite._BoundingBox;
+                sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, border, rect.Height + border), Color.Red);
+                sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, rect.Width + border, border), Color.White);
+                sb.Draw(_SelectTex, new Rectangle(rect.X + rect.Width, rect.Y, border, rect.Height + border), Color.White);
+                sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y + rect.Height, rect.Width + border, border), Color.White);
+            }
         }
 
         private void CheckPlayerHit()

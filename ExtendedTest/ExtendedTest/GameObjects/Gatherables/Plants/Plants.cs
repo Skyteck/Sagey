@@ -13,6 +13,13 @@ namespace ExtendedTest.GameObjects.Gatherables.Plants
             MyPlantType = PlantType.kStrawBerryType;
             _GrowTime = 10;
             this.Name = "StrawberryPlant";
+            _MyDrops = new Items.ItemBundle();
+            _MyDrops.output = Item.ItemType.kStrawberry;
+            _MyDrops.amount = 3;
+            _MyDrops.odds = 100;
+            OutputItems.Add(_MyDrops);
+
+            SetupDrops();
         }
     }
 

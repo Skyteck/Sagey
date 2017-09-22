@@ -15,6 +15,7 @@ namespace ExtendedTest
         private double timeDead = 0d;
         private bool isGatherable = false;
         public bool _Detector = false;
+        public bool _Walkable = false;
         public enum WorldObjectTag
         {
             kFireTag,
@@ -50,6 +51,11 @@ namespace ExtendedTest
         }
 
         public virtual void DoThing()
+        {
+
+        }
+
+        protected void Interact()
         {
 
         }

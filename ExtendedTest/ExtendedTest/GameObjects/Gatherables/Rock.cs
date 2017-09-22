@@ -26,17 +26,17 @@ namespace ExtendedTest.GameObjects.Gatherables
             switch(rockType)
             {
                 case RockType.kNormalRock:
-                    difficulty = 5;
+                    _Difficulty = 5;
                     break;
                 case RockType.kClayRock:
-                    difficulty = 2;
+                    _Difficulty = 2;
                     break;
                 case RockType.kIronRock:
-                    difficulty = 10;
+                    _Difficulty = 10;
                     break;
                     
                 default:
-                    difficulty = 9001;
+                    _Difficulty = 9001;
                     break;
             }
             
@@ -49,24 +49,9 @@ namespace ExtendedTest.GameObjects.Gatherables
             output.output = Item.ItemType.kItemOre;
             output.amount = 1;
             output.odds = 100;
+            OutputItems.Add(output);
 
-
-            for (int i = 0; i < output.odds; i++)
-            {
-                OutputItems.Add(output);
-            }
-
-            if (OutputItems.Count < 100)
-            {
-                Items.ItemBundle noneBundle = new Items.ItemBundle();
-                noneBundle.output = Item.ItemType.kItemNone;
-                noneBundle.amount = 1;
-                output.odds = 100 - OutputItems.Count;
-                for (int i = 0; i < output.odds; i++)
-                {
-                    OutputItems.Add(noneBundle);
-                }
-            }
+            SetupDrops();
         }        
     }
 }

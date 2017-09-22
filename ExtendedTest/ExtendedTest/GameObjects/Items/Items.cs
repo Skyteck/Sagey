@@ -82,6 +82,7 @@ namespace ExtendedTest.Items
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "Strawberry";
+            this._Stackable = true;
         }
     }
 }

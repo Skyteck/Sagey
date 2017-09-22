@@ -40,9 +40,34 @@ namespace ExtendedTest.Managers
             }
 
             InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
+
+            //item stackable, slot not found make one with amount
+            //item not stackable, create new slot with it
+
+
+            //item stackable, slot found. add to it.
             if (itemToAdd._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
                 itemSlot.Amount += amount;
+            }
+            else if(itemToAdd._Stackable && itemSlot == null)
+            {
+                if (itemSlots.Count < this.capacity) //Bag can only be so full...
+                {
+                    // create new slot for the item
+                    itemSlot = new InventorySlot();
+                    //create the item
+                    //put item in slot
+                    itemToAdd.itemtexture = _ItemManager.GetTexture(itemToAdd);
+                    itemSlot.ItemInSlot = itemToAdd;
+                    itemSlot.Amount = amount;
+                    itemSlots.Add(itemSlot);
+
+                }
+                else
+                {
+                    //error adding item message;
+                }
             }
             else //item not stackable or item not found, create a new slot
             {

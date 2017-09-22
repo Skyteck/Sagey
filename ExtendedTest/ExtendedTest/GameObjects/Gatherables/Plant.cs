@@ -14,6 +14,7 @@ namespace ExtendedTest.GameObjects.Gatherables
         public double _CurrentTime;
         public int _Stage;
         public bool _Harvestable = false;
+        public Items.ItemBundle _MyDrops;
         public enum PlantType
         {
             kStrawBerryType,
@@ -33,6 +34,10 @@ namespace ExtendedTest.GameObjects.Gatherables
             AddAnimation(planted);
             Animation grown = new Animation("Grown", 64, 64, 1, 1);
             AddAnimation(grown);
+            _Walkable = true;
+            _Difficulty = 0;
+            ItemGiveCount = 1;
+            _Respawns = false;
         }
 
         public override void UpdateActive(GameTime gameTime)
@@ -45,8 +50,6 @@ namespace ExtendedTest.GameObjects.Gatherables
                 {
                     ChangeAnimation("Grown");
                     _Harvestable = true;
-                    Console.WriteLine(this.Name + " at " + this._Position + " Finished growing!");
-
                 }
             }
 

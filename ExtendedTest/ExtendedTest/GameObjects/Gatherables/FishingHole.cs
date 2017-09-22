@@ -24,16 +24,16 @@ namespace ExtendedTest.GameObjects.Gatherables
             switch(fishingType)
             {
                 case FishingType.kNetType:
-                    difficulty = 2;
+                    _Difficulty = 2;
                     break;
                 case FishingType.kBaitType:
-                    difficulty = 6;
+                    _Difficulty = 6;
                     break;
                 case FishingType.kFlyFishType:
-                    difficulty = 9;
+                    _Difficulty = 9;
                     break;                    
                 default:
-                    difficulty = 90000001;
+                    _Difficulty = 90000001;
                     break;
             }
             Random ran = new Random();
@@ -49,23 +49,9 @@ namespace ExtendedTest.GameObjects.Gatherables
             output.amount = 1;
             output.odds = 100;
 
+            OutputItems.Add(output);
 
-            for (int i = 0; i < output.odds; i++)
-            {
-                OutputItems.Add(output);
-            }
-
-            if (OutputItems.Count < 100)
-            {
-                Items.ItemBundle noneBundle = new Items.ItemBundle();
-                noneBundle.output = Item.ItemType.kItemNone;
-                noneBundle.amount = 1;
-                output.odds = 100 - OutputItems.Count;
-                for (int i = 0; i < output.odds; i++)
-                {
-                    OutputItems.Add(noneBundle);
-                }
-            }
+            SetupDrops();
         }
     }
 }

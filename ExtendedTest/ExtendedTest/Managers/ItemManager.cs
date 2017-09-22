@@ -28,6 +28,7 @@ namespace ExtendedTest.Managers
             ItemList.Add(new Items.Ore());
             ItemList.Add(new Items.FishStick());
             ItemList.Add(new Items.Matches());
+            ItemList.Add(new Items.Strawberry());
 
 
             foreach (Item item in ItemList)
@@ -87,7 +88,7 @@ namespace ExtendedTest.Managers
 
         internal Texture2D GetTexture(Item item, bool selected = false)
         {
-            return GetTexture(item._Name, selected);
+            return GetTexture(item._Name + "Item", selected);
         }
 
         public Texture2D GetTexture(String itemName, bool selected = false)

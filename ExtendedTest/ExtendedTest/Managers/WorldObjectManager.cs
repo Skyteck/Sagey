@@ -105,6 +105,19 @@ namespace ExtendedTest.Managers
             return null;
         }
 
+        public WorldObject CheckWalkable(Rectangle rect)
+        {
+            List<WorldObject> checkList = objectList.FindAll(x => x._Walkable == false);
+            foreach (WorldObject thing in checkList)
+            {
+                if (thing._BoundingBox.Intersects(rect))
+                {
+                    return thing;
+                }
+            }
+            return null;
+        }
+
         public WorldObject CheckCollision(Rectangle rect)
         {
             List<WorldObject> checkList = objectList.FindAll(x => x._Detector == false);

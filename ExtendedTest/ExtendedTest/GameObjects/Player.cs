@@ -136,6 +136,7 @@ namespace ExtendedTest
             {
                 arrow.LoadContent("Art/Sword", content);
             }
+            
         }
 
         public override void UpdateActive(GameTime gameTime)
