@@ -22,9 +22,9 @@ namespace ExtendedTest.Managers
 
         public void Update(GameTime gameTime)
         {
-            foreach(UIPanel element in UIPanels)
+            foreach(UIPanel element in ActivePanels)
             {
-                element.UpdateActive(gameTime);
+                element.Update(gameTime);
             }
         }
 

@@ -68,7 +68,7 @@ namespace ExtendedTest.GameObjects.Gatherables
             return _Drops[randomNumber];
         }
 
-        public override void UpdateDead(GameTime gameTime)
+        protected override void UpdateDead(GameTime gameTime)
         {
             if(_Respawns)
             {

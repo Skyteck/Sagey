@@ -104,14 +104,9 @@ namespace ExtendedTest.Managers
             _GatherableListActive = gaList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateActive);
             _GatherableListInActive = gaList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateInActive);
 
-            foreach (WorldObject sprite in _GatherableListActive)
+            foreach(WorldObject sprite in gaList)
             {
-                sprite.UpdateActive(gameTime);
-            }
-
-            foreach(WorldObject sprite in _GatherableListInActive)
-            {
-                sprite.UpdateDead(gameTime);
+                sprite.Update(gameTime);
             }
         }
 

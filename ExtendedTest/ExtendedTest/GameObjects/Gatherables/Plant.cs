@@ -40,7 +40,7 @@ namespace ExtendedTest.GameObjects.Gatherables
             _Respawns = false;
         }
 
-        public override void UpdateActive(GameTime gameTime)
+        protected override void UpdateActive(GameTime gameTime)
         {
             if(!_Harvestable)
             {

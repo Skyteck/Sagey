@@ -74,14 +74,9 @@ namespace ExtendedTest.Managers
             _SpriteListActive = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateActive);
             _SpriteListDead = combinedList.FindAll(x => x._CurrentState == Sprite.SpriteState.kStateInActive);
 
-            foreach (NPC sprite in _SpriteListActive)
+            foreach(NPC sprite in combinedList)
             {
-                sprite.UpdateActive(gameTime);
-            }
-
-            foreach (NPC sprite in _SpriteListDead)
-            {
-                sprite.UpdateDead(gameTime);
+                sprite.Update(gameTime);
             }
         }
 

@@ -72,7 +72,7 @@ namespace ExtendedTest.GameObjects
             parentPlayer = p;
         }
 
-        public override void UpdateActive(GameTime gameTime)
+        protected override void UpdateActive(GameTime gameTime)
         {
             if(_CurrentState == SpriteState.kStateActive)
             {

@@ -347,7 +347,7 @@ namespace ExtendedTest
 
                 foreach (UIPanel element in _UIManager.UIPanels)
                 {
-                    element.UpdateActive(gameTime);
+                    element.Update(gameTime);
                 }
 
                 base.Update(gameTime);

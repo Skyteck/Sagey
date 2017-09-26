@@ -10,6 +10,7 @@ namespace ExtendedTest
     public class Recipe
     {
         public string Name;
+        public String _HoverText = "Hover Text!";
         public List<Ingredient> ingredients;
         public Item.ItemType output;
         public int amount;

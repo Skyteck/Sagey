@@ -40,7 +40,7 @@ namespace ExtendedTest
         }
 
 
-        public override void UpdateDead(GameTime gameTime)
+        protected override void UpdateDead(GameTime gameTime)
         {
             base.UpdateDead(gameTime);
         }

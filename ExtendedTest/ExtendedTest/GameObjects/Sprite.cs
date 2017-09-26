@@ -217,14 +217,18 @@ namespace ExtendedTest
             {
                 UpdateActive(gt);
             }
-            else
+            else if(_CurrentState == SpriteState.kStateInActive)
             {
                 UpdateDead(gt);
+            }
+            else
+            {
+                Console.WriteLine(this + " unknown state.");
             }
         }
 
 
-        public virtual void UpdateActive(GameTime gameTime)
+        protected virtual void UpdateActive(GameTime gameTime)
         {
             if (_CurrentState == SpriteState.kStateActive)
             {
@@ -252,7 +256,7 @@ namespace ExtendedTest
             }
         }
 
-        public virtual void UpdateDead(GameTime gameTime)
+        protected virtual void UpdateDead(GameTime gameTime)
         {
 
         }

@@ -78,7 +78,7 @@ namespace ExtendedTest
             animLooping = looping;
         }
 
-        public override void UpdateActive(GameTime gameTime)
+        protected override void UpdateActive(GameTime gameTime)
         {
             base.UpdateActive(gameTime);
             timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;

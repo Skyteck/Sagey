@@ -116,7 +116,7 @@ namespace ExtendedTest.Managers
                 }
             }
             
-            _Player.UpdateActive(gt);
+            _Player.Update(gt);
 
             if (_Player._PlayerAttacking)
             {

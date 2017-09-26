@@ -139,7 +139,7 @@ namespace ExtendedTest
             
         }
 
-        public override void UpdateActive(GameTime gameTime)
+        protected override void UpdateActive(GameTime gameTime)
         {
             if(comboCD > 0f)
             {

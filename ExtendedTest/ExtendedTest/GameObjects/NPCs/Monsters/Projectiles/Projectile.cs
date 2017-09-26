@@ -57,7 +57,7 @@ namespace ExtendedTest
             collisionBox.frameHeight = 10; //this._ProjectileTip.Height;
         }
 
-        public override void UpdateActive(GameTime gameTime)
+        protected override void UpdateActive(GameTime gameTime)
         {
             collisionBox._Position = HelperFunctions.PointToVector(this._ProjectileTip.Location);
             if (this._CurrentState != SpriteState.kStateActive) return;

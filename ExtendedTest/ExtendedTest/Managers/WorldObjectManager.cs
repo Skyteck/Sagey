@@ -81,16 +81,11 @@ namespace ExtendedTest.Managers
 
             detectorList = objectList.FindAll(x => x._Detector == true);
 
-            foreach (WorldObject sprite in ObjectList)
-            {
-                sprite.UpdateActive(gameTime);
-            }
 
-            foreach(WorldObject sprite in objectListInactive)
+            foreach(WorldObject sprite in combinedList)
             {
-                sprite.UpdateDead(gameTime);
+                sprite.Update(gameTime);
             }
-
         }
 
         public WorldObject CheckClicks(Vector2 pos)

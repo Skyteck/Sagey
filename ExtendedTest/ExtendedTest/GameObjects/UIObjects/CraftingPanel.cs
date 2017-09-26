@@ -12,7 +12,7 @@ namespace ExtendedTest.GameObjects.UIObjects
     public class CraftingPanel : UIPanel
     {
         Managers.ChemistryManager _ChemistryManager;
-        SpriteFont count;
+        SpriteFont _TheFont;
         Texture2D SelectedBG;
         Texture2D normalBG;
         List<CraftingSlot> CraftSlots;
@@ -29,23 +29,18 @@ namespace ExtendedTest.GameObjects.UIObjects
         public CraftingPanel(Managers.ChemistryManager ChemM)
         {
             _ChemistryManager = ChemM;
-            CraftSlots = new List<CraftingSlot>();
         }
 
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
-            count = content.Load<SpriteFont>("Fonts/Fipps");
+            _TheFont = content.Load<SpriteFont>("Fonts/Fipps");
             SelectedBG = content.Load<Texture2D>("Art/itemSlotSelected");
             normalBG = content.Load<Texture2D>("Art/itemSlotNormal");
-        }
 
-        public override void UpdateActive(GameTime gameTime)
-        {
-            CraftSlots.Clear();
-            foreach (Recipe recipe in _ChemistryManager.ActiveRecipes)
+            for(int i = 0; i < 30; i++)
             {
-                CraftingSlot slot = new CraftingSlot(SelectedBG, normalBG, recipe, count);
+                CraftingSlot slot = new CraftingSlot(SelectedBG, normalBG, _TheFont);
                 CraftSlots.Add(slot);
             }
         }
@@ -64,6 +59,17 @@ namespace ExtendedTest.GameObjects.UIObjects
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+
+            foreach(CraftingSlot slot in CraftSlots)
+            {
+                slot.Reset();
+            }
+            
+
+            foreach (Recipe recipe in _ChemistryManager.ActiveRecipes)
+            {
+                ActivateSlot(recipe);
+            }
 
             int rows = 5;
             int columns = 6;
@@ -107,6 +113,11 @@ namespace ExtendedTest.GameObjects.UIObjects
                 }
             }
         }
+
+        private void ActivateSlot(Recipe recipe)
+        {
+            CraftSlots.Find(x => x.Active == false).SetRecipe(recipe);
+        }
     }
 
     public class CraftingSlot
@@ -121,9 +132,8 @@ namespace ExtendedTest.GameObjects.UIObjects
         public bool Active = true;
         public Rectangle MyRect => new Rectangle((int)Position.X, (int)Position.Y, 32, 32);
 
-        public CraftingSlot(Texture2D sBG, Texture2D nBG, Recipe recipe, SpriteFont f)
+        public CraftingSlot(Texture2D sBG, Texture2D nBG, SpriteFont f)
         {
-            MyRecipe = recipe;
             regularBG = nBG;
             selectedBG = sBG;
             font = f;
@@ -135,6 +145,11 @@ namespace ExtendedTest.GameObjects.UIObjects
             Active = true;
         }
 
+        public void Reset()
+        {
+            Active = false;
+            MyRecipe = null;
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {

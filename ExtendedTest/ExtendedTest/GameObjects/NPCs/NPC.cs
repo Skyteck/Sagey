@@ -102,7 +102,7 @@ namespace ExtendedTest
             effectTex = content.Load<Texture2D>("Art/Effect");
         }
 
-        public override void UpdateActive(GameTime gameTime)
+        protected override void UpdateActive(GameTime gameTime)
         {
             if (!atDestination)
             {
@@ -116,7 +116,7 @@ namespace ExtendedTest
             base.UpdateActive(gameTime);
         }
 
-        public override void UpdateDead(GameTime gameTime)
+        protected override void UpdateDead(GameTime gameTime)
         {
             if (_CurrentState == SpriteState.kStateInActive)
             {
