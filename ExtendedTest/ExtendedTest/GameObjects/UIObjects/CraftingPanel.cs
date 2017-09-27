@@ -29,6 +29,8 @@ namespace ExtendedTest.GameObjects.UIObjects
         public CraftingPanel(Managers.ChemistryManager ChemM)
         {
             _ChemistryManager = ChemM;
+            CraftSlots = new List<CraftingSlot>();
+            _ChemistryManager.RecipesChanged += HandleRecipesChanged;
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -60,16 +62,9 @@ namespace ExtendedTest.GameObjects.UIObjects
         {
             base.Draw(spriteBatch);
 
-            foreach(CraftingSlot slot in CraftSlots)
-            {
-                slot.Reset();
-            }
-            
 
-            foreach (Recipe recipe in _ChemistryManager.ActiveRecipes)
-            {
-                ActivateSlot(recipe);
-            }
+
+            if (CraftSlots.Count(x => x.Active == true) <= 0) return;
 
             int rows = 5;
             int columns = 6;
@@ -83,10 +78,10 @@ namespace ExtendedTest.GameObjects.UIObjects
             switch(CurrentMode)
             {
                 case PanelMode.kModeHand:
-                    currentSlots = CraftSlots.FindAll(x => x.MyRecipe.MadeOnTag == WorldObject.WorldObjectTag.kNoneTag);
+                    currentSlots = CraftSlots.FindAll(x => x.Active == true && x.MyRecipe.MadeOnTag == WorldObject.WorldObjectTag.kNoneTag);
                     break;
                 case PanelMode.kModeFire:
-                    currentSlots = CraftSlots.FindAll(x => x.MyRecipe.MadeOnTag == WorldObject.WorldObjectTag.kFireTag);
+                    currentSlots = CraftSlots.FindAll(x => x.Active == true  && x.MyRecipe.MadeOnTag == WorldObject.WorldObjectTag.kFireTag );
                     break;
                 default:
                     currentSlots = CraftSlots;
@@ -118,6 +113,22 @@ namespace ExtendedTest.GameObjects.UIObjects
         {
             CraftSlots.Find(x => x.Active == false).SetRecipe(recipe);
         }
+
+        public void HandleRecipesChanged(object sender, EventArgs args)
+        {
+            //if (!_Showing) return;
+            foreach (CraftingSlot slot in CraftSlots)
+            {
+                slot.Reset();
+            }
+
+
+            foreach (Recipe recipe in _ChemistryManager.ActiveRecipes)
+            {
+                ActivateSlot(recipe);
+            }
+        }
+
     }
 
     public class CraftingSlot
@@ -129,7 +140,7 @@ namespace ExtendedTest.GameObjects.UIObjects
         public Texture2D regularBG;
         public Texture2D selectedBG;
         public bool Selected = false;
-        public bool Active = true;
+        public bool Active = false;
         public Rectangle MyRect => new Rectangle((int)Position.X, (int)Position.Y, 32, 32);
 
         public CraftingSlot(Texture2D sBG, Texture2D nBG, SpriteFont f)
@@ -181,5 +192,7 @@ namespace ExtendedTest.GameObjects.UIObjects
                 //gray ingredients out if can't make recipe
             }
         }
+
+
     }
 }

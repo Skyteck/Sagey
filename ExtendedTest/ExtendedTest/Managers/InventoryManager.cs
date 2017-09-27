@@ -11,6 +11,8 @@ namespace ExtendedTest.Managers
 {
     public class InventoryManager
     {
+        public event EventHandler InventoryChanged;
+
         public List<InventorySlot> itemSlots;
         int capacity = 28;
 
@@ -30,7 +32,7 @@ namespace ExtendedTest.Managers
         {
             //find if the item already exists in a slot
             if (itemType == Item.ItemType.kItemNone) return;
-
+            bool dirty = false;
             Item itemToAdd = _ItemManager.GetItem(itemType);
 
             if(itemToAdd == null)
@@ -49,6 +51,7 @@ namespace ExtendedTest.Managers
             if (itemToAdd._Stackable && itemSlot != null) //item is stackable and a slot for it was found
             {
                 itemSlot.Amount += amount;
+                dirty = true;
             }
             else if(itemToAdd._Stackable && itemSlot == null)
             {
@@ -62,6 +65,7 @@ namespace ExtendedTest.Managers
                     itemSlot.ItemInSlot = itemToAdd;
                     itemSlot.Amount = amount;
                     itemSlots.Add(itemSlot);
+                    dirty = true;
 
                 }
                 else
@@ -81,12 +85,18 @@ namespace ExtendedTest.Managers
                     itemSlot.ItemInSlot = itemToAdd;
                     itemSlot.Amount = 1;
                     itemSlots.Add(itemSlot);
+                    dirty = true;
                     
                 }
                 else
                 {
                     //error adding item message;
                 }
+            }
+
+            if(dirty)
+            {
+                OnInventoryChanged();
             }
         }
 
@@ -112,6 +122,7 @@ namespace ExtendedTest.Managers
         private void ReallyRemoveItem(List<InventorySlot> Slots, int Amount)
         {
             int numberRemoved = 0;
+            bool dirty = false;
             foreach(InventorySlot slot in Slots)
             {
                 if (slot != null)
@@ -123,11 +134,13 @@ namespace ExtendedTest.Managers
                         if (slot.Amount <= 0)
                         {
                             itemSlots.Remove(slot);
+                            dirty = true;
                         }
                     }
                     else
                     {
                         itemSlots.Remove(slot);
+                        dirty = true;
                         numberRemoved++;
                     }
 
@@ -140,6 +153,10 @@ namespace ExtendedTest.Managers
                 {
                     break;
                 }
+            }
+            if(dirty)
+            {
+                OnInventoryChanged();
             }
         }
 
@@ -206,5 +223,11 @@ namespace ExtendedTest.Managers
             }
             return items;
         }
+        
+        public void OnInventoryChanged()
+        {
+            InventoryChanged?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 }

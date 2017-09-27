@@ -10,6 +10,9 @@ namespace ExtendedTest.Managers
 {
     public class ChemistryManager
     {
+
+        public event EventHandler RecipesChanged;
+
         InventoryManager _InvenManager;
         WorldObjectManager _WorldObjectManager;
         NPCManager _NPCManager;
@@ -19,8 +22,11 @@ namespace ExtendedTest.Managers
         public List<Recipe> RecipeList;
         public List<Recipe> ActiveRecipes;
 
+
+
         public ChemistryManager(InventoryManager invenM, WorldObjectManager WOM, NPCManager NPCM, ContentManager content, ItemManager IM)
         {
+
             RecipeList = new List<Recipe>();
             ActiveRecipes = new List<Recipe>();
             _InvenManager = invenM;
@@ -28,6 +34,8 @@ namespace ExtendedTest.Managers
             _NPCManager = NPCM;
             _Content = content;
             _ItemManager = IM;
+
+            _InvenManager.InventoryChanged += HandleInventoryChanged;
 
             Recipe matches = new Recipes.MatchesRecipe();
             RecipeList.Add(matches);
@@ -50,6 +58,7 @@ namespace ExtendedTest.Managers
 
         public void CheckRecipes()
         {
+            bool dirty = false;
             foreach(Recipe recipe in RecipeList)
             {
                 bool itemsFound = false;
@@ -72,6 +81,7 @@ namespace ExtendedTest.Managers
                     if(!recipeInList) // items needed found and the recipe isn't in the active list.
                     {
                         ActiveRecipes.Add(recipe);
+                        dirty = true;
                     }
                 } 
                 else //items not found, if recipe in active list remove it
@@ -79,8 +89,13 @@ namespace ExtendedTest.Managers
                     if(recipeInList)
                     {
                         ActiveRecipes.Remove(recipe);
+                        dirty = true;
                     }
                 }
+            }
+            if(dirty)
+            {
+                OnRecipesChanged();
             }
         }
 
@@ -104,5 +119,15 @@ namespace ExtendedTest.Managers
             }
         }
 
+        public void HandleInventoryChanged(object sender, EventArgs args)
+        {
+            CheckRecipes();
+        }
+
+
+        public void OnRecipesChanged()
+        {
+            RecipesChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

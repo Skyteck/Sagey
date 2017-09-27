@@ -334,7 +334,9 @@ namespace ExtendedTest
                 _WorldObjectManager.Update(gameTime);
                 _GatherableManager.Update(gameTime);
 
-                if(!kbHandler.typingMode)
+                //TODO: Figure out how to only call this when inventory changes
+                //_ChemistryManager.CheckRecipes();
+                if (!kbHandler.typingMode)
                 {
                     //processor.currentError = string.Empty;
                     ProcessCamera(gameTime);
@@ -344,13 +346,9 @@ namespace ExtendedTest
                 _UIManager.getUIElement("Inventory")._Position = camera.ToWorld(400, 400);
                 _UIManager.getUIElement("Crafting")._Position = camera.ToWorld(600, 400);
                 _UIManager.getUIElement("Bank")._Position = camera.ToWorld(200, 400);
-
-                foreach (UIPanel element in _UIManager.UIPanels)
-                {
-                    element.Update(gameTime);
-                }
-
+                
                 base.Update(gameTime);
+
                 //Show FPS
                 if((1 / gameTime.ElapsedGameTime.TotalSeconds) <= 59)
                 {
@@ -366,7 +364,6 @@ namespace ExtendedTest
 
             if(IsKeyPressed(Keys.E))
             {
-                _ChemistryManager.CheckRecipes();
                 _UIManager.TogglePanel("Crafting");
             }
             if (IsKeyPressed(Keys.I))
@@ -528,7 +525,7 @@ namespace ExtendedTest
             {
                 int border = 3;
                 Rectangle rect = _SelectedSprite._BoundingBox;
-                sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, border, rect.Height + border), Color.Red);
+                sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, border, rect.Height + border), Color.White);
                 sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, rect.Width + border, border), Color.White);
                 sb.Draw(_SelectTex, new Rectangle(rect.X + rect.Width, rect.Y, border, rect.Height + border), Color.White);
                 sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y + rect.Height, rect.Width + border, border), Color.White);
