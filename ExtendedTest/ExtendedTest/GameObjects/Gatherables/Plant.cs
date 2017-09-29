@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ExtendedTest.GameObjects.Gatherables
 {
-    public class Plant : Gatherable
+    public abstract class Plant : Gatherable
     {
         public int _GrowTime;
         public double _CurrentTime;

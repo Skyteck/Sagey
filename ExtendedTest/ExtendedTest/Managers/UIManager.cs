@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Comora;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,12 @@ namespace ExtendedTest.Managers
             _invenManager = invenManager;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Camera _Cam)
         {
             foreach(UIPanel element in ActivePanels)
             {
                 element.Update(gameTime);
+                element._Position = _Cam.ToWorld(element._InitialPos);
             }
         }
 

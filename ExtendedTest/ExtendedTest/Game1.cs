@@ -216,7 +216,7 @@ namespace ExtendedTest
         {
             GameObjects.UIObjects.InventoryPanel inventoryBG = new GameObjects.UIObjects.InventoryPanel(_InvenManager);
             inventoryBG.LoadContent("Art/inventoryBG", Content);
-            inventoryBG._Position = new Vector2(250, 450);
+            inventoryBG._InitialPos = new Vector2(400, 450);
             inventoryBG.Name = "Inventory";
             inventoryBG._Opacity = 0.6f;
             _UIManager.UIPanels.Add(inventoryBG);
@@ -225,14 +225,15 @@ namespace ExtendedTest
 
             GameObjects.UIObjects.CraftingPanel craftingPanel = new GameObjects.UIObjects.CraftingPanel(_ChemistryManager);
             craftingPanel.LoadContent("Art/inventoryBG", Content);
-            craftingPanel._Position = new Vector2(450, 450);
+            craftingPanel._InitialPos = new Vector2(600, 400);
             craftingPanel.Name = "Crafting";
             craftingPanel._Opacity = 0.9f;
             _UIManager.UIPanels.Add(craftingPanel);
 
+            
             GameObjects.UIObjects.BankPanel bankPanel = new GameObjects.UIObjects.BankPanel(_BankManager);
             bankPanel.LoadContent("Art/inventoryBG", Content);
-            bankPanel._Position = new Vector2(0, 0);
+            bankPanel._InitialPos = new Vector2(200, 200);
             bankPanel.Name = "Bank";
             bankPanel._Opacity = 1f;
             _UIManager.UIPanels.Add(bankPanel);
@@ -333,9 +334,8 @@ namespace ExtendedTest
                 _NPCManager.UpdateNPCs(gameTime);
                 _WorldObjectManager.Update(gameTime);
                 _GatherableManager.Update(gameTime);
+                
 
-                //TODO: Figure out how to only call this when inventory changes
-                //_ChemistryManager.CheckRecipes();
                 if (!kbHandler.typingMode)
                 {
                     //processor.currentError = string.Empty;
@@ -343,9 +343,7 @@ namespace ExtendedTest
 
                 }
 
-                _UIManager.getUIElement("Inventory")._Position = camera.ToWorld(400, 400);
-                _UIManager.getUIElement("Crafting")._Position = camera.ToWorld(600, 400);
-                _UIManager.getUIElement("Bank")._Position = camera.ToWorld(200, 400);
+                _UIManager.Update(gameTime, camera);
                 
                 base.Update(gameTime);
 

@@ -8,7 +8,7 @@ using ExtendedTest.GameObjects.Items;
 
 namespace ExtendedTest.GameObjects.Gatherables
 {
-    public class Gatherable : WorldObject
+    public abstract class Gatherable : WorldObject
     {
         public int _Difficulty = 300;
         public List<ItemBundle> OutputItems;

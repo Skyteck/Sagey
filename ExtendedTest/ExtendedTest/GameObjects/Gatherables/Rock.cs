@@ -10,7 +10,7 @@ using ExtendedTest.GameObjects.Items;
 
 namespace ExtendedTest.GameObjects.Gatherables
 {
-    class Rock : Gatherable
+    public class Rock : Gatherable
     {
         public enum RockType
         {
