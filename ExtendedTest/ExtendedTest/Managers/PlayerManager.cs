@@ -161,9 +161,28 @@ namespace ExtendedTest.Managers
             NPC npcHit = _NPCManager.CheckAttacks(_Player.swordTip._BoundingBox);
             if(npcHit != null)
             {
-                Console.WriteLine(npcHit.Name);
-                npcHit.ReceiveDamage(1);
+                Vector2 recoilVect = Vector2.Zero;
+                if( npcHit._TopLeftRect.Intersects(_Player.swordTip._BoundingBox))
+                {
+                    recoilVect = new Vector2(1, 1);
+                }
+                else if (npcHit._TopRightRect.Intersects(_Player.swordTip._BoundingBox))
+                {
+                    recoilVect = new Vector2(-1, 1);
+                }
+                else if (npcHit._BottomLeftRect.Intersects(_Player.swordTip._BoundingBox))
+                {
+                    recoilVect = new Vector2(1, -1);
+                }
+                else if (npcHit._BottomRightRect.Intersects(_Player.swordTip._BoundingBox))
+                {
+                    recoilVect = new Vector2(-1, -1);
+                }
+                _Player.sword.Deactivate();
+                npcHit.ReceiveDamage(3, recoilVect);
 
+
+                return;
             }
         }
 

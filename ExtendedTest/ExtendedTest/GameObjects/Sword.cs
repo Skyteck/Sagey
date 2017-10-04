@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace ExtendedTest.GameObjects
 {
-    class Sword : Sprite
+    public class Sword : Sprite
     {
         float TTL= 0.15f;
         float currentTime = 0f;

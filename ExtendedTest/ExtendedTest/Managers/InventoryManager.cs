@@ -75,23 +75,27 @@ namespace ExtendedTest.Managers
             }
             else //item not stackable or item not found, create a new slot
             {
-                if(itemSlots.Count < this.capacity) //Bag can only be so full...
+                for(int i = 0; i < amount; i++)
                 {
-                    // create new slot for the item
-                    itemSlot = new InventorySlot();
-                    //create the item
-                    //put item in slot
-                    itemToAdd.itemtexture = _ItemManager.GetTexture(itemToAdd); 
-                    itemSlot.ItemInSlot = itemToAdd;
-                    itemSlot.Amount = 1;
-                    itemSlots.Add(itemSlot);
-                    dirty = true;
+                    if(itemSlots.Count < this.capacity) //Bag can only be so full...
+                    {
+                        // create new slot for the item
+                        itemSlot = new InventorySlot();
+                        //create the item
+                        //put item in slot
+                        itemToAdd.itemtexture = _ItemManager.GetTexture(itemToAdd); 
+                        itemSlot.ItemInSlot = itemToAdd;
+                        itemSlot.Amount = 1;
+                        itemSlots.Add(itemSlot);
+                        dirty = true;
                     
+                    }
+                    else
+                    {
+                        //error adding item message;
+                    }
                 }
-                else
-                {
-                    //error adding item message;
-                }
+                
             }
 
             if(dirty)

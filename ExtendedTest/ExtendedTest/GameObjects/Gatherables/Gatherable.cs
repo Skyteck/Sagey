@@ -13,7 +13,8 @@ namespace ExtendedTest.GameObjects.Gatherables
         public int _Difficulty = 300;
         protected ItemBundle CurrentDrop;
         public int _HP;
-        protected int _StartHP;
+        protected int _TrueStartHP;
+        public int _StartHP;
         public int ItemGiveCount = 3;
         private int MaxItemGive = 3;
         protected bool _Respawns = true;
@@ -25,13 +26,15 @@ namespace ExtendedTest.GameObjects.Gatherables
 
         public void Setup()
         {
-
-
+            Random ran = new Random((int)this._Position.X);
+            _StartHP = _TrueStartHP;// + (ran.Next(0, (int)(_TrueStartHP * 0.5)));
             _HP = _StartHP;
         }
         public ItemBundle GetGathered()
         {
             Deactivate();
+            Random ran = new Random((int)this._Position.X);
+            CurrentDrop.amount += ran.Next(0, 2);
             return CurrentDrop;
         }
 
@@ -65,8 +68,9 @@ namespace ExtendedTest.GameObjects.Gatherables
 
             Random ran = new Random();
             ItemGiveCount = ran.Next(1, MaxItemGive);
-            _HP = _StartHP;
+            Setup();
         }
+        
         
     }
 }

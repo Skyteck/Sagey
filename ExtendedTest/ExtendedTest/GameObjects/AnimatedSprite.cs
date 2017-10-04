@@ -19,7 +19,7 @@ namespace ExtendedTest
         private float timeElapsed = 0;
         bool animationDone = false;
         List<Animation> _AnimList;
-        Animation _ActiveAnim = null;
+        protected Animation _ActiveAnim = null;
 
         public override Vector2 _TopLeft
         {

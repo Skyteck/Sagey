@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ExtendedTest.Managers
         ContentManager Content;
         TilemapManager _TilemapManager;
         List<Plant> PlantList;
-
+        Texture2D _HpTex;
         readonly Player thePlayer;
         
         public GatherableManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player)
@@ -38,6 +39,7 @@ namespace ExtendedTest.Managers
         {
             PlantList.Add(new GameObjects.Gatherables.Plants.StrawberryPlant());
             Content = content;
+            _HpTex = content.Load<Texture2D>("Art/WhiteTexture");
             //PlantList.Add(new GameObjects.Gatherables.Plants.PotatoPlant());
             //PlantList.Add(new GameObjects.Gatherables.Plants.CornPlant());
 
@@ -170,16 +172,29 @@ namespace ExtendedTest.Managers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach(Sprite sprite in _GatherableListActive)
+            foreach(Gatherable sprite in _GatherableListActive)
             {
                 sprite.Draw(spriteBatch);
+                
+                if (sprite._HP == sprite._StartHP) continue;
+                drawHP(sprite, spriteBatch);
             }
         }
 
         public Plant GetPlant(Plant.PlantType type)
         {
-            GameObjects.Gatherables.Plants.StrawberryPlant p = (GameObjects.Gatherables.Plants.StrawberryPlant)FindPlant(Plant.PlantType.kStrawBerryType);
+            StrawberryPlant p = (StrawberryPlant)FindPlant(Plant.PlantType.kStrawBerryType);
             return p;
+        }
+
+        private void drawHP(Gatherable sprite, SpriteBatch spriteBatch)
+        {
+            float HPgone = (float)sprite._HP / sprite._StartHP;
+            Rectangle rect = new Rectangle((int)sprite._TopLeft.X, (int)sprite._TopLeft.Y - 10, (int)(64 * HPgone), 6);
+            int green = (int)(HPgone * 255);
+            int red = (255 - (int)(HPgone * 255))+100;
+            Color col = new Color(red, green, 0);
+            spriteBatch.Draw(_HpTex, rect, col);
         }
     }
 }

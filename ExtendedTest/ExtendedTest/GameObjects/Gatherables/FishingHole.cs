@@ -50,6 +50,8 @@ namespace ExtendedTest.GameObjects.Gatherables
             output.odds = 100;
             CurrentDrop = output;
 
+            _TrueStartHP = 3;
+
             Setup();
         }
     }

@@ -44,8 +44,9 @@ namespace ExtendedTest.GameObjects.Gatherables
             this.MyWorldObjectTag = WorldObjectTag.kRockTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
 
-            _StartHP = 10;
-            _HP = 10;
+            _TrueStartHP = 8;
+
+
             ItemBundle output = new ItemBundle();
             output.output = Item.ItemType.kItemOre;
             output.amount = 1;
@@ -53,6 +54,7 @@ namespace ExtendedTest.GameObjects.Gatherables
             CurrentDrop = output;
 
             Setup();
-        }    
+        }
+        
     }
 }

@@ -37,7 +37,7 @@ namespace ExtendedTest.GameObjects.Gatherables
                     break;
             }
 
-            _StartHP = 10;
+            _TrueStartHP = 10;
 
             Random ran = new Random();
             ItemGiveCount = ran.Next(1, 7);

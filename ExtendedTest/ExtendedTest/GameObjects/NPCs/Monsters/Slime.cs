@@ -14,10 +14,12 @@ namespace ExtendedTest.GameObjects.NPCs.Monsters
             attack = 6;
             defense = 5;
             attackRange = 256;
-            _HP = 1;
-            startHP = 1;
+            _HP = 4;
+            startHP = 4;
             _CanFight = true;
-            _Speed = 2f;
+            _StartSpeed = 2f;
+            _Speed = _StartSpeed;
+            Tame();
             this._AttackStyle = AttackStyle.kMeleeStyle;
         }
 

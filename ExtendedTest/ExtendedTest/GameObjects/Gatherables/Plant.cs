@@ -38,6 +38,7 @@ namespace ExtendedTest.GameObjects.Gatherables
             _Difficulty = 0;
             ItemGiveCount = 1;
             _Respawns = false;
+            _TrueStartHP = 1;
             _StartHP = 1;
         }
 

@@ -15,7 +15,7 @@ namespace ExtendedTest
     {
         private int startHP;
 
-        Sword sword;
+        public Sword sword;
 
         public int _HP { get; private set; }
         public int _Defense { get; private set; }

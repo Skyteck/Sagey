@@ -26,6 +26,7 @@ namespace ExtendedTest
         public bool movingY = false;
         public bool moving = false;
 
+        public float _StartSpeed = 5f;
         public float _Speed = 5f;
 
         List<Tile> myPath;
@@ -71,12 +72,48 @@ namespace ExtendedTest
 
         public Projectile myShot;
 
+        public bool _KnockedBack = false;
         public bool _Stunned = false;
         public bool _Invuln = false;
         public double _StunTime = 0;
 
         private Texture2D effectTex;
         private Enums.EffectTypes _CurrentEffect = Enums.EffectTypes.kEffectNone;
+
+#region collision rects
+        public Rectangle _TopLeftRect
+        {
+            get
+            {
+                return new Rectangle((int)_TopLeft.X, (int)_TopLeft.Y, _ActiveAnim._FrameWidth / 2, _ActiveAnim._FrameHeight / 2);
+            }
+        }
+
+        public Rectangle _TopRightRect
+        {
+            get
+            {
+                return new Rectangle((int)_Position.X, (int)_TopLeft.Y, _ActiveAnim._FrameWidth / 2, _ActiveAnim._FrameHeight / 2);
+            }
+        }
+
+        public Rectangle _BottomLeftRect
+        {
+            get
+            {
+                return new Rectangle((int)_TopLeft.X, (int)_Position.Y, _ActiveAnim._FrameWidth / 2, _ActiveAnim._FrameHeight / 2);
+            }
+        }
+        
+        public Rectangle _BottomRightRect
+        {
+            get
+            {
+                return new Rectangle((int)_Position.X, (int)_Position.Y, _ActiveAnim._FrameWidth / 2, _ActiveAnim._FrameHeight / 2);
+            }
+        }
+#endregion
+
         public enum AttackStyle
         {
             kMeleeStyle,
@@ -104,13 +141,29 @@ namespace ExtendedTest
 
         protected override void UpdateActive(GameTime gameTime)
         {
+            if(_StunTime > 0)
+            {
+                _StunTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                _KnockedBack = false;
+            }
+            if(_KnockedBack)
+            {
+                _Speed = 20f;
+            }
+            else
+            {
+                _Speed = _StartSpeed;
+            }
             if (!atDestination)
             {
                 FindPath();
             }
             if(_CanFight)
             {
-                UpdateCombat(gameTime);
+                //UpdateCombat(gameTime);
             }
 
             base.UpdateActive(gameTime);
@@ -127,6 +180,8 @@ namespace ExtendedTest
             {
                 Activate();
                 timeDead = 0;
+                _HP = startHP;
+                ClearPath();
             }
             base.UpdateDead(gameTime);
         }
@@ -281,10 +336,6 @@ namespace ExtendedTest
                 }
                 base.UpdateActive(gameTime);
             }
-            else
-            {
-                Console.Write("Stunned");
-            }
 
 
             if (attackCD > 0)
@@ -321,16 +372,38 @@ namespace ExtendedTest
 
         public virtual void ReceiveDamage(int amt)
         {
+
             if (_Invuln) return;
+            int prevHP = _HP;
             _HP -= amt;
             _StunTime = 0.3;
-            _Invuln = true;
-            _Stunned = true;
-            _MyColor = Color.Red;
+            //_Invuln = true;
+            //_Stunned = true;
+            //_MyColor = Color.Red;
             if (_HP <= 0)
             {
                 Die();
             }
+        }
+
+        public virtual void ReceiveDamage(int amt, Vector2 recoilVect)
+        {
+            ReceiveDamage(amt);
+
+            _KnockedBack = true;
+            _StunTime = 0.5f;
+            ClearPath();
+            _Speed = 20f;
+            float x = (float)(recoilVect.X * 32);
+            float y = (float)(recoilVect.Y * 32);
+            Vector2 newDest = new Vector2(this._Position.X + x, this._Position.Y + y);
+            SetDestination(newDest);
+        }
+
+        private void Knockback()
+        {
+            //this._Position.X += (float)(_Heading.X * (_Speed * gameTime.ElapsedGameTime.TotalSeconds));
+            //this._Position.Y += (float)(_Heading.Y * (_Speed * gameTime.ElapsedGameTime.TotalSeconds));
         }
 
         private void Die()
@@ -382,7 +455,9 @@ namespace ExtendedTest
             //            }
             //    }
             //}
+
                 base.Draw(spriteBatch);
+
             // draw the effectTex to show status effect
             if (_CurrentEffect != Enums.EffectTypes.kEffectNone)
             {
