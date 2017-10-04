@@ -44,14 +44,15 @@ namespace ExtendedTest.GameObjects.Gatherables
             this.MyWorldObjectTag = WorldObjectTag.kRockTag;
             this._CurrentState = Sprite.SpriteState.kStateActive;
 
-
+            _StartHP = 10;
+            _HP = 10;
             ItemBundle output = new ItemBundle();
             output.output = Item.ItemType.kItemOre;
             output.amount = 1;
             output.odds = 100;
-            OutputItems.Add(output);
+            CurrentDrop = output;
 
-            SetupDrops();
-        }        
+            Setup();
+        }    
     }
 }

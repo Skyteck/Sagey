@@ -152,9 +152,9 @@ namespace ExtendedTest.Managers
         public GameObjects.Items.ItemBundle GatherItem(Gatherable thing)
         {
             Random ran = new Random();
-            int randomNumber = ran.Next(0, thing._Difficulty);
-            if (randomNumber == 0)
-            {
+            thing.GetHit();
+            if(thing._HP <= 0)
+            {                
                 return thing.GetGathered();
             }
             else

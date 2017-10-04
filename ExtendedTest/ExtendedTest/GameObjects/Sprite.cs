@@ -370,13 +370,13 @@ namespace ExtendedTest
             }
             _MyColor = Color.White;
             parent = null;
-            Setup();
+            //Setup();
         }
 
-        public virtual void Setup()
-        {
+        //public virtual void Setup()
+        //{
 
-        }
+        //}
 
         public virtual void Activate()
         {

@@ -17,9 +17,9 @@ namespace ExtendedTest.GameObjects.Gatherables.Plants
             _MyDrops.output = Item.ItemType.kStrawberry;
             _MyDrops.amount = 3;
             _MyDrops.odds = 100;
-            OutputItems.Add(_MyDrops);
+            CurrentDrop = _MyDrops;
 
-            SetupDrops();
+            Setup();
         }
     }
 

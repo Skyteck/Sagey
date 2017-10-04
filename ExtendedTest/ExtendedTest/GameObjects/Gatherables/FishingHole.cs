@@ -48,10 +48,9 @@ namespace ExtendedTest.GameObjects.Gatherables
             output.output = Item.ItemType.kItemFish;
             output.amount = 1;
             output.odds = 100;
+            CurrentDrop = output;
 
-            OutputItems.Add(output);
-
-            SetupDrops();
+            Setup();
         }
     }
 }

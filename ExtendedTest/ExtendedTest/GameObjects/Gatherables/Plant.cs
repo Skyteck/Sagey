@@ -38,6 +38,7 @@ namespace ExtendedTest.GameObjects.Gatherables
             _Difficulty = 0;
             ItemGiveCount = 1;
             _Respawns = false;
+            _StartHP = 1;
         }
 
         protected override void UpdateActive(GameTime gameTime)

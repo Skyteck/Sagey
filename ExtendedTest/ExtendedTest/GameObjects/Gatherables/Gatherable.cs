@@ -11,61 +11,33 @@ namespace ExtendedTest.GameObjects.Gatherables
     public abstract class Gatherable : WorldObject
     {
         public int _Difficulty = 300;
-        public List<ItemBundle> OutputItems;
-        public List<ItemBundle> _Drops;
+        protected ItemBundle CurrentDrop;
+        public int _HP;
+        protected int _StartHP;
         public int ItemGiveCount = 3;
         private int MaxItemGive = 3;
         protected bool _Respawns = true;
         
         public Gatherable()
         {
-            OutputItems = new List<ItemBundle>();
             IsGatherable = true;
-            _Drops = new List<ItemBundle>();
         }
 
-        public void SetupDrops()
+        public void Setup()
         {
-            foreach(ItemBundle bundle in OutputItems)
-            {
-                for (int i = 0; i < bundle.odds; i++)
-                {
-                    _Drops.Add(bundle);
-                }
-            }
 
 
-            if (_Drops.Count < 100)
-            {
-                ItemBundle noneBundle = new ItemBundle();
-                noneBundle.output = Item.ItemType.kItemNone;
-                noneBundle.amount = 1;
-                noneBundle.odds = 100 - _Drops.Count;
-                for (int i = 0; i < noneBundle.odds; i++)
-                {
-                    _Drops.Add(noneBundle);
-                }
-            }
-            else if(_Drops.Count > 100)
-            {
-                Console.Write(this.Name + " too many _Drops!");
-            }
+            _HP = _StartHP;
         }
         public ItemBundle GetGathered()
         {
-            Random ran = new Random();
-            int randomNumber;
-            if(_Drops.Count != 100)
-            {
-                Console.WriteLine(this.Name + "output items not at 100");
-            }
-            randomNumber = ran.Next(0, _Drops.Count);
-            ItemGiveCount--;
-            if (ItemGiveCount <= 0)
-            {
-                this.Deactivate();
-            }
-            return _Drops[randomNumber];
+            Deactivate();
+            return CurrentDrop;
+        }
+
+        public void GetHit(int dmg = 1)
+        {
+            this._HP -= dmg;
         }
 
         protected override void UpdateDead(GameTime gameTime)
@@ -84,7 +56,7 @@ namespace ExtendedTest.GameObjects.Gatherables
             }
             base.UpdateDead(gameTime);
         }
-
+        
         public virtual void Revive()
         {
             this._CurrentState = SpriteState.kStateActive;
@@ -93,6 +65,7 @@ namespace ExtendedTest.GameObjects.Gatherables
 
             Random ran = new Random();
             ItemGiveCount = ran.Next(1, MaxItemGive);
+            _HP = _StartHP;
         }
         
     }

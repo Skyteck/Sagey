@@ -36,6 +36,9 @@ namespace ExtendedTest.GameObjects.Gatherables
                     _Difficulty = 9001;
                     break;
             }
+
+            _StartHP = 10;
+
             Random ran = new Random();
             ItemGiveCount = ran.Next(1, 7);
 
@@ -47,15 +50,13 @@ namespace ExtendedTest.GameObjects.Gatherables
             output.output = Item.ItemType.kItemLog;
             output.amount = 1;
             output.odds = 95;
-
-            OutputItems.Add(output);
+            
             output = new Items.ItemBundle();
             output.output = Item.ItemType.kItemLog;
             output.amount = 2;
             output.odds = 1;
-
-            OutputItems.Add(output);
-            SetupDrops();
+            CurrentDrop = output;
+            Setup();
         }
     }
 }
