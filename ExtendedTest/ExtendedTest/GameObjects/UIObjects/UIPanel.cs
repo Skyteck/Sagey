@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace ExtendedTest
 {
@@ -17,6 +18,11 @@ namespace ExtendedTest
         int adjustedHeight;
         public Vector2 _InitialPos = Vector2.Zero;
         public bool _Showing = false;
+        private bool TrackMouse = false;
+        private bool xTracked = false;
+        private bool yTracked = false;
+
+        private MouseState prevMousePos;
         Vector2 prevScale;
 
         public Vector2 _Center
@@ -24,6 +30,38 @@ namespace ExtendedTest
             get
             {
                 return new Vector2(frameWidth / 2, frameHeight / 2);
+            }
+        }
+
+        private Rectangle _TopEdge
+        {
+            get
+            {
+                return new Rectangle(_BoundingBox.Left, _BoundingBox.Top, frameWidth, 10);
+            }
+        }
+
+        private Rectangle _BottomEdge
+        {
+            get
+            {
+                return new Rectangle(_BoundingBox.Left, _BoundingBox.Bottom-10, frameWidth, 10);
+            }
+        }
+
+        private Rectangle _LeftEdge
+        {
+            get
+            {
+                return new Rectangle(_BoundingBox.Left, _BoundingBox.Top, 10, frameHeight);
+            }
+        }
+
+        private Rectangle _RightEdge
+        {
+            get
+            {
+                return new Rectangle(_BoundingBox.Right - 10, _BoundingBox.Top, 10, frameHeight);
             }
         }
 
@@ -40,6 +78,35 @@ namespace ExtendedTest
             adJustedWidth = frameWidth;
         }
 
+        protected override void UpdateActive(GameTime gt)
+        {
+            base.UpdateActive(gt);
+            if(xTracked || yTracked)
+            {
+                MouseState mState = Mouse.GetState();
+
+                if (prevMousePos.LeftButton == ButtonState.Pressed && mState.LeftButton == ButtonState.Released)
+                {
+                    xTracked = false;
+                    yTracked = false;
+
+                }
+                else
+                {
+                    Vector2 currentPos = HelperFunctions.PointToVector(mState.Position);
+                    Vector2 prevPos = HelperFunctions.PointToVector(prevMousePos.Position);
+                    if(xTracked) adJustedWidth += (int)(currentPos.X - prevPos.X);
+                    if(yTracked) adjustedHeight += (int)(currentPos.Y - prevPos.Y);
+                    float yDiff = currentPos.Y - prevPos.Y;
+
+                    prevMousePos = mState;
+                }
+
+                    
+            }
+        }
+
+
         public void Resize(Vector2 difference)
         {
             Console.WriteLine(this._Texture.Width);
@@ -48,7 +115,35 @@ namespace ExtendedTest
 
         public virtual void ProcessClick(Vector2 pos)
         {
+        }
 
+        public bool CheckForEdgeClicked(Vector2 pos)
+        {
+            bool track = false;
+            if (_TopEdge.Contains(pos))
+            {
+                yTracked = true;
+                track = true;
+            }
+            else if (_BottomEdge.Contains(pos))
+            {
+
+                yTracked = true;
+                track = true;
+            }
+        
+
+            if (_LeftEdge.Contains(pos))
+            {
+                xTracked = true;
+                track = true;
+            }
+            else if (_RightEdge.Contains(pos))
+            {
+                xTracked = true;
+                track = true;
+            }
+            return track;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -85,6 +180,12 @@ namespace ExtendedTest
                     }
                 }
             }
+        }
+
+        internal void MarkToTrack(MouseState mState)
+        {
+            TrackMouse = true;
+            prevMousePos = mState;
         }
     }
 }

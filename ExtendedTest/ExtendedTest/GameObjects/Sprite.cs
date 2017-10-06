@@ -121,26 +121,6 @@ namespace ExtendedTest
             _Texture = content.Load<Texture2D>(path);
             frameHeight = _Texture.Height;
             frameWidth = _Texture.Width;
-            //cornerTex = content.Load<Texture2D>("Art/Corner");
-
-
-            //List<Vector2> playerCorners = HelperFunctions.RotatedRectList(this._BoundingBox, _Rotation);
-            //Sprite topLeft = new Sprite();
-            //topLeft._Position = new Vector2(playerCorners[0].X, playerCorners[0].Y);
-            //topLeft.LoadContent(cornerTex);
-            //corners.Add(topLeft);
-            //Sprite topRight = new Sprite();
-            //topRight._Position = new Vector2(playerCorners[1].X, playerCorners[1].Y);
-            //topRight.LoadContent(cornerTex);
-            //corners.Add(topRight);
-            //Sprite bottomLeft = new Sprite();
-            //bottomLeft._Position = new Vector2(playerCorners[2].X, playerCorners[2].Y);
-            //bottomLeft.LoadContent(cornerTex);
-            //corners.Add(bottomLeft);
-            //Sprite bottomRight = new Sprite();
-            //bottomRight._Position = new Vector2(playerCorners[3].X, playerCorners[3].Y);
-            //bottomRight.LoadContent(cornerTex);
-            //corners.Add(bottomRight);
 
         }
         public virtual void LoadContent(Texture2D tex)
@@ -148,67 +128,6 @@ namespace ExtendedTest
             _Texture = tex;
             frameHeight = _Texture.Height;
             frameWidth = _Texture.Width;
-        }
-        
-        public void SelectSprite()
-        {
-            _Selected = true;
-            CreateSelectRect();
-        }
-
-        public void CreateSelectRect()
-        {
-            if(_SelectRect == null)
-            {
-                _SelectRect = _Texture;
-                Color clear = new Color(0, 0, 0, 0);
-                int border = 1;
-                Color[] colorData = new Color[_SelectRect.Width * _SelectRect.Height];
-
-                int i = 0;
-                for (; i < colorData.Length; i++)
-                {
-                    colorData[i] = clear;
-                }
-                i = 0;
-
-                //top border rows
-                for (; i < _SelectRect.Width * border; i++)
-                {
-                    colorData[i] = Color.White;
-                }
-                //top border is done. time for middle. i should be at first element of the array
-
-                //loop for each middle row
-                for (int j = 0; j < (_SelectRect.Height - (border * 2));j++)
-                {
-                    //draw the outer border
-                    for (int foo = 0; foo < border; foo++)
-                    {
-                        colorData[i] = Color.White;
-                        i++;
-                    }
-                    //draw the middle clear.
-                    for (int foo = 0; foo < (_SelectRect.Width - (border * 2)); foo++)
-                    {
-                        colorData[i] = clear;
-                        i++;
-                    }
-                    //draw the outside                
-                    for (int foo = 0; foo < border; foo++)
-                    {
-                        colorData[i] = Color.White;
-                        i++;
-                    }
-                }
-                //bottom border rows
-                for (int foo = 0; foo < (_SelectRect.Width) * border; foo++)
-                {
-                    colorData[i] = Color.White;
-                    i++;
-                }
-                _SelectRect.SetData(colorData);
-            }
         }
 
         public virtual void Update(GameTime gt)

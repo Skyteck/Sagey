@@ -418,9 +418,21 @@ namespace ExtendedTest
         {
             MouseState mouseState = Mouse.GetState();
             String command = string.Empty;
+            //check if there was a click
             if(mouseState.LeftButton==ButtonState.Pressed && previousMouseState.LeftButton==ButtonState.Released)
             {
+                //convert the mouse click position to world position
                 Vector2 mouseClickpos = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
+
+                //first check if the click was on any of the panels edge for resizing
+                UIPanel panelHit = _UIManager.CheckPanelEdges(mouseClickpos);
+
+                //if panel was hit have panel track mouse and apply changes in update?
+                if(panelHit != null)
+                {
+                    panelHit.MarkToTrack(mouseState);
+                }
+
 
                 //check if a click was in the crafting panel
                 foreach(UIPanel panel in _UIManager.ActivePanels)
@@ -456,9 +468,9 @@ namespace ExtendedTest
                 //_GatherableManager.CreatePlant(GameObjects.Gatherables.Plant.PlantType.kStrawBerryType, new Vector2(0,0));
             }
 
-                if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
+            if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
             {
-                camera.Scale += 0.2f;
+                camera.Scale += 0.1f;
                 if (camera.Scale > 2f)
                 {
                     camera.Scale = 2f;
@@ -466,7 +478,7 @@ namespace ExtendedTest
             }
             else if (mouseState.ScrollWheelValue < previousMouseState.ScrollWheelValue)
             {
-                camera.Scale -= 0.25f;
+                camera.Scale -= 0.1f;
                 if (camera.Scale < 0.6f)
                 {
                     camera.Scale = 0.6f;

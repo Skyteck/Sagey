@@ -85,5 +85,15 @@ namespace ExtendedTest.Managers
                 panelToFind._Showing = false;
             }
         }
+
+        internal UIPanel CheckPanelEdges(Vector2 mouseClickpos)
+        {
+            foreach(UIPanel panel in ActivePanels)
+            {
+                if (panel.CheckForEdgeClicked(mouseClickpos)) return panel;
+
+            }
+            return null;
+        }
     }
 }
