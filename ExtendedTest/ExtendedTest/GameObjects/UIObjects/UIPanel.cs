@@ -25,19 +25,29 @@ namespace ExtendedTest
         private MouseState prevMousePos;
         Vector2 prevScale;
 
+        Texture2D edgeTex;
+
         public Vector2 _Center
         {
             get
             {
-                return new Vector2(frameWidth / 2, frameHeight / 2);
+                return new Vector2(adJustedWidth / 2, adjustedHeight / 2);
             }
         }
+
+        //new private Vector2 _TopLeft
+        //{
+        //    get
+        //    {
+
+        //    }
+        //}
 
         private Rectangle _TopEdge
         {
             get
             {
-                return new Rectangle(_BoundingBox.Left, _BoundingBox.Top, frameWidth, 10);
+                return new Rectangle((int)_Position.X, (int)_Position.Y, adJustedWidth, 5);
             }
         }
 
@@ -45,7 +55,7 @@ namespace ExtendedTest
         {
             get
             {
-                return new Rectangle(_BoundingBox.Left, _BoundingBox.Bottom-10, frameWidth, 10);
+                return new Rectangle((int)_Position.X, (int)_Position.Y - 5 + adjustedHeight, adJustedWidth, 5);
             }
         }
 
@@ -53,7 +63,7 @@ namespace ExtendedTest
         {
             get
             {
-                return new Rectangle(_BoundingBox.Left, _BoundingBox.Top, 10, frameHeight);
+                return new Rectangle((int)_Position.X, (int)_Position.Y, 5, adjustedHeight);
             }
         }
 
@@ -61,7 +71,7 @@ namespace ExtendedTest
         {
             get
             {
-                return new Rectangle(_BoundingBox.Right - 10, _BoundingBox.Top, 10, frameHeight);
+                return new Rectangle((int)_Position.X + adJustedWidth - 5, (int)_Position.Y, 5, adjustedHeight);
             }
         }
 
@@ -74,6 +84,7 @@ namespace ExtendedTest
         public override void LoadContent(string path, ContentManager content)
         {
             base.LoadContent(path, content);
+            edgeTex = content.Load<Texture2D>("Art/Whitetexture");
             adjustedHeight = frameHeight;
             adJustedWidth = frameWidth;
         }
@@ -96,7 +107,9 @@ namespace ExtendedTest
                     Vector2 currentPos = HelperFunctions.PointToVector(mState.Position);
                     Vector2 prevPos = HelperFunctions.PointToVector(prevMousePos.Position);
                     if(xTracked) adJustedWidth += (int)(currentPos.X - prevPos.X);
+                    if (adJustedWidth < minWidth) adJustedWidth = minWidth;
                     if(yTracked) adjustedHeight += (int)(currentPos.Y - prevPos.Y);
+                    if (adjustedHeight < minHeight) adjustedHeight = minHeight;
                     float yDiff = currentPos.Y - prevPos.Y;
 
                     prevMousePos = mState;
@@ -148,38 +161,47 @@ namespace ExtendedTest
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (_Draw)
+            if(_Draw)
             {
-                //Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * StateNum), frameWidth, frameHeight);
-                Rectangle sr = new Rectangle(0, 0, adJustedWidth, adjustedHeight);
-                if (!_FlipX && !_FlipY)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.None, 0f);
-                }
-                else if (_FlipX)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.FlipHorizontally, 0f);
-                }
-                else if (_FlipY)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.FlipVertically, 0f);
-                }
-                else if (_FlipX && _FlipY)
-                {
-                    spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), (_Rotation + (float)Math.PI), _Center, 1, SpriteEffects.None, 0f);
-                }
-
-                if (_ChildrenList != null)
-                {
-                    if (_ChildrenList.Count >= 1)
-                    {
-                        foreach (Sprite child in _ChildrenList)
-                        {
-                            child.Draw(spriteBatch);
-                        }
-                    }
-                }
+                Rectangle sr = new Rectangle((int)_Position.X, (int)_Position.Y, adJustedWidth, adjustedHeight);
+                spriteBatch.Draw(_Texture, sr, Color.White);
+                spriteBatch.Draw(edgeTex, _TopEdge, Color.White);
+                spriteBatch.Draw(edgeTex, _BottomEdge, Color.White);
+                spriteBatch.Draw(edgeTex, _LeftEdge, Color.White);
+                spriteBatch.Draw(edgeTex, _RightEdge, Color.White);
             }
+            //if (_Draw)
+            //{
+            //    //Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * StateNum), frameWidth, frameHeight);
+            //    Rectangle sr = new Rectangle(0, 0, adJustedWidth, adjustedHeight);
+            //    if (!_FlipX && !_FlipY)
+            //    {
+            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.None, 0f);
+            //    }
+            //    else if (_FlipX)
+            //    {
+            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.FlipHorizontally, 0f);
+            //    }
+            //    else if (_FlipY)
+            //    {
+            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.FlipVertically, 0f);
+            //    }
+            //    else if (_FlipX && _FlipY)
+            //    {
+            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), (_Rotation + (float)Math.PI), _Center, 1, SpriteEffects.None, 0f);
+            //    }
+
+            //    if (_ChildrenList != null)
+            //    {
+            //        if (_ChildrenList.Count >= 1)
+            //        {
+            //            foreach (Sprite child in _ChildrenList)
+            //            {
+            //                child.Draw(spriteBatch);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         internal void MarkToTrack(MouseState mState)

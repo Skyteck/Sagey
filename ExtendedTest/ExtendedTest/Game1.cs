@@ -216,7 +216,7 @@ namespace ExtendedTest
         {
             GameObjects.UIObjects.InventoryPanel inventoryBG = new GameObjects.UIObjects.InventoryPanel(_InvenManager);
             inventoryBG.LoadContent("Art/inventoryBG", Content);
-            inventoryBG._InitialPos = new Vector2(400, 450);
+            inventoryBG._InitialPos = new Vector2(200, 200);
             inventoryBG.Name = "Inventory";
             inventoryBG._Opacity = 0.6f;
             _UIManager.UIPanels.Add(inventoryBG);
