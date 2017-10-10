@@ -14,7 +14,7 @@ namespace ExtendedTest.Managers
         public event EventHandler InventoryChanged;
 
         public List<InventorySlot> itemSlots;
-        int capacity = 28;
+        public int capacity = 28;
 
         //Managers
         ItemManager _ItemManager;

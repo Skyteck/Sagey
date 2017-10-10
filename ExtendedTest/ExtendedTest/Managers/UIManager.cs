@@ -27,6 +27,7 @@ namespace ExtendedTest.Managers
             {
                 element.Update(gameTime);
                 element._Position = _Cam.ToWorld(element._InitialPos);
+                //element._Position = _Cam.ToWorld(element._Position);
             }
         }
 
@@ -88,7 +89,7 @@ namespace ExtendedTest.Managers
 
         internal UIPanel CheckPanelEdges(Vector2 mouseClickpos)
         {
-            foreach(UIPanel panel in ActivePanels)
+            foreach(UIPanel panel in ActivePanels.Where(x=>x._Resizable == true))
             {
                 if (panel.CheckForEdgeClicked(mouseClickpos)) return panel;
 

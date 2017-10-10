@@ -12,15 +12,18 @@ namespace ExtendedTest
 {
     public class UIPanel : Sprite
     {
-        int minWidth = 15;
-        int adJustedWidth;
-        int minHeight = 15;
-        int adjustedHeight;
+        int minWidth = 50;
+        protected int adJustedWidth;
+        int minHeight = 60;
+        protected int adjustedHeight;
         public Vector2 _InitialPos = Vector2.Zero;
         public bool _Showing = false;
         private bool TrackMouse = false;
         private bool xTracked = false;
         private bool yTracked = false;
+        bool leftTracked = false;
+        bool topTracked = false;
+        public bool _Resizable = true;
 
         private MouseState prevMousePos;
         Vector2 prevScale;
@@ -43,7 +46,7 @@ namespace ExtendedTest
         //    }
         //}
 
-        private Rectangle _TopEdge
+        protected Rectangle _TopEdge
         {
             get
             {
@@ -59,7 +62,7 @@ namespace ExtendedTest
             }
         }
 
-        private Rectangle _LeftEdge
+        protected Rectangle _LeftEdge
         {
             get
             {
@@ -92,7 +95,10 @@ namespace ExtendedTest
         protected override void UpdateActive(GameTime gt)
         {
             base.UpdateActive(gt);
-            if(xTracked || yTracked)
+
+            if (!_Resizable) return;
+
+            if(xTracked || yTracked || topTracked || leftTracked)
             {
                 MouseState mState = Mouse.GetState();
 
@@ -100,17 +106,43 @@ namespace ExtendedTest
                 {
                     xTracked = false;
                     yTracked = false;
+                    leftTracked = false;
+                    topTracked = false;
 
                 }
                 else
                 {
                     Vector2 currentPos = HelperFunctions.PointToVector(mState.Position);
                     Vector2 prevPos = HelperFunctions.PointToVector(prevMousePos.Position);
-                    if(xTracked) adJustedWidth += (int)(currentPos.X - prevPos.X);
-                    if (adJustedWidth < minWidth) adJustedWidth = minWidth;
-                    if(yTracked) adjustedHeight += (int)(currentPos.Y - prevPos.Y);
-                    if (adjustedHeight < minHeight) adjustedHeight = minHeight;
-                    float yDiff = currentPos.Y - prevPos.Y;
+
+                    int xDiff = (int)(currentPos.X - prevPos.X);
+                    int yDiff = (int)(currentPos.Y - prevPos.Y);
+                    Vector2 initPos = _InitialPos;
+                    if (topTracked)
+                    {
+                        adjustedHeight -= yDiff;
+                        _InitialPos.Y += yDiff;
+                    }
+
+                    if(leftTracked)
+                    {
+                        adJustedWidth -= xDiff;
+                        _InitialPos.X += xDiff;
+                    }
+
+                    if (xTracked) adJustedWidth += xDiff;
+                    if (yTracked) adjustedHeight += yDiff;
+
+                    if (adjustedHeight < minHeight)
+                    {
+                        adjustedHeight = minHeight;
+                        _InitialPos.Y = initPos.Y;
+                    }
+                    if (adJustedWidth < minWidth)
+                    {
+                        adJustedWidth = minWidth;
+                        _InitialPos.X = initPos.X;
+                    }
 
                     prevMousePos = mState;
                 }
@@ -135,7 +167,7 @@ namespace ExtendedTest
             bool track = false;
             if (_TopEdge.Contains(pos))
             {
-                yTracked = true;
+                topTracked = true;
                 track = true;
             }
             else if (_BottomEdge.Contains(pos))
@@ -148,7 +180,7 @@ namespace ExtendedTest
 
             if (_LeftEdge.Contains(pos))
             {
-                xTracked = true;
+                leftTracked = true;
                 track = true;
             }
             else if (_RightEdge.Contains(pos))
@@ -165,10 +197,15 @@ namespace ExtendedTest
             {
                 Rectangle sr = new Rectangle((int)_Position.X, (int)_Position.Y, adJustedWidth, adjustedHeight);
                 spriteBatch.Draw(_Texture, sr, Color.White);
-                spriteBatch.Draw(edgeTex, _TopEdge, Color.White);
-                spriteBatch.Draw(edgeTex, _BottomEdge, Color.White);
-                spriteBatch.Draw(edgeTex, _LeftEdge, Color.White);
-                spriteBatch.Draw(edgeTex, _RightEdge, Color.White);
+
+                if(_Resizable)
+                {
+                    spriteBatch.Draw(edgeTex, _TopEdge, Color.White);
+                    spriteBatch.Draw(edgeTex, _BottomEdge, Color.White);
+                    spriteBatch.Draw(edgeTex, _LeftEdge, Color.White);
+                    spriteBatch.Draw(edgeTex, _RightEdge, Color.White);
+                }
+                
             }
             //if (_Draw)
             //{

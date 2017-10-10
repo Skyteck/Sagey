@@ -14,6 +14,7 @@ namespace ExtendedTest.GameObjects.UIObjects
         Managers.InventoryManager _InventoryManager;
         SpriteFont count;
         Texture2D SelectedBG;
+        int scrollPos = 0;
 
         public InventoryPanel(Managers.InventoryManager invenM)
         {
@@ -41,13 +42,18 @@ namespace ExtendedTest.GameObjects.UIObjects
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            /* thinking through scroll bar
+             * scroll down one click to increment items drawn by columns?
+             * 
+             * 
+             * */
             base.Draw(spriteBatch);
-
-            int rows = 5;
-            int columns = 6;
-            int buffer = 30;
+            
+            int buffer = 32;
+            int columns = adJustedWidth / buffer;
+            int rows = adjustedHeight / buffer;
             int itemsDrawn = 0;
-            Vector2 StartPos = this._TopLeft;
+            Vector2 StartPos = HelperFunctions.PointToVector(_TopEdge.Location);
             StartPos.X += 8;
             StartPos.Y += 8;
             if (_InventoryManager.itemSlots.Count > 0)
@@ -58,12 +64,11 @@ namespace ExtendedTest.GameObjects.UIObjects
                     {
                         Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
                         _InventoryManager.itemSlots[itemsDrawn]._Position = pos;
+                        
 
-                        if (_InventoryManager.itemSlots[itemsDrawn].ItemInSlot == _InventoryManager.selectedItem)
-                        {
-                            spriteBatch.Draw(SelectedBG, new Vector2(pos.X - 8, pos.Y - 8), Color.White);
-                        }
                         _InventoryManager.itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
+
+
                         if (_InventoryManager.itemSlots[itemsDrawn].ItemInSlot._Stackable)
                         {
                             spriteBatch.DrawString(count, _InventoryManager.itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
@@ -76,6 +81,19 @@ namespace ExtendedTest.GameObjects.UIObjects
                     }
                 }
             }
+        }
+    }
+
+    class InventoryDrawSpot
+    {
+        SpriteFont font;
+        InventorySlot mySlot;
+        Vector2 pos;
+        public InventoryDrawSpot(SpriteFont f, InventorySlot slot, Vector2 p)
+        {
+            font = f;
+            mySlot = slot;
+            pos = p;
         }
     }
 }
