@@ -71,6 +71,7 @@
     <Compile Include="GameObjects\UIObjects\InventoryPanel.cs" />
     <Compile Include="GameObjects\UIObjects\UIPanel.cs" />
     <Compile Include="HelperFunctions.cs" />
+    <Compile Include="InputHelper.cs" />
     <Compile Include="kbHandler.cs" />
     <Compile Include="Managers\BankManager.cs" />
     <Compile Include="Managers\ChemistryManager.cs" />
