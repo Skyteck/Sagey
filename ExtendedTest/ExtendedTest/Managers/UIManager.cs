@@ -26,7 +26,7 @@ namespace ExtendedTest.Managers
             foreach(UIPanel element in ActivePanels)
             {
                 element.Update(gameTime);
-                element._Position = _Cam.ToWorld(element._InitialPos);
+                element._Position = element._InitialPos;
                 //element._Position = _Cam.ToWorld(element._Position);
             }
         }

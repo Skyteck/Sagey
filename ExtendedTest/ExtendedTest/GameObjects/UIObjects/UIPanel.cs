@@ -26,7 +26,6 @@ namespace ExtendedTest
         public bool _Resizable = true;
 
         private MouseState prevMousePos;
-        Vector2 prevScale;
 
         Texture2D edgeTex;
 
@@ -38,13 +37,13 @@ namespace ExtendedTest
             }
         }
 
-        //new private Vector2 _TopLeft
-        //{
-        //    get
-        //    {
-
-        //    }
-        //}
+        public override Rectangle _BoundingBox 
+        {
+            get
+            {
+                return new Rectangle((int)_Position.X, (int)_Position.Y, adJustedWidth, adjustedHeight);
+            }
+        }
 
         protected Rectangle _TopEdge
         {
@@ -101,19 +100,18 @@ namespace ExtendedTest
             if(xTracked || yTracked || topTracked || leftTracked)
             {
                 MouseState mState = Mouse.GetState();
-
-                if (prevMousePos.LeftButton == ButtonState.Pressed && mState.LeftButton == ButtonState.Released)
+                if(InputHelper.LeftButtonReleased)
                 {
+
                     xTracked = false;
                     yTracked = false;
                     leftTracked = false;
                     topTracked = false;
-
                 }
                 else
                 {
-                    Vector2 currentPos = HelperFunctions.PointToVector(mState.Position);
-                    Vector2 prevPos = HelperFunctions.PointToVector(prevMousePos.Position);
+                    Vector2 currentPos = InputHelper.MouseScreenPos;
+                    Vector2 prevPos = InputHelper.PrevMouseScreenPos;
 
                     int xDiff = (int)(currentPos.X - prevPos.X);
                     int yDiff = (int)(currentPos.Y - prevPos.Y);
@@ -207,38 +205,6 @@ namespace ExtendedTest
                 }
                 
             }
-            //if (_Draw)
-            //{
-            //    //Rectangle sr = new Rectangle((frameWidth * frameNum), (frameHeight * StateNum), frameWidth, frameHeight);
-            //    Rectangle sr = new Rectangle(0, 0, adJustedWidth, adjustedHeight);
-            //    if (!_FlipX && !_FlipY)
-            //    {
-            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.None, 0f);
-            //    }
-            //    else if (_FlipX)
-            //    {
-            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.FlipHorizontally, 0f);
-            //    }
-            //    else if (_FlipY)
-            //    {
-            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), _Rotation, _Center, 1, SpriteEffects.FlipVertically, 0f);
-            //    }
-            //    else if (_FlipX && _FlipY)
-            //    {
-            //        spriteBatch.Draw(_Texture, _Position, sr, new Color(_MyColor, _Opacity), (_Rotation + (float)Math.PI), _Center, 1, SpriteEffects.None, 0f);
-            //    }
-
-            //    if (_ChildrenList != null)
-            //    {
-            //        if (_ChildrenList.Count >= 1)
-            //        {
-            //            foreach (Sprite child in _ChildrenList)
-            //            {
-            //                child.Draw(spriteBatch);
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         internal void MarkToTrack(MouseState mState)

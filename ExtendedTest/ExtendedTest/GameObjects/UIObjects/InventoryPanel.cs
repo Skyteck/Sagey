@@ -12,13 +12,16 @@ namespace ExtendedTest.GameObjects.UIObjects
     public class InventoryPanel : UIPanel
     {
         Managers.InventoryManager _InventoryManager;
+        List<Rectangle> rectList;
         SpriteFont count;
         Texture2D SelectedBG;
         int scrollPos = 0;
+        int itemsDrawn = 0;
 
         public InventoryPanel(Managers.InventoryManager invenM)
         {
             _InventoryManager = invenM;
+            rectList = new List<Rectangle>();
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -48,40 +51,77 @@ namespace ExtendedTest.GameObjects.UIObjects
              * 
              * */
             base.Draw(spriteBatch);
-            
+
             int buffer = 32;
             int columns = adJustedWidth / buffer;
             int rows = adjustedHeight / buffer;
+            int toDraw = columns * rows;
             int itemsDrawn = 0;
-            Vector2 StartPos = HelperFunctions.PointToVector(_TopEdge.Location);
-            StartPos.X += 8;
-            StartPos.Y += 8;
-            if (_InventoryManager.itemSlots.Count > 0)
+            int currentRow = 0;
+            int currentColumn = 0;
+
+            if(toDraw < _InventoryManager.itemSlots.Count)
             {
-                for (int i = 0; i < rows; i++)
+                if (this._BoundingBox.Contains(InputHelper.MouseScreenPos) && InputHelper.MouseScrolled)
                 {
-                    for (int j = 0; j < columns; j++)
+                    if(InputHelper.MouseScrolledUp)
                     {
-                        Vector2 pos = new Vector2(StartPos.X + (j * buffer), StartPos.Y + (i * buffer));
-                        _InventoryManager.itemSlots[itemsDrawn]._Position = pos;
-                        
-
-                        _InventoryManager.itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
-
-
-                        if (_InventoryManager.itemSlots[itemsDrawn].ItemInSlot._Stackable)
+                        scrollPos--;
+                        if(scrollPos < 0)
                         {
-                            spriteBatch.DrawString(count, _InventoryManager.itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
+                            scrollPos = 0;
                         }
-                        itemsDrawn++;
-                        if (itemsDrawn >= _InventoryManager.itemSlots.Count)
+                    }
+                    else if(InputHelper.MouseScrolledDown)
+                    {
+                        scrollPos++;
+                        if(scrollPos > rows)
                         {
-                            return;
+                            scrollPos = rows;
                         }
                     }
                 }
             }
+            else
+            {
+                scrollPos = 0;
+            }
+            
+            itemsDrawn = columns * scrollPos;
+            if(itemsDrawn>= _InventoryManager.itemSlots.Count)
+            {
+                itemsDrawn = _InventoryManager.itemSlots.Count - columns;
+            }
+            Vector2 StartPos = HelperFunctions.PointToVector(_TopEdge.Location);
+            StartPos.X += 8;
+            StartPos.Y += 8;
+
+            while(itemsDrawn < _InventoryManager.itemSlots.Count)
+            {
+                //where to draw?
+                Vector2 pos = new Vector2(StartPos.X + (currentColumn * buffer), StartPos.Y + (currentRow * buffer));
+                //draw
+                _InventoryManager.itemSlots[itemsDrawn]._Position = pos;
+                _InventoryManager.itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
+                if (_InventoryManager.itemSlots[itemsDrawn].ItemInSlot._Stackable)
+                {
+                    spriteBatch.DrawString(count, _InventoryManager.itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
+                }
+                //done drawing
+                currentColumn++;
+                if(currentColumn >= columns)
+                {
+                    currentColumn = 0;
+                    currentRow++;
+                    if(currentRow >= rows)
+                    {
+                        break;
+                    }
+                }
+                itemsDrawn++;
+            }
         }
+
     }
 
     class InventoryDrawSpot

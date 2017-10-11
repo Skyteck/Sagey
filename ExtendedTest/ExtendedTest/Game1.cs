@@ -20,9 +20,7 @@ namespace ExtendedTest
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public Player player;
-        //List<Sprite> gameObjectList;
-        MouseState previousMouseState;
-        KeyboardState previousKBState;
+
         public Camera  camera;
 
         SpriteFont font;
@@ -41,7 +39,7 @@ namespace ExtendedTest
         Managers.BankManager _BankManager;
         Managers.GatherableManager _GatherableManager;
 
-
+        
         //UI        
         Vector2 mouseClickPos;
         Sprite mouseCursor;
@@ -82,6 +80,8 @@ namespace ExtendedTest
             kbHandler = new KbHandler();
 
             _SelectedSprite = new Sprite();
+
+            InputHelper.Init(camera);
             base.Initialize();
         }
 
@@ -303,6 +303,13 @@ namespace ExtendedTest
                     Exit();
                 }
 
+                InputHelper.Update();
+
+                if(InputHelper.LeftButtonPressed)
+                {
+                    Console.WriteLine(InputHelper.MouseScreenPos);
+                    Console.WriteLine(InputHelper.MouseWorldPos);
+                }
 
                 ProcessMouse(gameTime);
                 ProcessKeyboard(gameTime);
@@ -360,57 +367,17 @@ namespace ExtendedTest
         {
             KeyboardState kbState = Keyboard.GetState();
 
-            if(IsKeyPressed(Keys.E))
+            if(InputHelper.IsKeyPressed(Keys.E))
             {
                 _UIManager.TogglePanel("Crafting");
             }
-            if (IsKeyPressed(Keys.I))
+            if (InputHelper.IsKeyPressed(Keys.I))
             {
                 _UIManager.TogglePanel("Inventory");
             }
-            if(IsKeyPressed(Keys.P))
+            if(InputHelper.IsKeyPressed(Keys.P))
             {
                 SaveGame();
-            }
-            previousKBState = kbState;
-        }
-
-        private bool IsKeyPressed(Keys key)
-        {
-            KeyboardState kbState = Keyboard.GetState();
-            if(kbState.IsKeyDown(key) && previousKBState.IsKeyUp(key))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool IsKeyReleased(Keys key)
-        {
-            KeyboardState kbState = Keyboard.GetState();
-            if (kbState.IsKeyUp(key) && previousKBState.IsKeyDown(key))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool IsKeyHeld(Keys key)
-        {
-            KeyboardState kbState = Keyboard.GetState();
-            if (kbState.IsKeyDown(key) && previousKBState.IsKeyDown(key))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
@@ -419,10 +386,10 @@ namespace ExtendedTest
             MouseState mouseState = Mouse.GetState();
             String command = string.Empty;
             //check if there was a click
-            if(mouseState.LeftButton==ButtonState.Pressed && previousMouseState.LeftButton==ButtonState.Released)
+            if(InputHelper.LeftButtonPressed)
             {
                 //convert the mouse click position to world position
-                Vector2 mouseClickpos = camera.ToWorld(new Vector2(mouseState.Position.X, mouseState.Position.Y));
+                Vector2 mouseClickpos = InputHelper.MouseScreenPos;
 
                 //first check if the click was on any of the panels edge for resizing
                 UIPanel panelHit = _UIManager.CheckPanelEdges(mouseClickpos);
@@ -463,12 +430,12 @@ namespace ExtendedTest
 
             }
 
-            if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released)
-            {
-                //_GatherableManager.CreatePlant(GameObjects.Gatherables.Plant.PlantType.kStrawBerryType, new Vector2(0,0));
-            }
+            //if (InputHelper.RightButtonPressed)
+            //{
+            //    //_GatherableManager.CreatePlant(GameObjects.Gatherables.Plant.PlantType.kStrawBerryType, new Vector2(0,0));
+            //}
 
-            if (mouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue)
+            if (InputHelper.MouseScrolledUp)
             {
                 camera.Scale += 0.1f;
                 if (camera.Scale > 2f)
@@ -476,7 +443,7 @@ namespace ExtendedTest
                     camera.Scale = 2f;
                 }
             }
-            else if (mouseState.ScrollWheelValue < previousMouseState.ScrollWheelValue)
+            else if (InputHelper.MouseScrolledDown)
             {
                 camera.Scale -= 0.1f;
                 if (camera.Scale < 0.6f)
@@ -484,14 +451,12 @@ namespace ExtendedTest
                     camera.Scale = 0.6f;
                 }
             }
-
-            previousMouseState = mouseState;
+            
 
         }
 
         private void ProcessCamera(GameTime gameTime)
         {
-
             this.camera.Position = _PlayerManager._PlayerPos;
 
             camera.Update(gameTime);
@@ -515,7 +480,6 @@ namespace ExtendedTest
 
             _WorldObjectManager.Draw(spriteBatch);
             _GatherableManager.Draw(spriteBatch);
-            _UIManager.Draw(spriteBatch);
 
             //Vector2 invenBgpos = _UIManager.getUIElement("Inventory")._TopLeft;
             //_InvenManager.Draw(spriteBatch, invenBgpos);
@@ -527,6 +491,10 @@ namespace ExtendedTest
             
             base.Draw(gameTime);
             spriteBatch.End();
+            spriteBatch.Begin();
+            _UIManager.Draw(spriteBatch);
+            spriteBatch.End();
+
         }
 
         private void DrawSelectRect(SpriteBatch sb)

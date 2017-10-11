@@ -15,7 +15,6 @@ namespace ExtendedTest.Managers
         Player _Player;
         //Managers
         InventoryManager _InventoryManager;
-        KeyboardState _PrevKBState;
         WorldObjectManager _WorldObjectManager;
         GatherableManager _GatherManager;
         NPCManager _NPCManager;
@@ -237,31 +236,30 @@ namespace ExtendedTest.Managers
 
         public void ProcessKeyboard(GameTime gt)
         {
-            KeyboardState kbState = Keyboard.GetState();
             bool moved = false;
             Vector2 newPos = _Player._Position;
-            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+            if (InputHelper.IsKeyDown(Keys.A) || InputHelper.IsKeyDown(Keys.Left))
             {
                 //player._Position.X -= player._Speed;
                 newPos.X -= (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
                 _Player._Direction = Sprite.Direction.kDirectionLeft;
                 moved = true;
             }
-            else if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+            else if (InputHelper.IsKeyDown(Keys.D) || InputHelper.IsKeyDown(Keys.Right))
             {
                 //player._Position.X += player._Speed;
                 newPos.X += (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
                 _Player._Direction = Sprite.Direction.kDirectionRight;
                 moved = true;
             }
-            if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
+            if (InputHelper.IsKeyDown(Keys.W) || InputHelper.IsKeyDown(Keys.Up))
             {
                 //player._Position.Y -= player._Speed;
                 newPos.Y -= (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
                 _Player._Direction = Sprite.Direction.kDirectionUp;
                 moved = true;
             }
-            else if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
+            else if (InputHelper.IsKeyDown(Keys.S) || InputHelper.IsKeyDown(Keys.Down))
             {
                 //player._Position.Y += player._Speed;
                 newPos.Y += (float)(playerSpeed * gt.ElapsedGameTime.TotalSeconds);
@@ -269,11 +267,11 @@ namespace ExtendedTest.Managers
                 moved = true;
             }
 
-            if(kbState.IsKeyDown(Keys.R) )
+            if(InputHelper.IsKeyDown(Keys.R) )
             {
                 _Player._Rotation += 0.05f;
             }
-            if(kbState.IsKeyDown(Keys.F))
+            if(InputHelper.IsKeyPressed(Keys.F))
             {
                 _Player._Rotation = 0f;
             }
@@ -281,7 +279,7 @@ namespace ExtendedTest.Managers
 
             _Player._Position = newPos;
 
-            if (kbState.IsKeyDown(Keys.Space) && _PrevKBState.IsKeyUp(Keys.Space))
+            if (InputHelper.IsKeyPressed(Keys.Space))
             {
                 //This is for interacting with NPCs or other objects.
                 //first check if we talked to an NPC;
@@ -297,17 +295,17 @@ namespace ExtendedTest.Managers
                 }
             }
 
-            if (kbState.IsKeyDown(Keys.V) && _PrevKBState.IsKeyUp(Keys.V))
+            if (InputHelper.IsKeyPressed(Keys.V))
             {
                 _Player.Attack();
             }
 
-            if (kbState.IsKeyDown(Keys.B) && _PrevKBState.IsKeyUp(Keys.B))
+            if (InputHelper.IsKeyPressed(Keys.B))
             {
                 _Player.RangedAttack();
             }
 
-            if(kbState.IsKeyDown(Keys.L) && _PrevKBState.IsKeyUp(Keys.L))
+            if(InputHelper.IsKeyPressed(Keys.L))
             {
                 //check collision to see if dirt patch hit
                 WorldObject woHit = _WorldObjectManager.CheckDetectors(CheckRect);
@@ -329,7 +327,6 @@ namespace ExtendedTest.Managers
                 ClearTargets();
                 _Player._MyState = PlayerState.kStateWalk;
             }
-            _PrevKBState = kbState;
         }
 
         private void ProcessWorldObject(WorldObject woHit)
