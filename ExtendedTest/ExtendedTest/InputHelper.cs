@@ -34,7 +34,7 @@ namespace ExtendedTest
             CurrentMouseState = Mouse.GetState();
         }
 
-        #region KeyboardStuff
+        #region Keyboard Stuff
         public static bool IsKeyDown(Keys key)
         {
             if(CurrentKBState.IsKeyDown(key))
