@@ -13,8 +13,6 @@ namespace ExtendedTest.GameObjects.UIObjects
     {
         Managers.InventoryManager _InventoryManager;
         List<Rectangle> rectList;
-        SpriteFont count;
-        Texture2D SelectedBG;
         int scrollPos = 0;
         int itemsDrawn = 0;
 
@@ -22,13 +20,6 @@ namespace ExtendedTest.GameObjects.UIObjects
         {
             _InventoryManager = invenM;
             rectList = new List<Rectangle>();
-        }
-
-        public override void LoadContent(string path, ContentManager content)
-        {
-            base.LoadContent(path, content);
-            count = content.Load<SpriteFont>("Fonts/Fipps");
-            SelectedBG = content.Load<Texture2D>("Art/itemSlotSelected");
         }
 
         new public Item.ItemType ProcessClick(Vector2 pos)

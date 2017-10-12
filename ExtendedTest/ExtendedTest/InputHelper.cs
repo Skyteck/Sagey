@@ -167,7 +167,7 @@ namespace ExtendedTest
             }
         }
 
-        public static bool LeftButtonPressed
+        public static bool LeftButtonClicked
         {
             get
             {
@@ -233,7 +233,7 @@ namespace ExtendedTest
 
         }
 
-        public static bool RightButtonPressed
+        public static bool RightButtonClicked
         {
             get
             {

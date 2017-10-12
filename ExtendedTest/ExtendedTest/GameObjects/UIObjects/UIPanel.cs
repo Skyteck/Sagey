@@ -29,6 +29,9 @@ namespace ExtendedTest
 
         Texture2D edgeTex;
 
+
+        protected SpriteFont count;
+
         public Vector2 _Center
         {
             get
@@ -87,6 +90,7 @@ namespace ExtendedTest
         {
             base.LoadContent(path, content);
             edgeTex = content.Load<Texture2D>("Art/Whitetexture");
+            count = content.Load<SpriteFont>("Fonts/Fipps");
             adjustedHeight = frameHeight;
             adJustedWidth = frameWidth;
         }

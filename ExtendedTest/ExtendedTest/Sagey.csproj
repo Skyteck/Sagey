@@ -63,6 +63,7 @@
     <Compile Include="GameObjects\Fire.cs" />
     <Compile Include="GameObjects\Gatherables\Rock.cs" />
     <Compile Include="GameObjects\Gatherables\FishingHole.cs" />
+    <Compile Include="GameObjects\UIObjects\DialogPanel.cs" />
     <Compile Include="GameObjects\UIObjects\UIPanelv2.cs" />
     <Compile Include="GameObjects\WorldObject.cs" />
     <Compile Include="GameObjects\Sword.cs" />

@@ -96,7 +96,6 @@ namespace ExtendedTest
 
             LoadPlayerContent();
             LoadGUI();
-
             _MapManager.LoadMap("0-0", Content);
             LoadMapNPCs(_MapManager.findMapByName("0-0"));
             LoadMapObjects(_MapManager.findMapByName("0-0"));
@@ -238,6 +237,14 @@ namespace ExtendedTest
             bankPanel._Opacity = 1f;
             _UIManager.UIPanels.Add(bankPanel);
 
+            GameObjects.UIObjects.DialogPanel dPanel = new GameObjects.UIObjects.DialogPanel();
+            dPanel.LoadContent("Art/inventoryBG", Content);
+            dPanel._InitialPos = new Vector2(0, 0);
+            dPanel.Name = "Dialog";
+            dPanel._Opacity = 1;
+            _UIManager.UIPanels.Add(dPanel);
+            _UIManager.TogglePanel("Dialog");
+
             mouseCursor = new Sprite();
             mouseCursor.Name = "Cursor";
         }
@@ -305,7 +312,7 @@ namespace ExtendedTest
 
                 InputHelper.Update();
 
-                if(InputHelper.LeftButtonPressed)
+                if(InputHelper.LeftButtonClicked)
                 {
                     Console.WriteLine(InputHelper.MouseScreenPos);
                     Console.WriteLine(InputHelper.MouseWorldPos);
@@ -386,7 +393,7 @@ namespace ExtendedTest
             MouseState mouseState = Mouse.GetState();
             String command = string.Empty;
             //check if there was a click
-            if(InputHelper.LeftButtonPressed)
+            if(InputHelper.LeftButtonClicked)
             {
                 //convert the mouse click position to world position
                 Vector2 mouseClickpos = InputHelper.MouseScreenPos;
