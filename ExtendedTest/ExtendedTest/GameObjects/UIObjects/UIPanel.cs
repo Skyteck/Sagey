@@ -13,9 +13,9 @@ namespace ExtendedTest
     public class UIPanel : Sprite
     {
         int minWidth = 50;
-        protected int adJustedWidth;
+        protected int adJustedWidth = 200;
         int minHeight = 60;
-        protected int adjustedHeight;
+        protected int adjustedHeight = 200;
         public Vector2 _InitialPos = Vector2.Zero;
         public bool _Showing = false;
         private bool TrackMouse = false;
@@ -24,7 +24,8 @@ namespace ExtendedTest
         bool leftTracked = false;
         bool topTracked = false;
         public bool _Resizable = true;
-
+        protected int scrollPos = 0;
+        public Managers.UIManager parentManager;
         private MouseState prevMousePos;
 
         Texture2D edgeTex;
@@ -91,8 +92,6 @@ namespace ExtendedTest
             base.LoadContent(path, content);
             edgeTex = content.Load<Texture2D>("Art/Whitetexture");
             count = content.Load<SpriteFont>("Fonts/Fipps");
-            adjustedHeight = frameHeight;
-            adJustedWidth = frameWidth;
         }
 
         protected override void UpdateActive(GameTime gt)
@@ -114,6 +113,7 @@ namespace ExtendedTest
                 }
                 else
                 {
+                    scrollPos = 0;
                     Vector2 currentPos = InputHelper.MouseScreenPos;
                     Vector2 prevPos = InputHelper.PrevMouseScreenPos;
 

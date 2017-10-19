@@ -13,7 +13,6 @@ namespace ExtendedTest.GameObjects.UIObjects
     {
         Managers.InventoryManager _InventoryManager;
         List<Rectangle> rectList;
-        int scrollPos = 0;
         int itemsDrawn = 0;
 
         public InventoryPanel(Managers.InventoryManager invenM)

@@ -1,0 +1,16 @@
+﻿[
+  {
+    "ID": "NPC1",
+    "textList": [
+      "I'm a talking slime!",
+      "Do you know the muffin pan?",
+      "y = mx + b"
+    ]
+  },
+  {
+    "ID": "MightyDucks",
+    "textList": [
+      "I love Mike!"
+    ]
+  }
+]

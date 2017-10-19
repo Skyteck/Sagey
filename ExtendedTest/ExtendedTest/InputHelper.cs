@@ -281,8 +281,71 @@ namespace ExtendedTest
             }
 
         }
-#endregion
 
+        #endregion
+        #region Middle Mouse Button
+        public static bool MiddleButtonDown
+        {
+            get
+            {
+                if (CurrentMouseState.MiddleButton == ButtonState.Pressed)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+        }
+
+        public static bool MiddleButtonClicked
+        {
+            get
+            {
+                if (MiddleButtonDown && PrevMouseState.MiddleButton == ButtonState.Released)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public static bool MiddleButtonUp
+        {
+            get
+            {
+                if (CurrentMouseState.MiddleButton == ButtonState.Released)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public static bool MiddleButtonHeld
+        {
+            get
+            {
+                if (MiddleButtonDown && PrevMouseState.MiddleButton == ButtonState.Pressed)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public static bool MiddleButtonReleased
+        {
+            get
+            {
+                if (MiddleButtonUp && PrevMouseState.MiddleButton == ButtonState.Pressed)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+        }
+#endregion
 
 
         #endregion

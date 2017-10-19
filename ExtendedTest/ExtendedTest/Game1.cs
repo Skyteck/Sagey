@@ -9,6 +9,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using TiledSharp;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace ExtendedTest
 {
@@ -38,6 +40,7 @@ namespace ExtendedTest
         Managers.PlayerManager _PlayerManager;
         Managers.BankManager _BankManager;
         Managers.GatherableManager _GatherableManager;
+        Managers.DialogManager _DialogManager;
 
         
         //UI        
@@ -76,6 +79,7 @@ namespace ExtendedTest
 
             _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _WorldObjectManager, _NPCManager, _MapManager, _GatherableManager);
             _WorldObjectManager.SetGatherManager(_GatherableManager);
+            _DialogManager = new Managers.DialogManager();
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
 
@@ -181,7 +185,30 @@ namespace ExtendedTest
                 _BankManager.AddItem(Item.ItemType.kItemLog, 10);
                 _BankManager.AddItem(Item.ItemType.kItemFish, 3);
             }
+            //List<Dialog> dList = new List<Dialog>();
 
+            //Dialog d1 = new Dialog();
+            //d1.ID = "NPC1";
+            //d1.textList.Add("I'm a talking slime!");
+            //d1.textList.Add("Do you know the muffin pan?");
+            //d1.textList.Add("y = mx + b");
+            //dList.Add(d1);
+
+            //Dialog d2 = new Dialog();
+            //d2.ID = "MightyDucks";
+            //d2.textList.Add("I love Mike!");
+            //dList.Add(d2);
+            //List <Dialog> list2 = new List<Dialog>();
+
+            //string text = JsonConvert.SerializeObject(dList, Newtonsoft.Json.Formatting.Indented);
+
+            path = Content.RootDirectory + @"\JSON\Dialog_EN_US.json";
+            _DialogManager.LoadDialog(path);
+
+
+            _DialogManager.PlayMessage("NPC1");
+            //var dialog = System.IO.File.ReadAllText(path);
+            //list2 = JsonConvert.DeserializeObject<List<Dialog>>(dialog);
 
             //XDocument xmlTest = XDocument.Load("Content/Items.xml");
             //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
@@ -214,36 +241,39 @@ namespace ExtendedTest
         private void LoadGUI()
         {
             GameObjects.UIObjects.InventoryPanel inventoryBG = new GameObjects.UIObjects.InventoryPanel(_InvenManager);
-            inventoryBG.LoadContent("Art/inventoryBG", Content);
+            inventoryBG.LoadContent("Art/BlackTexture", Content);
             inventoryBG._InitialPos = new Vector2(200, 200);
             inventoryBG.Name = "Inventory";
             inventoryBG._Opacity = 0.6f;
+            inventoryBG.parentManager = _UIManager;
             _UIManager.UIPanels.Add(inventoryBG);
 
             _UIManager.TogglePanel("Inventory");
 
             GameObjects.UIObjects.CraftingPanel craftingPanel = new GameObjects.UIObjects.CraftingPanel(_ChemistryManager);
-            craftingPanel.LoadContent("Art/inventoryBG", Content);
+            craftingPanel.LoadContent("Art/BlackTexture", Content);
             craftingPanel._InitialPos = new Vector2(600, 400);
             craftingPanel.Name = "Crafting";
             craftingPanel._Opacity = 0.9f;
+            craftingPanel.parentManager = _UIManager;
             _UIManager.UIPanels.Add(craftingPanel);
 
             
             GameObjects.UIObjects.BankPanel bankPanel = new GameObjects.UIObjects.BankPanel(_BankManager);
-            bankPanel.LoadContent("Art/inventoryBG", Content);
+            bankPanel.LoadContent("Art/BlackTexture", Content);
             bankPanel._InitialPos = new Vector2(200, 200);
             bankPanel.Name = "Bank";
             bankPanel._Opacity = 1f;
+            bankPanel.parentManager = _UIManager;
             _UIManager.UIPanels.Add(bankPanel);
 
-            GameObjects.UIObjects.DialogPanel dPanel = new GameObjects.UIObjects.DialogPanel();
-            dPanel.LoadContent("Art/inventoryBG", Content);
+            GameObjects.UIObjects.DialogPanel dPanel = new GameObjects.UIObjects.DialogPanel(_DialogManager);
+            dPanel.LoadContent("Art/BlackTexture", Content);
             dPanel._InitialPos = new Vector2(0, 0);
             dPanel.Name = "Dialog";
             dPanel._Opacity = 1;
+            dPanel.parentManager = _UIManager;
             _UIManager.UIPanels.Add(dPanel);
-            _UIManager.TogglePanel("Dialog");
 
             mouseCursor = new Sprite();
             mouseCursor.Name = "Cursor";
@@ -312,16 +342,15 @@ namespace ExtendedTest
 
                 InputHelper.Update();
 
-                if(InputHelper.LeftButtonClicked)
-                {
-                    Console.WriteLine(InputHelper.MouseScreenPos);
-                    Console.WriteLine(InputHelper.MouseWorldPos);
-                }
-
                 ProcessMouse(gameTime);
                 ProcessKeyboard(gameTime);
+                
 
-                kbHandler.Update();
+                if(InputHelper.IsKeyPressed(Keys.J))
+                {
+                    _DialogManager.PlayMessage("MightyDucks");
+                }
+
                 //if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
                 //{
                 //    processor.Parsetext(kbHandler.Input);
@@ -350,12 +379,7 @@ namespace ExtendedTest
                 _GatherableManager.Update(gameTime);
                 
 
-                if (!kbHandler.typingMode)
-                {
-                    //processor.currentError = string.Empty;
-                    ProcessCamera(gameTime);
-
-                }
+                ProcessCamera(gameTime);
 
                 _UIManager.Update(gameTime, camera);
                 
@@ -366,7 +390,6 @@ namespace ExtendedTest
                 {
                     Console.WriteLine("BAD FPS!!!!!!!!!!");
                 }
-                typingMode = kbHandler.typingMode;
             }
         }
 
@@ -548,4 +571,5 @@ namespace ExtendedTest
             }
         }
     }
+
 }

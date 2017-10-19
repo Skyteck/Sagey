@@ -44,7 +44,7 @@
     <Compile Include="CollisionDetection2D.cs" />
     <Compile Include="Commander.cs" />
     <Compile Include="enums\NPCenums.cs" />
-    <Compile Include="ExtendedTest\GameObjects\NPCs\Banker.cs" />
+    <Compile Include="GameObjects\NPCs\Banker.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\AnimatedSprite.cs" />
     <Compile Include="GameObjects\Animation.cs" />
@@ -77,6 +77,7 @@
     <Compile Include="Managers\BankManager.cs" />
     <Compile Include="Managers\ChemistryManager.cs" />
     <Compile Include="Managers\CombatManager.cs" />
+    <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\InventorySlot.cs" />
     <Compile Include="Managers\ItemManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
@@ -138,7 +139,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="Content\Fonts\Fipps.spritefont" />
-    <None Include="Content\JSON\Items.json">
+    <None Include="Content\JSON\Dialog_EN_US.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Tilemaps\0-1.tmx">
@@ -155,6 +156,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ExtendedTest\GameObjects\NPCs\" />
     <Folder Include="GameObjects\Objects\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

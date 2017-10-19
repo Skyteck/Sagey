@@ -10,18 +10,28 @@ namespace ExtendedTest.GameObjects.UIObjects
 {
     public class DialogPanel : UIPanel
     {
+        Managers.DialogManager _DialogManager;
         List<string> DialogList;
         int CurrentIndex = 0;
-        Vector2 offset = new Vector2(15, 15);
-        public DialogPanel()
+        Vector2 offset = new Vector2(10, 10);
+        int currentStringLength = 0;
+
+        private Vector2 _characterSize
+        {
+            get
+            {
+                return count.MeasureString(new StringBuilder("W", 1));
+            }
+        } 
+
+        public DialogPanel(Managers.DialogManager dm)
         {
             DialogList = new List<string>();
-            string test = "This is a string! You better hope it's not very long though!";
-            string test2 = "Testing!";
-            string test3 = "For good measure.";
-            DialogList.Add(test);
-            DialogList.Add(test2);
-            DialogList.Add(test3);
+            _Resizable = false;
+            adjustedHeight = 100;
+            adJustedWidth = 450;
+            _DialogManager = dm;
+            _DialogManager.DialogPlayed += HandleDialogPlayed;
         }
 
         protected override void UpdateActive(GameTime gt)
@@ -46,7 +56,22 @@ namespace ExtendedTest.GameObjects.UIObjects
                         CurrentIndex = 0;
                     }
                 }
+                else if(InputHelper.MiddleButtonClicked)
+                {
+                    Console.WriteLine(adJustedWidth + " " + adjustedHeight);
+                }
+
             }
+        }
+
+        public void HandleDialogPlayed(object sender, EventArgs args)
+        {
+            DialogList.Clear();
+            foreach(string msg in _DialogManager.CurrentDialog.textList)
+            {
+                DialogList.Add(msg);
+            }
+            parentManager.ShowPanel("Dialog");
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -59,5 +84,15 @@ namespace ExtendedTest.GameObjects.UIObjects
         }
 
 
+    }
+
+    class WordInfo
+    {
+        int wordLength = 0;
+        StringBuilder word;
+        public WordInfo(String w)
+        {
+            word = new StringBuilder(w);
+        }
     }
 }
