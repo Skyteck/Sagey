@@ -45,7 +45,8 @@ namespace ExtendedTest.GameObjects.UIObjects
                     CurrentIndex++;
                     if(CurrentIndex >= DialogList.Count)
                     {
-                        CurrentIndex = DialogList.Count - 1;
+                        parentManager.HidePanel(this);
+                        CurrentIndex = 0;
                     }
                 }
                 else if(InputHelper.RightButtonClicked)
@@ -67,16 +68,17 @@ namespace ExtendedTest.GameObjects.UIObjects
         public void HandleDialogPlayed(object sender, EventArgs args)
         {
             DialogList.Clear();
+            CurrentIndex = 0;
             foreach(string msg in _DialogManager.CurrentDialog.textList)
             {
                 DialogList.Add(msg);
             }
-            parentManager.ShowPanel("Dialog");
+            parentManager.ShowPanel(this);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
+            if (DialogList.Count <= 0) return;
             // https://github.com/Andrux51/MonoGame-Tutorial-DialogBox/blob/master/MonoGame-Tutorial-DialogBox/DialogBox.cs
             base.Draw(spriteBatch);
             Vector2 drawPos = new Vector2(_Position.X + offset.X, _Position.Y + offset.Y);

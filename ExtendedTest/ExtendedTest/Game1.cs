@@ -74,7 +74,7 @@ namespace ExtendedTest
             _NPCManager = new Managers.NPCManager(_MapManager,  Content, player);
             _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
             _GatherableManager = new Managers.GatherableManager(_MapManager, _InvenManager, Content, player);
-            _UIManager = new Managers.UIManager(_InvenManager);
+            _UIManager = new Managers.UIManager();
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _WorldObjectManager, _NPCManager, Content, _ItemManager);
 
             _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _WorldObjectManager, _NPCManager, _MapManager, _GatherableManager);
@@ -206,7 +206,7 @@ namespace ExtendedTest
             _DialogManager.LoadDialog(path);
 
 
-            _DialogManager.PlayMessage("NPC1");
+            //_DialogManager.PlayMessage("NPC1");
             //var dialog = System.IO.File.ReadAllText(path);
             //list2 = JsonConvert.DeserializeObject<List<Dialog>>(dialog);
 
@@ -348,7 +348,7 @@ namespace ExtendedTest
 
                 if(InputHelper.IsKeyPressed(Keys.J))
                 {
-                    _DialogManager.PlayMessage("MightyDucks");
+                    _DialogManager.PlayMessage("NPC1");
                 }
 
                 //if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
@@ -381,7 +381,7 @@ namespace ExtendedTest
 
                 ProcessCamera(gameTime);
 
-                _UIManager.Update(gameTime, camera);
+                _UIManager.Update(gameTime);
                 
                 base.Update(gameTime);
 
