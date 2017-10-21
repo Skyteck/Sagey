@@ -29,6 +29,7 @@ namespace ExtendedTest
         private MouseState prevMousePos;
 
         Texture2D edgeTex;
+        protected Texture2D extraTex;
 
 
         protected SpriteFont count;
@@ -92,6 +93,7 @@ namespace ExtendedTest
             base.LoadContent(path, content);
             edgeTex = content.Load<Texture2D>("Art/Whitetexture");
             count = content.Load<SpriteFont>("Fonts/Fipps");
+            extraTex = content.Load<Texture2D>("Art/YellowTexture");
         }
 
         protected override void UpdateActive(GameTime gt)

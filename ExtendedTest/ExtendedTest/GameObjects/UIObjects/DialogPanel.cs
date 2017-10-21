@@ -12,9 +12,13 @@ namespace ExtendedTest.GameObjects.UIObjects
     {
         Managers.DialogManager _DialogManager;
         List<string> DialogList;
+        List<String> DialogOptions;
+        List<Rectangle> optionsRects;
         int CurrentIndex = 0;
         Vector2 offset = new Vector2(10, 10);
         int currentStringLength = 0;
+
+        bool showOptions = false;
 
         private Vector2 _characterSize
         {
@@ -27,6 +31,8 @@ namespace ExtendedTest.GameObjects.UIObjects
         public DialogPanel(Managers.DialogManager dm)
         {
             DialogList = new List<string>();
+            DialogOptions = new List<string>();
+            optionsRects = new List<Rectangle>();
             _Resizable = false;
             adjustedHeight = 100;
             adJustedWidth = 450;
@@ -47,6 +53,11 @@ namespace ExtendedTest.GameObjects.UIObjects
                     {
                         parentManager.HidePanel(this);
                         CurrentIndex = 0;
+                        showOptions = false;
+                    }
+                    else if(CurrentIndex == DialogList.Count-1) //last one?
+                    {
+                        showOptions = true;
                     }
                 }
                 else if(InputHelper.RightButtonClicked)
@@ -56,6 +67,7 @@ namespace ExtendedTest.GameObjects.UIObjects
                     {
                         CurrentIndex = 0;
                     }
+                    showOptions = false;
                 }
                 else if(InputHelper.MiddleButtonClicked)
                 {
@@ -63,15 +75,42 @@ namespace ExtendedTest.GameObjects.UIObjects
                 }
 
             }
+            if(showOptions)
+            {
+                int optionPicked = 0;
+                foreach (Rectangle rect in optionsRects)
+                {
+                    if(rect.Contains(InputHelper.MouseScreenPos) && InputHelper.LeftButtonClicked)
+                    {
+                        _DialogManager.PlayMessage(_DialogManager.CurrentDialog.options[optionPicked].NextMsgID);
+                        showOptions = false;
+                        break;
+                    }
+                    optionPicked++;
+                }
+            }
         }
 
         public void HandleDialogPlayed(object sender, EventArgs args)
         {
             DialogList.Clear();
+            optionsRects.Clear();
+            DialogOptions.Clear();
             CurrentIndex = 0;
             foreach(string msg in _DialogManager.CurrentDialog.textList)
             {
                 DialogList.Add(msg);
+            }
+            if(_DialogManager.CurrentDialog.options.Count > 0)
+            {
+                int rectsMade = 0;
+                foreach(Managers.DialogOption option in _DialogManager.CurrentDialog.options)
+                {
+                    DialogOptions.Add(option.optiontext);
+                    Rectangle optionrect = new Rectangle(this._BoundingBox.Left, this._BoundingBox.Bottom + ((count.LineSpacing + 5) * rectsMade), this.adJustedWidth, 20);
+                    optionsRects.Add(optionrect);
+                    rectsMade++;
+                }
             }
             parentManager.ShowPanel(this);
         }
@@ -83,6 +122,17 @@ namespace ExtendedTest.GameObjects.UIObjects
             base.Draw(spriteBatch);
             Vector2 drawPos = new Vector2(_Position.X + offset.X, _Position.Y + offset.Y);
             spriteBatch.DrawString(count, DialogList[CurrentIndex], drawPos, Color.White);
+
+            if(showOptions)
+            {
+                int optionCount = 0;
+                foreach(Rectangle rect in optionsRects)
+                {
+                    spriteBatch.Draw(_Texture, rect, Color.White);
+                    spriteBatch.DrawString(count, DialogOptions[optionCount], new Vector2(rect.Left + 3, rect.Top + 3), Color.White);
+                    optionCount++;
+                }
+            }
         }
 
 

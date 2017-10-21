@@ -11,6 +11,7 @@ using System.Xml.XPath;
 using TiledSharp;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using ExtendedTest.Managers;
 
 namespace ExtendedTest
 {
@@ -190,8 +191,16 @@ namespace ExtendedTest
             //Dialog d1 = new Dialog();
             //d1.ID = "NPC1";
             //d1.textList.Add("I'm a talking slime!");
-            //d1.textList.Add("Do you know the muffin pan?");
             //d1.textList.Add("y = mx + b");
+            //d1.textList.Add("Do you know the muffin pan?");
+            //DialogOption option = new DialogOption();
+            //option.NextMsgID = "muffinYes";
+            //option.optiontext = "I think it's muffin pan though.";
+            //d1.options.Add(option);
+            //option = new DialogOption();
+            //option.NextMsgID = "muffinNo";
+            //option.optiontext = "That's not how the story goes...";
+            //d1.options.Add(option);
             //dList.Add(d1);
 
             //Dialog d2 = new Dialog();

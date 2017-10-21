@@ -42,10 +42,17 @@ namespace ExtendedTest.Managers
     {
         public string ID;
         public List<string> textList;
-
+        public List<DialogOption> options;
         public Dialog()
         {
             textList = new List<string>();
+            options = new List<DialogOption>();
         }
+    }
+
+    public class DialogOption
+    {
+        public string NextMsgID;
+        public string optiontext;
     }
 }

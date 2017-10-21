@@ -1,16 +1,43 @@
 ﻿[
-  {
-    "ID": "NPC1",
-    "textList": [
-      "I'm a talking slime!",
-      "y = mx + b",
-      "Do you know the muffin pan?"
-    ]
-  },
-  {
-    "ID": "MightyDucks",
-    "textList": [
-      "I love Mike!"
-    ]
-  }
+    {
+        "ID": "NPC1",
+        "textList": [
+            "I'm a talking slime!",
+            "y = mx + b",
+            "Do you know the muffin pan?"
+        ],
+        "options": [
+            {
+                "NextMsgID": "muffinYes",
+                "optiontext": "I think it's muffin pan though."
+            },
+            {
+                "NextMsgID": "muffinNo",
+                "optiontext": "That's not how the story goes..."
+            }
+        ]
+    },
+    {
+        "ID": "muffinYes",
+        "textList": [
+            "Well, pan is more hilarious.",
+            "Go screw yourself."
+        ],
+        "options": []
+    },
+    {
+        "ID": "muffinNo",
+        "textList": [
+            "I'm a slime I do what I want.",
+            "Go screw yourself."
+        ],
+        "options": []
+    },
+    {
+        "ID": "MightyDucks",
+        "textList": [
+            "I love Mike!"
+        ],
+        "options": []
+    }
 ]
