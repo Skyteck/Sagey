@@ -1,43 +1,59 @@
 ﻿[
-    {
-        "ID": "NPC1",
-        "textList": [
-            "I'm a talking slime!",
-            "y = mx + b",
-            "Do you know the muffin pan?"
-        ],
-        "options": [
-            {
-                "NextMsgID": "muffinYes",
-                "optiontext": "I think it's muffin pan though."
-            },
-            {
-                "NextMsgID": "muffinNo",
-                "optiontext": "That's not how the story goes..."
-            }
-        ]
-    },
-    {
-        "ID": "muffinYes",
-        "textList": [
-            "Well, pan is more hilarious.",
-            "Go screw yourself."
-        ],
-        "options": []
-    },
-    {
-        "ID": "muffinNo",
-        "textList": [
-            "I'm a slime I do what I want.",
-            "Go screw yourself."
-        ],
-        "options": []
-    },
-    {
-        "ID": "MightyDucks",
-        "textList": [
-            "I love Mike!"
-        ],
-        "options": []
-    }
+  {
+    "ID": "NPC1",
+    "textList": [
+      "I'm a talking slime!",
+      "y = mx + b",
+      "Do you know the muffin pan?"
+    ],
+    "options": [
+      {
+        "NextMsgID": "muffinYes",
+        "optiontext": "I think it's muffin man though."
+      },
+      {
+        "NextMsgID": "muffinNo",
+        "optiontext": "That's not how the story goes..."
+      }
+    ]
+  },
+  {
+    "ID": "muffinYes",
+    "textList": [
+      "Well, pan is more hilarious.",
+      "Go screw yourself."
+    ],
+    "options": []
+  },
+  {
+    "ID": "muffinNo",
+    "textList": [
+      "I'm a slime I do what I want.",
+      "Go screw yourself."
+    ],
+    "options": []
+  },
+  {
+    "ID": "OpenBank",
+    "textList": [
+      "Hi! Would you like to access your bank?"
+    ],
+    "options": [
+      {
+        "optiontext": "Sure! I've got some stuff to stash.",
+        "Command":  "Open Bank"
+      },
+      {
+        "NextMsgID": "BankNo",
+        "optiontext": "Nah, I'm good."
+      }
+    ]
+  },
+  {
+    "ID": "BankNo",
+    "textList": [
+      "Understandable. Have a slimy day!"
+    ],
+    "options": []
+  }
 ]

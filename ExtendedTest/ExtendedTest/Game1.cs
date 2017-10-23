@@ -88,7 +88,13 @@ namespace ExtendedTest
 
             InputHelper.Init(camera);
             base.Initialize();
+
+            //EVENTS
+            _DialogManager.BankOpened += HandleBankOpened;
+            _PlayerManager.BankOpened += HandleBankOpened;
+            _PlayerManager.PlayerMoved += HandlePlayerMoved;
         }
+
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -254,7 +260,7 @@ namespace ExtendedTest
             inventoryBG._InitialPos = new Vector2(200, 200);
             inventoryBG.Name = "Inventory";
             inventoryBG._Opacity = 0.6f;
-            inventoryBG.parentManager = _UIManager;
+            inventoryBG._UIManager = _UIManager;
             _UIManager.UIPanels.Add(inventoryBG);
 
             _UIManager.TogglePanel("Inventory");
@@ -264,16 +270,16 @@ namespace ExtendedTest
             craftingPanel._InitialPos = new Vector2(600, 400);
             craftingPanel.Name = "Crafting";
             craftingPanel._Opacity = 0.9f;
-            craftingPanel.parentManager = _UIManager;
+            craftingPanel._UIManager = _UIManager;
             _UIManager.UIPanels.Add(craftingPanel);
 
             
             GameObjects.UIObjects.BankPanel bankPanel = new GameObjects.UIObjects.BankPanel(_BankManager);
             bankPanel.LoadContent("Art/BlackTexture", Content);
-            bankPanel._InitialPos = new Vector2(200, 200);
+            bankPanel._InitialPos = new Vector2(400, 200);
             bankPanel.Name = "Bank";
             bankPanel._Opacity = 1f;
-            bankPanel.parentManager = _UIManager;
+            bankPanel._UIManager = _UIManager;
             _UIManager.UIPanels.Add(bankPanel);
 
             GameObjects.UIObjects.DialogPanel dPanel = new GameObjects.UIObjects.DialogPanel(_DialogManager);
@@ -281,7 +287,7 @@ namespace ExtendedTest
             dPanel._InitialPos = new Vector2(0, 0);
             dPanel.Name = "Dialog";
             dPanel._Opacity = 1;
-            dPanel.parentManager = _UIManager;
+            dPanel._UIManager = _UIManager;
             _UIManager.UIPanels.Add(dPanel);
 
             mouseCursor = new Sprite();
@@ -357,7 +363,7 @@ namespace ExtendedTest
 
                 if(InputHelper.IsKeyPressed(Keys.J))
                 {
-                    _DialogManager.PlayMessage("NPC1");
+                    _DialogManager.PlayMessage("OpenBank");
                 }
 
                 //if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
@@ -371,16 +377,6 @@ namespace ExtendedTest
                 if(_PlayerManager._FrontSprite != null)
                 {
                     _SelectedSprite = _PlayerManager._FrontSprite;
-                }
-                if(_PlayerManager._BankerGo)
-                {
-                    _UIManager.ShowPanel("Bank");
-                    BankMode = true;
-                }
-                else
-                {
-                    _UIManager.HidePanel("Bank");
-                    BankMode = false;
                 }
 
                 _NPCManager.UpdateNPCs(gameTime);
@@ -556,29 +552,46 @@ namespace ExtendedTest
 
         private void SaveGame()
         {
-            string playerPos = string.Format("{0} {1}", _PlayerManager._PlayerPos.X, _PlayerManager._PlayerPos.Y);
+            //string playerPos = string.Format("{0} {1}", _PlayerManager._PlayerPos.X, _PlayerManager._PlayerPos.Y);
 
-            List<string> bankStuff = _BankManager.getList();
-            List<string> inventoryStuff = _InvenManager.getList();
-            string test = Content.RootDirectory + @"\Save\save.txt";
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(test))
-            {
-                file.WriteLine(playerPos);
-                file.WriteLine("B");
-                foreach(string line in bankStuff)
-                {
-                    file.WriteLine(line);
-                }
-                file.WriteLine("BEnd");
-                file.WriteLine("I");
-                foreach (string line in inventoryStuff)
-                {
-                    file.WriteLine(line);
-                }
-                file.WriteLine("IEnd");
-            }
+            //List<string> bankStuff = _BankManager.getList();
+            //List<string> inventoryStuff = _InvenManager.getList();
+            //string test = Content.RootDirectory + @"\Save\save.txt";
+            //using (System.IO.StreamWriter file =
+            //new System.IO.StreamWriter(test))
+            //{
+            //    file.WriteLine(playerPos);
+            //    file.WriteLine("B");
+            //    foreach(string line in bankStuff)
+            //    {
+            //        file.WriteLine(line);
+            //    }
+            //    file.WriteLine("BEnd");
+            //    file.WriteLine("I");
+            //    foreach (string line in inventoryStuff)
+            //    {
+            //        file.WriteLine(line);
+            //    }
+            //    file.WriteLine("IEnd");
+            //}
+
+            string TestInventorySave = JsonConvert.SerializeObject(_InvenManager.itemSlots);
         }
+
+        #region Events
+
+        public void HandleBankOpened(object sender, EventArgs args)
+        {
+            BankMode = true;
+            _UIManager.ShowPanel("Bank");
+        }
+        private void HandlePlayerMoved(object sender, EventArgs args)
+        {
+            BankMode = false;
+            _UIManager.HidePanel("Bank");
+        }
+
+        #endregion
     }
 
 }

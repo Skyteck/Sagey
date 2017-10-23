@@ -25,7 +25,7 @@ namespace ExtendedTest
         bool topTracked = false;
         public bool _Resizable = true;
         protected int scrollPos = 0;
-        public Managers.UIManager parentManager;
+        public Managers.UIManager _UIManager;
         private MouseState prevMousePos;
 
         Texture2D edgeTex;

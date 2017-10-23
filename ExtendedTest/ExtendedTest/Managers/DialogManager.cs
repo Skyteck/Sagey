@@ -10,6 +10,7 @@ namespace ExtendedTest.Managers
     public class DialogManager
     {
         public event EventHandler DialogPlayed;
+        public event EventHandler BankOpened;
 
         List<Dialog> _DialogList;
         public Dialog CurrentDialog;
@@ -27,13 +28,37 @@ namespace ExtendedTest.Managers
 
         public void PlayMessage(string msgID)
         {
-            CurrentDialog = _DialogList.Find(x => x.ID == msgID);
+            Dialog newDialog = new Dialog();
+            newDialog = _DialogList.Find(x => x.ID == msgID);
+            if(newDialog == null || msgID == String.Empty)
+            {
+                Console.WriteLine("Line: " + msgID + " MISSING!");
+                Console.WriteLine("Previous dialog: " + CurrentDialog.ID);
+            }
+            CurrentDialog = newDialog;
             OnDialogPlayed();
+        }
+
+        public void PlayMessage(DialogOption option)
+        {
+            string msgID = option.NextMsgID;
+            PlayMessage(msgID);
+
+            if(option.Command!= null && option.Command == "Open Bank")
+            {
+                OnBankOpened();
+            }
+
         }
 
         public void OnDialogPlayed()
         {
             DialogPlayed?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void OnBankOpened()
+        {
+            BankOpened?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -54,5 +79,7 @@ namespace ExtendedTest.Managers
     {
         public string NextMsgID;
         public string optiontext;
+        public string Command;
+        public string Condition;
     }
 }

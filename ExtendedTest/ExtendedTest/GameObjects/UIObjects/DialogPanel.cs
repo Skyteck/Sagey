@@ -51,13 +51,8 @@ namespace ExtendedTest.GameObjects.UIObjects
                     CurrentIndex++;
                     if(CurrentIndex >= DialogList.Count)
                     {
-                        parentManager.HidePanel(this);
+                        _UIManager.HidePanel(this);
                         CurrentIndex = 0;
-                        showOptions = false;
-                    }
-                    else if(CurrentIndex == DialogList.Count-1) //last one?
-                    {
-                        showOptions = true;
                     }
                 }
                 else if(InputHelper.RightButtonClicked)
@@ -67,7 +62,6 @@ namespace ExtendedTest.GameObjects.UIObjects
                     {
                         CurrentIndex = 0;
                     }
-                    showOptions = false;
                 }
                 else if(InputHelper.MiddleButtonClicked)
                 {
@@ -75,15 +69,27 @@ namespace ExtendedTest.GameObjects.UIObjects
                 }
 
             }
-            if(showOptions)
+
+            if (CurrentIndex == DialogList.Count - 1) //last one?
+            {
+                showOptions = true;
+            }
+            else
+            {
+                showOptions = false;
+            }
+
+            if (showOptions)
             {
                 int optionPicked = 0;
                 foreach (Rectangle rect in optionsRects)
                 {
                     if(rect.Contains(InputHelper.MouseScreenPos) && InputHelper.LeftButtonClicked)
                     {
-                        _DialogManager.PlayMessage(_DialogManager.CurrentDialog.options[optionPicked].NextMsgID);
                         showOptions = false;
+                        CurrentIndex = 0;
+                        //_UIManager.HidePanel(this);
+                        _DialogManager.PlayMessage(_DialogManager.CurrentDialog.options[optionPicked]);
                         break;
                     }
                     optionPicked++;
@@ -97,6 +103,11 @@ namespace ExtendedTest.GameObjects.UIObjects
             optionsRects.Clear();
             DialogOptions.Clear();
             CurrentIndex = 0;
+            if(_DialogManager.CurrentDialog == null)
+            {
+                _UIManager.HidePanel(this);
+                return;
+            }
             foreach(string msg in _DialogManager.CurrentDialog.textList)
             {
                 DialogList.Add(msg);
@@ -112,7 +123,7 @@ namespace ExtendedTest.GameObjects.UIObjects
                     rectsMade++;
                 }
             }
-            parentManager.ShowPanel(this);
+            _UIManager.ShowPanel(this);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

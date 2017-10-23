@@ -12,6 +12,9 @@ namespace ExtendedTest.Managers
 {
     public class PlayerManager
     {
+        public event EventHandler BankOpened;
+        public event EventHandler PlayerMoved;
+
         Player _Player;
         //Managers
         InventoryManager _InventoryManager;
@@ -20,9 +23,6 @@ namespace ExtendedTest.Managers
         NPCManager _NPCManager;
         TilemapManager _MapManager;
         public Vector2 _PlayerPos;
-
-        private bool bankerGo = false;
-        public bool _BankerGo { get => bankerGo; set => bankerGo = value; }
 
 
         //Gathering variables
@@ -45,7 +45,7 @@ namespace ExtendedTest.Managers
         public PlayerState _PlayerState { get => playerState; set => playerState = value; }
 
         public float _PlayerSpeed { get => playerSpeed; set => playerSpeed = value; }
-        private float playerSpeed = 128.0f;
+        private float playerSpeed = 200.0f;
 
         private Rectangle CheckRect
         {
@@ -326,6 +326,7 @@ namespace ExtendedTest.Managers
             {
                 ClearTargets();
                 _Player._MyState = PlayerState.kStateWalk;
+                //OnPlayerMoved();
             }
         }
 
@@ -349,7 +350,7 @@ namespace ExtendedTest.Managers
         {
             if(npcHit._Tag == Sprite.SpriteType.kNPCType)
             {
-                _BankerGo = true;
+                OnBankOpened();
             }
         }
 
@@ -368,7 +369,20 @@ namespace ExtendedTest.Managers
         public void ClearTargets()
         {
             _CurrentGatherTarget = null;
-            _BankerGo = false;
         }
+
+
+        #region Events
+
+        public void OnBankOpened()
+        {
+            BankOpened?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void OnBankClosed()
+        {
+            PlayerMoved?.Invoke(this, EventArgs.Empty);
+        }
+#endregion
     }
 }
