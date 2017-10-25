@@ -12,22 +12,49 @@ namespace ExtendedTest.GameObjects.UIObjects
     public class InventoryPanel : UIPanel
     {
         Managers.InventoryManager _InventoryManager;
-        List<Rectangle> rectList;
+        List<DrawSpot> _PanelSpots;
         int itemsDrawn = 0;
 
         public InventoryPanel(Managers.InventoryManager invenM)
         {
             _InventoryManager = invenM;
-            rectList = new List<Rectangle>();
+            _PanelSpots = new List<DrawSpot>();
+        }
+
+        public override void LoadContent(string path, ContentManager content)
+        {
+            base.LoadContent(path, content);
+
+            for (int i = 0; i < _InventoryManager.capacity; i++)
+            {
+                DrawSpot spot = new DrawSpot(extraTex);
+                _PanelSpots.Add(spot);
+            }
+        }
+
+        public override void Update(GameTime gt)
+        {
+            base.Update(gt);
+
+            if(this._BoundingBox.Contains(InputHelper.MouseScreenPos))
+            {
+                foreach(DrawSpot slot in _PanelSpots)
+                {
+                    if(slot.myRect.Contains(InputHelper.MouseScreenPos))
+                    {
+                        Console.WriteLine(slot.MouseOver);
+                    }
+                }
+            }
         }
 
         new public Item.ItemType ProcessClick(Vector2 pos)
         {
-            foreach (InventorySlot slot in _InventoryManager.itemSlots)
+            foreach (DrawSpot slot in _PanelSpots.FindAll(x=>x._Active == true))
             {
                 if (slot.myRect.Contains(pos))
                 {
-                    return slot.ItemInSlot._Type;
+                    return slot.mySlot.ItemInSlot._Type;
                 }
             }
             return Item.ItemType.kItemNone;
@@ -42,7 +69,7 @@ namespace ExtendedTest.GameObjects.UIObjects
              * */
             base.Draw(spriteBatch);
 
-            int buffer = 32;
+            int buffer = 37;
             int columns = adJustedWidth / buffer;
             int rows = adjustedHeight / buffer;
             int toDraw = columns * rows;
@@ -83,20 +110,25 @@ namespace ExtendedTest.GameObjects.UIObjects
                 itemsDrawn = _InventoryManager.itemSlots.Count - columns;
             }
             Vector2 StartPos = HelperFunctions.PointToVector(_TopEdge.Location);
-            StartPos.X += 8;
-            StartPos.Y += 8;
+            StartPos.X += 16;
+            StartPos.Y += 16;
 
-            while(itemsDrawn < _InventoryManager.itemSlots.Count)
+            ResetSlots();
+
+            while (itemsDrawn < _InventoryManager.itemSlots.Count)
             {
                 //where to draw?
                 Vector2 pos = new Vector2(StartPos.X + (currentColumn * buffer), StartPos.Y + (currentRow * buffer));
+                ActivateSlot(_InventoryManager.itemSlots[itemsDrawn], pos);
                 //draw
-                _InventoryManager.itemSlots[itemsDrawn]._Position = pos;
-                _InventoryManager.itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
-                if (_InventoryManager.itemSlots[itemsDrawn].ItemInSlot._Stackable)
-                {
-                    spriteBatch.DrawString(count, _InventoryManager.itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
-                }
+                //_InventoryManager.itemSlots[itemsDrawn]._Position = pos;
+                //_InventoryManager.itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
+                //_PanelSpots[itemsDrawn].Draw(spriteBatch);
+                //spriteBatch.Draw(newSpot.mySlot.ItemInSlot.itemtexture, pos, Color.White);
+                //if (_PanelSpots[itemsDrawn].mySlot.ItemInSlot._Stackable)
+                //{
+                //    spriteBatch.DrawString(count, _InventoryManager.itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
+                //}
                 //done drawing
                 currentColumn++;
                 if(currentColumn >= columns)
@@ -110,20 +142,76 @@ namespace ExtendedTest.GameObjects.UIObjects
                 }
                 itemsDrawn++;
             }
+            
+            foreach(DrawSpot spot in _PanelSpots.FindAll(x=>x._Active == true))
+            {
+                spot.Draw(spriteBatch, count);
+            }
+        }
+
+        private void ResetSlots()
+        {
+            foreach (DrawSpot spot in _PanelSpots.FindAll(x => x._Active == true))
+            {
+                spot.Reset();
+            }
+        }
+
+        private void ActivateSlot(ItemSlot slot, Vector2 pos)
+        {
+            _PanelSpots.Find(x => x._Active == false).Setup(slot, pos);
         }
 
     }
 
-    class InventoryDrawSpot
+    public class DrawSpot
     {
-        SpriteFont font;
-        InventorySlot mySlot;
-        Vector2 pos;
-        public InventoryDrawSpot(SpriteFont f, InventorySlot slot, Vector2 p)
+        public ItemSlot mySlot;
+        public Vector2 _Position;
+        public bool _Active = false;
+        public Texture2D bgTex;
+        public string MouseOver;
+        int buffer = 34;
+        public DrawSpot(Texture2D tex)
         {
-            font = f;
+            bgTex = tex;
+        }
+
+        public Rectangle myRect
+        {
+            get
+            {
+                return new Rectangle((int)_Position.X - 8, (int)_Position.Y - 8, buffer, buffer);
+            }
+        }
+
+        public void Setup(ItemSlot slot, Vector2 pos)
+        {
             mySlot = slot;
-            pos = p;
+            _Position = pos;
+            _Active = true;
+            MouseOver = mySlot.ItemInSlot._Name;
+        }
+
+        public void Reset()
+        {
+            mySlot = null;
+            _Position = Vector2.Zero;
+            _Active = false;
+            MouseOver = string.Empty;
+        }
+
+        public void Draw(SpriteBatch sb, SpriteFont font)
+        {
+            if (!_Active) return;
+            //draw BG
+            sb.Draw(bgTex, myRect, Color.White);
+            sb.Draw(mySlot.ItemInSlot.itemtexture, new Vector2(_Position.X - 8, _Position.Y + 8), Color.White);
+
+            if(mySlot.ItemInSlot._Stackable)
+            {
+                sb.DrawString(font, mySlot.Amount.ToString(), new Vector2(_Position.X, _Position.Y - font.LineSpacing), Color.White);
+            }
         }
     }
 }

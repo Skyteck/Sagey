@@ -13,7 +13,7 @@ namespace ExtendedTest.Managers
     {
         public event EventHandler InventoryChanged;
 
-        public List<InventorySlot> itemSlots;
+        public List<ItemSlot> itemSlots;
         public int capacity = 28;
 
         //Managers
@@ -24,7 +24,7 @@ namespace ExtendedTest.Managers
         public InventoryManager(ItemManager IM)
         {
             _ItemManager = IM;
-            itemSlots = new List<InventorySlot>();
+            itemSlots = new List<ItemSlot>();
             
         }
                 
@@ -41,7 +41,7 @@ namespace ExtendedTest.Managers
                 return;
             }
 
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
+            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
 
             //item stackable, slot not found make one with amount
             //item not stackable, create new slot with it
@@ -58,7 +58,7 @@ namespace ExtendedTest.Managers
                 if (itemSlots.Count < this.capacity) //Bag can only be so full...
                 {
                     // create new slot for the item
-                    itemSlot = new InventorySlot();
+                    itemSlot = new ItemSlot();
                     //create the item
                     //put item in slot
                     itemToAdd.itemtexture = _ItemManager.GetTexture(itemToAdd);
@@ -80,7 +80,7 @@ namespace ExtendedTest.Managers
                     if(itemSlots.Count < this.capacity) //Bag can only be so full...
                     {
                         // create new slot for the item
-                        itemSlot = new InventorySlot();
+                        itemSlot = new ItemSlot();
                         //create the item
                         //put item in slot
                         itemToAdd.itemtexture = _ItemManager.GetTexture(itemToAdd); 
@@ -111,23 +111,23 @@ namespace ExtendedTest.Managers
 
         public void RemoveItem(Item.ItemType itemType, int amount = 1)
         {
-            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Type == itemType);
+            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Type == itemType);
             ReallyRemoveItem(itemSlot, amount);
 
         }
 
         internal void RemoveItem(string name, int amount)
         {
-            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Name == name);
+            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Name == name);
 
             ReallyRemoveItem(itemSlot, amount);
         }
 
-        private void ReallyRemoveItem(List<InventorySlot> Slots, int Amount)
+        private void ReallyRemoveItem(List<ItemSlot> Slots, int Amount)
         {
             int numberRemoved = 0;
             bool dirty = false;
-            foreach(InventorySlot slot in Slots)
+            foreach(ItemSlot slot in Slots)
             {
                 if (slot != null)
                 {
@@ -164,32 +164,32 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public Item checkClicks(Vector2 pos)
-        {
-            foreach(InventorySlot item in itemSlots)
-            {
-                if(item.myRect.Contains(pos))
-                {
-                    return item.ItemInSlot;
-                }
-            }
-            return null;
-        }
+        //public Item checkClicks(Vector2 pos)
+        //{
+        //    foreach(InventorySlot item in itemSlots)
+        //    {
+        //        if(item.myRect.Contains(pos))
+        //        {
+        //            return item.ItemInSlot;
+        //        }
+        //    }
+        //    return null;
+        //}
 
-        public void SelectItem(Vector2 pos)
-        {
-            foreach (InventorySlot item in itemSlots)
-            {
-                if (item.myRect.Contains(pos))
-                {
-                    selectedItem = item.ItemInSlot;
-                }
-            }
-        }
+        //public void SelectItem(Vector2 pos)
+        //{
+        //    foreach (InventorySlot item in itemSlots)
+        //    {
+        //        if (item.myRect.Contains(pos))
+        //        {
+        //            selectedItem = item.ItemInSlot;
+        //        }
+        //    }
+        //}
 
         public void SelectItem(Item item)
         {
-            foreach(InventorySlot itemSlot in itemSlots)
+            foreach(ItemSlot itemSlot in itemSlots)
             {
                 if(itemSlot.ItemInSlot == item)
                 {
@@ -201,7 +201,7 @@ namespace ExtendedTest.Managers
 
         public int getItemCount(Item.ItemType itemType)
         {
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemType);
+            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemType);
             if(itemSlot == null)
             {
                 return 0;
@@ -220,7 +220,7 @@ namespace ExtendedTest.Managers
         public List<string> getList()
         {
             List<string> items = new List<string>();
-            foreach (InventorySlot slot in itemSlots)
+            foreach (ItemSlot slot in itemSlots)
             {
                 string thing = string.Format("{0} {1}", (int)slot.ItemInSlot._Type, slot.Amount);
                 items.Add(thing);

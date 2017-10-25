@@ -78,7 +78,7 @@
     <Compile Include="Managers\ChemistryManager.cs" />
     <Compile Include="Managers\CombatManager.cs" />
     <Compile Include="Managers\DialogManager.cs" />
-    <Compile Include="Managers\InventorySlot.cs" />
+    <Compile Include="Managers\ItemSlot.cs" />
     <Compile Include="Managers\ItemManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\UIManager.cs" />

@@ -12,16 +12,16 @@ namespace ExtendedTest.Managers
     public class BankManager
     {
         public ItemManager _ItemManager;
-        public List<InventorySlot> itemSlots;
+        public List<ItemSlot> itemSlots;
         public Item _SelectedItem;
-        int _Capacity = 500;
+        public int _Capacity = 500;
 
         
 
         public BankManager(ItemManager IM)
         {
             _ItemManager = IM;
-            itemSlots = new List<InventorySlot>();
+            itemSlots = new List<ItemSlot>();
         }
 
         public void AddItem(Item.ItemType itemType, int amount = 1)
@@ -39,7 +39,7 @@ namespace ExtendedTest.Managers
                 return;
             }
 
-            InventorySlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
+            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
             if (itemSlot != null) //All items stack in the bank. Is there a slot for this one?
             {
                 itemSlot.Amount += amount;
@@ -49,7 +49,7 @@ namespace ExtendedTest.Managers
                 if (itemSlots.Count < _Capacity) //Bag can only be so full...
                 {
                     // create new slot for the item
-                    itemSlot = new InventorySlot();
+                    itemSlot = new ItemSlot();
                     //create the item
                     //put item in slot
                     itemToAdd.itemtexture = _ItemManager.GetTexture(itemToAdd);
@@ -65,59 +65,59 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public void SelectItem(Vector2 pos)
-        {
-            foreach (InventorySlot item in itemSlots)
-            {
-                if (item.myRect.Contains(pos))
-                {
-                    _SelectedItem = item.ItemInSlot;
-                }
-            }
-        }
+        //public void SelectItem(Vector2 pos)
+        //{
+        //    foreach (InventorySlot item in itemSlots)
+        //    {
+        //        if (item.myRect.Contains(pos))
+        //        {
+        //            _SelectedItem = item.ItemInSlot;
+        //        }
+        //    }
+        //}
 
-        public void SelectItem(Item item)
-        {
-            foreach (InventorySlot itemSlot in itemSlots)
-            {
-                if (itemSlot.ItemInSlot == item)
-                {
-                    _SelectedItem = itemSlot.ItemInSlot;
-                    return;
-                }
-            }
-        }
+        //public void SelectItem(Item item)
+        //{
+        //    foreach (InventorySlot itemSlot in itemSlots)
+        //    {
+        //        if (itemSlot.ItemInSlot == item)
+        //        {
+        //            _SelectedItem = itemSlot.ItemInSlot;
+        //            return;
+        //        }
+        //    }
+        //}
 
-        public Item checkClicks(Vector2 pos)
-        {
-            foreach (InventorySlot item in itemSlots)
-            {
-                if (item.myRect.Contains(pos))
-                {
-                    return item.ItemInSlot;
-                }
-            }
-            return null;
-        }
+        //public Item checkClicks(Vector2 pos)
+        //{
+        //    foreach (InventorySlot item in itemSlots)
+        //    {
+        //        if (item.myRect.Contains(pos))
+        //        {
+        //            return item.ItemInSlot;
+        //        }
+        //    }
+        //    return null;
+        //}
 
         public void RemoveItem(Item.ItemType itemType, int amount = 1)
         {
-            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Type == itemType);
+            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Type == itemType);
             ReallyRemoveItem(itemSlot, amount);
 
         }
 
         internal void RemoveItem(string name, int amount)
         {
-            List<InventorySlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Name == name);
+            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Name == name);
 
             ReallyRemoveItem(itemSlot, amount);
         }
 
-        private void ReallyRemoveItem(List<InventorySlot> Slots, int Amount)
+        private void ReallyRemoveItem(List<ItemSlot> Slots, int Amount)
         {
             int numberRemoved = 0;
-            foreach (InventorySlot slot in Slots)
+            foreach (ItemSlot slot in Slots)
             {
                 if (slot != null)
                 {
@@ -143,7 +143,7 @@ namespace ExtendedTest.Managers
         public List<string> getList()
         {
             List<string> items = new List<string>();
-            foreach(InventorySlot slot in itemSlots)
+            foreach(ItemSlot slot in itemSlots)
             {
                 string thing = string.Format("{0} {1}", (int)slot.ItemInSlot._Type, slot.Amount);
                 items.Add(thing);

@@ -184,10 +184,11 @@ namespace ExtendedTest
             }
             else
             {
-                player._Position = new Vector2(32, 32);
+                player._Position = new Vector2(32, 320);
 
                 _InvenManager.AddItem(Item.ItemType.kItemLog, 5);
                 _InvenManager.AddItem(Item.ItemType.kItemMatches);
+                _InvenManager.AddItem(Item.ItemType.kItemFish, 2);
 
                 _BankManager.AddItem(Item.ItemType.kItemLog, 10);
                 _BankManager.AddItem(Item.ItemType.kItemFish, 3);
@@ -423,17 +424,14 @@ namespace ExtendedTest
             //check if there was a click
             if(InputHelper.LeftButtonClicked)
             {
-                //convert the mouse click position to world position
-                Vector2 mouseClickpos = InputHelper.MouseScreenPos;
-
                 //first check if the click was on any of the panels edge for resizing
-                UIPanel panelHit = _UIManager.CheckPanelEdges(mouseClickpos);
+                UIPanel panelHit = _UIManager.CheckPanelEdgesForResize(InputHelper.MouseScreenPos);
 
                 //if panel was hit have panel track mouse and apply changes in update?
-                if(panelHit != null)
-                {
-                    panelHit.MarkToTrack(mouseState);
-                }
+                //if(panelHit != null)
+                //{
+                //    panelHit.MarkToTrack(mouseState);
+                //}
 
 
                 //check if a click was in the crafting panel
@@ -443,7 +441,7 @@ namespace ExtendedTest
                     {
                         if (panel.Name.Equals("Bank"))
                         {
-                            Item.ItemType item = (panel as GameObjects.UIObjects.BankPanel).ProcessClick(mouseClickpos);
+                            Item.ItemType item = (panel as GameObjects.UIObjects.BankPanel).ProcessClick(InputHelper.MouseScreenPos);
                             if (item != Item.ItemType.kItemNone)
                             {
                                 _BankManager.RemoveItem(item);
@@ -452,7 +450,7 @@ namespace ExtendedTest
                         }
                         if (panel.Name.Equals("Inventory"))
                         {
-                            Item.ItemType item = (panel as GameObjects.UIObjects.InventoryPanel).ProcessClick(mouseClickpos);
+                            Item.ItemType item = (panel as GameObjects.UIObjects.InventoryPanel).ProcessClick(InputHelper.MouseScreenPos);
                             if (item != Item.ItemType.kItemNone)
                             {
                                 _InvenManager.RemoveItem(item);
@@ -460,9 +458,22 @@ namespace ExtendedTest
                             }
                         }
                     }
-                    panel.ProcessClick(mouseClickpos);
+                    panel.ProcessClick(InputHelper.MouseScreenPos);
                 }
 
+            }
+            else if(InputHelper.RightButtonClicked)
+            {
+                
+
+                //first check if the click was on any of the panels edge for resizing
+                UIPanel panelHit = _UIManager.CheckPanelEdgesForMove(InputHelper.MouseScreenPos);
+
+                //if panel was hit have panel track mouse and apply changes in update?
+                if (panelHit != null)
+                {
+                    panelHit.MarkToMove();
+                }
             }
 
             //if (InputHelper.RightButtonPressed)

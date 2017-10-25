@@ -121,11 +121,21 @@ namespace ExtendedTest.Managers
             }
         }
 
-        internal UIPanel CheckPanelEdges(Vector2 mouseClickpos)
+        internal UIPanel CheckPanelEdgesForResize(Vector2 mouseClickpos)
         {
             foreach(UIPanel panel in ActivePanels.Where(x=>x._Resizable == true))
             {
-                if (panel.CheckForEdgeClicked(mouseClickpos)) return panel;
+                if (panel.CheckForResize(mouseClickpos)) return panel;
+
+            }
+            return null;
+        }
+
+        internal UIPanel CheckPanelEdgesForMove(Vector2 mouseClickpos)
+        {
+            foreach (UIPanel panel in ActivePanels.Where(x => x._Resizable == true))
+            {
+                if (panel.CheckForMove(mouseClickpos)) return panel;
 
             }
             return null;

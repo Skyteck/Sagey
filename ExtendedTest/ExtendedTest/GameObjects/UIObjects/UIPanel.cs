@@ -18,15 +18,14 @@ namespace ExtendedTest
         protected int adjustedHeight = 200;
         public Vector2 _InitialPos = Vector2.Zero;
         public bool _Showing = false;
-        private bool TrackMouse = false;
         private bool xTracked = false;
         private bool yTracked = false;
         bool leftTracked = false;
         bool topTracked = false;
+        bool trackMove = false;
         public bool _Resizable = true;
         protected int scrollPos = 0;
         public Managers.UIManager _UIManager;
-        private MouseState prevMousePos;
 
         Texture2D edgeTex;
         protected Texture2D extraTex;
@@ -104,7 +103,6 @@ namespace ExtendedTest
 
             if(xTracked || yTracked || topTracked || leftTracked)
             {
-                MouseState mState = Mouse.GetState();
                 if(InputHelper.LeftButtonReleased)
                 {
 
@@ -147,11 +145,31 @@ namespace ExtendedTest
                         adJustedWidth = minWidth;
                         _InitialPos.X = initPos.X;
                     }
-
-                    prevMousePos = mState;
+                    
                 }
 
                     
+            }
+            else if(trackMove)
+            {
+
+                if(InputHelper.RightButtonReleased)
+                {
+                    trackMove = false;
+                }
+                else
+                {
+                    Vector2 currentPos = InputHelper.MouseScreenPos;
+                    Vector2 prevPos = InputHelper.PrevMouseScreenPos;
+
+                    int xDiff = (int)(currentPos.X - prevPos.X);
+                    int yDiff = (int)(currentPos.Y - prevPos.Y);
+
+                    _InitialPos.X += xDiff;
+                    _InitialPos.Y += yDiff;
+
+                }
+
             }
         }
 
@@ -166,7 +184,7 @@ namespace ExtendedTest
         {
         }
 
-        public bool CheckForEdgeClicked(Vector2 pos)
+        public bool CheckForResize(Vector2 pos)
         {
             bool track = false;
             if (_TopEdge.Contains(pos))
@@ -195,6 +213,18 @@ namespace ExtendedTest
             return track;
         }
 
+        public bool CheckForMove(Vector2 pos)
+        {
+
+            bool track = false;
+            if (_TopEdge.Contains(pos) || _BottomEdge.Contains(pos) || _LeftEdge.Contains(pos) || _RightEdge.Contains(pos))
+            {
+                trackMove = true;
+                track = true;
+            }
+            return track;
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             if(_Draw)
@@ -213,10 +243,15 @@ namespace ExtendedTest
             }
         }
 
-        internal void MarkToTrack(MouseState mState)
+        //internal void MarkToTrack(MouseState mState)
+        //{
+        //    TrackMouse = true;
+        //    prevMousePos = mState;
+        //}
+
+        public void MarkToMove()
         {
-            TrackMouse = true;
-            prevMousePos = mState;
+            trackMove = true;
         }
     }
 }
