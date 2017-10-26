@@ -18,7 +18,7 @@ namespace ExtendedTest
     {
         public List<NPC> parentList;
 
-        Managers.NPCManager ParentManager;
+        protected Managers.NPCManager ParentManager;
         double currentMoveTimer = 6f;
         Vector2 Destination;
         public bool atDestination = true;
@@ -31,6 +31,8 @@ namespace ExtendedTest
 
         List<Tile> myPath;
 
+        protected List<string> myDialog;
+        public bool _Interactable = false;
 
         public double LeftBoundary { get; private set; }
         public double RightBoundary { get; private set; }
@@ -54,28 +56,28 @@ namespace ExtendedTest
 
         //Combat stats
         public bool _CanFight = false;
+        public bool _KnockedBack = false;
+        public bool _Stunned = false;
+        public bool _Invuln = false;
         public double attackSpeed = 3.0;
         public double attackCD = 0;
+        public double _StunTime = 0;
+        public double respawnTimerStart = 15;
+        public double timeDead = 0d;
         public int startHP = 2;
         public int _HP = 2;
         public int defense;
         public int attack;
         public float attackRange = 64f; // tileWidth
 
-        public double respawnTimerStart = 15;
-        public double timeDead = 0d;
-
-        bool Agressive = false;
-        List<Sprite> _TargetList;
-
         Rectangle huntZone;
 
         public Projectile myShot;
 
-        public bool _KnockedBack = false;
-        public bool _Stunned = false;
-        public bool _Invuln = false;
-        public double _StunTime = 0;
+
+        bool Agressive = false;
+        List<Sprite> _TargetList;
+
 
         private Texture2D effectTex;
         private Enums.EffectTypes _CurrentEffect = Enums.EffectTypes.kEffectNone;
@@ -118,7 +120,8 @@ namespace ExtendedTest
         {
             kMeleeStyle,
             kRangeStyle,
-            kMagicStyle
+            kMagicStyle,
+            kNoneStyle
         }
 
         public AttackStyle _AttackStyle = AttackStyle.kMeleeStyle;
@@ -129,6 +132,7 @@ namespace ExtendedTest
             myPath = new List<Tile>();
             _TargetList = new List<Sprite>();
             Animation idle = new Animation("Idle", 64, 64, 1, 1);
+            myDialog = new List<string>();
             //AddAnimation(idle);
         }
 
@@ -186,6 +190,17 @@ namespace ExtendedTest
             base.UpdateDead(gameTime);
         }
 
+        public virtual void Interact()
+        {
+
+        }
+
+        public void AddMessages(string MsgID)
+        {
+            this.myDialog.Add(MsgID);
+        }
+
+        #region movement stuff
         public void AddPath(List<Tile> path)
         {
             myPath.AddRange(path);
@@ -206,6 +221,8 @@ namespace ExtendedTest
 
         public virtual void Roam(GameTime gameTime)
         {
+            //the way I may want to do this now is checking if a random tile N,S,E,W of the 
+            // NPC is open and in boundary and then moving to it
             currentMoveTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             if (currentMoveTimer <= 0)
             {
@@ -289,8 +306,9 @@ namespace ExtendedTest
             TopBoundary = ty;
             BottomBoundary = by + ty;
         }
+#endregion
 
- #region Combat Stuff
+        #region Combat Stuff
 
         private void UpdateCombat(GameTime gameTime)
         {

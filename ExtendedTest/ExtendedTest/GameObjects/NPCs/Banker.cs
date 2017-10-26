@@ -9,6 +9,14 @@ namespace ExtendedTest.GameObjects.NPCs
     {
         public Banker(NPCManager nm) : base(nm)
         {
+            AddMessages("OpenBank");
+            _Interactable = true;
+        }
+
+        public override void Interact()
+        {
+            base.Interact();
+            ParentManager.PlayDialogue("OpenBank");
         }
     }
 }

@@ -15,16 +15,18 @@ namespace ExtendedTest.Managers
         public List<NPC> _SpriteListActive;
         public List<NPC> _SpriteListDead;
         public TilemapManager _TilemapManager;
+        DialogManager _DialogManager;
         ContentManager _Content;
         Player thePlayer;
         List<Projectile> _ProjectileList;
 
-        public NPCManager(TilemapManager tMapManager ,ContentManager content, Player player)
+        public NPCManager(TilemapManager tMapManager, ContentManager content, Player player, DialogManager dm)
         {
             _SpriteListActive = new List<NPC>();
             _SpriteListDead = new List<NPC>();
             _ProjectileList = new List<Projectile>();
             _TilemapManager = tMapManager;
+            _DialogManager = dm;
             _Content = content;
             thePlayer = player;
         }
@@ -122,6 +124,21 @@ namespace ExtendedTest.Managers
                 }
             }
             return null;
+        }
+
+        public bool AttemptInteract(Rectangle checkRect)
+        {
+            foreach(NPC thing in _SpriteListActive.FindAll(x=>x._Interactable == true))
+            {
+                thing.Interact();
+                return true;
+            }
+            return false;
+        }
+
+        public void PlayDialogue(string msgID)
+        {
+            _DialogManager.PlayMessage(msgID);
         }
     }
 }

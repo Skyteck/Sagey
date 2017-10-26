@@ -281,15 +281,13 @@ namespace ExtendedTest.Managers
 
             if (InputHelper.IsKeyPressed(Keys.Space))
             {
+                bool gotHit = false;
                 //This is for interacting with NPCs or other objects.
                 //first check if we talked to an NPC;
+                //NPC npcHit = _NPCManager.CheckCollisions(CheckRect);
+                gotHit =  _NPCManager.AttemptInteract(CheckRect);
 
-                NPC npcHit = _NPCManager.CheckCollisions(CheckRect);
-                if (npcHit != null)
-                {
-                    ProcessNPC(npcHit);
-                }
-                else
+                if (!gotHit)
                 {
                     _CurrentGatherTarget = _GatherManager.CheckCollision(CheckRect);
                 }

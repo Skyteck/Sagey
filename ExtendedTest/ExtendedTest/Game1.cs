@@ -68,19 +68,19 @@ namespace ExtendedTest
         {
             // TODO: Add your initialization logic here
             player = new Player();
+            _UIManager = new Managers.UIManager();
+            _DialogManager = new Managers.DialogManager();
             _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(_ItemManager);
             _BankManager = new Managers.BankManager(_ItemManager);
             _MapManager = new Managers.TilemapManager(_NPCManager, _WorldObjectManager);
-            _NPCManager = new Managers.NPCManager(_MapManager,  Content, player);
+            _NPCManager = new Managers.NPCManager(_MapManager,  Content, player, _DialogManager);
             _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
             _GatherableManager = new Managers.GatherableManager(_MapManager, _InvenManager, Content, player);
-            _UIManager = new Managers.UIManager();
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _WorldObjectManager, _NPCManager, Content, _ItemManager);
 
             _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _WorldObjectManager, _NPCManager, _MapManager, _GatherableManager);
             _WorldObjectManager.SetGatherManager(_GatherableManager);
-            _DialogManager = new Managers.DialogManager();
             camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
 
@@ -364,7 +364,7 @@ namespace ExtendedTest
 
                 if(InputHelper.IsKeyPressed(Keys.J))
                 {
-                    _DialogManager.PlayMessage("OpenBank");
+                    //_DialogManager.PlayMessage("OpenBank");
                 }
 
                 //if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
