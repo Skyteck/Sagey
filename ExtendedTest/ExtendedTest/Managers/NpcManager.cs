@@ -130,8 +130,12 @@ namespace ExtendedTest.Managers
         {
             foreach(NPC thing in _SpriteListActive.FindAll(x=>x._Interactable == true))
             {
-                thing.Interact();
-                return true;
+                if(thing._BoundingBox.Intersects(checkRect))
+                {
+                    thing.Interact();
+                    return true;
+
+                }
             }
             return false;
         }

@@ -126,6 +126,10 @@ namespace ExtendedTest
             {
                 saveExist = true;
             }
+            else 
+            {
+                System.IO.Directory.CreateDirectory(Content.RootDirectory + @"\Save\");
+            }
             if (saveExist)
             {
                 //load
@@ -563,30 +567,45 @@ namespace ExtendedTest
 
         private void SaveGame()
         {
-            //string playerPos = string.Format("{0} {1}", _PlayerManager._PlayerPos.X, _PlayerManager._PlayerPos.Y);
+            string playerPos = string.Format("{0} {1}", _PlayerManager._PlayerPos.X, _PlayerManager._PlayerPos.Y);
 
-            //List<string> bankStuff = _BankManager.getList();
-            //List<string> inventoryStuff = _InvenManager.getList();
-            //string test = Content.RootDirectory + @"\Save\save.txt";
-            //using (System.IO.StreamWriter file =
-            //new System.IO.StreamWriter(test))
-            //{
-            //    file.WriteLine(playerPos);
-            //    file.WriteLine("B");
-            //    foreach(string line in bankStuff)
-            //    {
-            //        file.WriteLine(line);
-            //    }
-            //    file.WriteLine("BEnd");
-            //    file.WriteLine("I");
-            //    foreach (string line in inventoryStuff)
-            //    {
-            //        file.WriteLine(line);
-            //    }
-            //    file.WriteLine("IEnd");
-            //}
+            List<string> bankStuff = _BankManager.getList();
+            List<string> inventoryStuff = _InvenManager.getList();
+            string test = Content.RootDirectory + @"\Save\save.txt";
 
-            string TestInventorySave = JsonConvert.SerializeObject(_InvenManager.itemSlots);
+
+            bool saveExist = false;
+            if (System.IO.File.Exists(test))
+            {
+                saveExist = true;
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(Content.RootDirectory + @"\Save\");
+            }
+
+            if(saveExist)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(test))
+                {
+                    file.WriteLine(playerPos);
+                    file.WriteLine("B");
+                    foreach (string line in bankStuff)
+                    {
+                        file.WriteLine(line);
+                    }
+                    file.WriteLine("BEnd");
+                    file.WriteLine("I");
+                    foreach (string line in inventoryStuff)
+                    {
+                        file.WriteLine(line);
+                    }
+                    file.WriteLine("IEnd");
+                }
+            }
+            
+
+            //string TestInventorySave = JsonConvert.SerializeObject(_InvenManager.itemSlots);
         }
 
         #region Events
