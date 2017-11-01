@@ -14,7 +14,7 @@ namespace ExtendedTest.Managers
     public class ItemManager
     {
         ContentManager _Content;
-        List<Item> ItemList;
+        public List<Item> ItemList;
         public ItemManager(ContentManager c)
         {
             _Content = c;
@@ -23,12 +23,20 @@ namespace ExtendedTest.Managers
 
         public void LoadItems(String path)
         {
-            ItemList.Add(new Items.Log());
-            ItemList.Add(new Items.Fish());
-            ItemList.Add(new Items.Ore());
-            ItemList.Add(new Items.FishStick());
-            ItemList.Add(new Items.Matches());
-            ItemList.Add(new Items.Strawberry());
+            
+            var file = System.IO.File.ReadAllText(path);
+            ItemList = JsonConvert.DeserializeObject<List<Item>>(file);
+            //ItemList.Clear();
+
+
+
+
+            //ItemList.Add(new Items.Log());
+            //ItemList.Add(new Items.Fish());
+            //ItemList.Add(new Items.Ore());
+            //ItemList.Add(new Items.FishStick());
+            //ItemList.Add(new Items.Matches());
+            //ItemList.Add(new Items.Strawberry());
 
 
             foreach (Item item in ItemList)

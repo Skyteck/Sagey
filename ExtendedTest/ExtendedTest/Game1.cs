@@ -112,7 +112,8 @@ namespace ExtendedTest
             LoadMapObjects(_MapManager.findMapByName("0-0"));
             _MapManager.LoadMap("0-1", Content);
             font = Content.Load<SpriteFont>("Fonts/Fipps");
-            _ItemManager.LoadItems("Content/JSON/Items.json");
+            _ItemManager.LoadItems("Content/JSON/ItemList.json");
+            _ChemistryManager.LoadRecipes("Content/JSON/RecipeList.json");
             _ChemistryManager.LoadIcons();
             _GatherableManager.LoadContent(Content);
 
@@ -193,6 +194,7 @@ namespace ExtendedTest
                 _InvenManager.AddItem(Item.ItemType.kItemLog, 5);
                 _InvenManager.AddItem(Item.ItemType.kItemMatches);
                 _InvenManager.AddItem(Item.ItemType.kItemFish, 2);
+                _InvenManager.AddItem(Item.ItemType.kMilkItem, 1);
 
                 _BankManager.AddItem(Item.ItemType.kItemLog, 10);
                 _BankManager.AddItem(Item.ItemType.kItemFish, 3);
@@ -220,7 +222,18 @@ namespace ExtendedTest
             //dList.Add(d2);
             //List <Dialog> list2 = new List<Dialog>();
 
-            //string text = JsonConvert.SerializeObject(dList, Newtonsoft.Json.Formatting.Indented);
+            //List<Recipe> rList = new List<Recipe>();
+            //Recipe matches = new Recipes.MatchesRecipe();
+            //Recipe DoubleLog = new Recipes.DoubleLogRecipe();
+            //Recipe fishStick = new Recipes.FishStickRecipe();
+
+            //rList.Add(matches);
+            //rList.Add(DoubleLog);
+            //rList.Add(fishStick);
+
+            
+
+            //string text = JsonConvert.SerializeObject(rList, Newtonsoft.Json.Formatting.Indented);
 
             path = Content.RootDirectory + @"\JSON\Dialog_EN_US.json";
             _DialogManager.LoadDialog(path);
@@ -229,26 +242,8 @@ namespace ExtendedTest
             //_DialogManager.PlayMessage("NPC1");
             //var dialog = System.IO.File.ReadAllText(path);
             //list2 = JsonConvert.DeserializeObject<List<Dialog>>(dialog);
-
-            //XDocument xmlTest = XDocument.Load("Content/Items.xml");
-            //IEnumerable<XElement> itemList = xmlTest.Elements("Items");
-            //IEnumerable<XElement> LogList = itemList.Elements("Logs");
-            //foreach(XElement item in LogList.Elements("Item"))
-            //{
-            //    String test = item.Element("Name").Value;
-            //    String test2 = item.Element("SaleValue").Value;
-            //    String test3 = item.Element("Weight").Value;
-            //}
-            //IEnumerable<XElement> oreList = itemList.Elements("Ores");
-            //foreach (XElement item in oreList.Elements("Item"))
-            //{
-            //    String test = item.Element("Name").Value;
-            //    String test2 = item.Element("SaleValue").Value;
-            //    String test3 = item.Element("Weight").Value;
-            //}
-
-            //List<Sprite> test = new List<Sprite>();
-            //test = gameObjectList.FindAll(x => x._Tag == Sprite.SpriteType.kTreeType);
+            
+            
 
             // TODO: use this.Content to load your game content here
         }
@@ -354,7 +349,7 @@ namespace ExtendedTest
             if(this.IsActive)
             {
                 // TODO: Add your update logic here
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 {
                     SaveGame();
                     Exit();
@@ -414,6 +409,10 @@ namespace ExtendedTest
             if (InputHelper.IsKeyPressed(Keys.I))
             {
                 _UIManager.TogglePanel("Inventory");
+            }
+            if(InputHelper.IsKeyPressed(Keys.Escape))
+            {
+                _UIManager.HideAll();
             }
             if(InputHelper.IsKeyPressed(Keys.P))
             {

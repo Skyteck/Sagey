@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,15 +38,22 @@ namespace ExtendedTest.Managers
 
             _InvenManager.InventoryChanged += HandleInventoryChanged;
 
-            Recipe matches = new Recipes.MatchesRecipe();
-            RecipeList.Add(matches);
+            //Recipe matches = new Recipes.MatchesRecipe();
+            //RecipeList.Add(matches);
 
-            Recipe DoubleLog = new Recipes.DoubleLogRecipe();
-            RecipeList.Add(DoubleLog);
+            //Recipe DoubleLog = new Recipes.DoubleLogRecipe();
+            //RecipeList.Add(DoubleLog);
 
-            Recipe fishStick = new Recipes.FishStickRecipe();
+            //Recipe fishStick = new Recipes.FishStickRecipe();
 
-            RecipeList.Add(fishStick);
+            //RecipeList.Add(fishStick);
+        }
+
+        public void LoadRecipes(string path)
+        {
+
+            var file = System.IO.File.ReadAllText(path);
+            RecipeList = JsonConvert.DeserializeObject<List<Recipe>>(file);
         }
 
         public void LoadIcons()

@@ -64,6 +64,15 @@ namespace ExtendedTest.Managers
             return element;
         }
 
+        public void HideAll()
+        {
+            foreach (UIPanel panel in ActivePanels)
+            {
+                PanelsToRemove.Add(panel);
+            }
+        }
+
+
         public void TogglePanel(String PanelName)
         {
             //check if the panel is already in the active list

@@ -163,29 +163,7 @@ namespace ExtendedTest.Managers
                 OnInventoryChanged();
             }
         }
-
-        //public Item checkClicks(Vector2 pos)
-        //{
-        //    foreach(InventorySlot item in itemSlots)
-        //    {
-        //        if(item.myRect.Contains(pos))
-        //        {
-        //            return item.ItemInSlot;
-        //        }
-        //    }
-        //    return null;
-        //}
-
-        //public void SelectItem(Vector2 pos)
-        //{
-        //    foreach (InventorySlot item in itemSlots)
-        //    {
-        //        if (item.myRect.Contains(pos))
-        //        {
-        //            selectedItem = item.ItemInSlot;
-        //        }
-        //    }
-        //}
+        
 
         public void SelectItem(Item item)
         {

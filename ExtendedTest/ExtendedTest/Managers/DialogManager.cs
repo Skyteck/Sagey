@@ -22,6 +22,7 @@ namespace ExtendedTest.Managers
 
         public void LoadDialog(string path)
         {
+            //TODO: dispose object
             var file = System.IO.File.ReadAllText(path);
             _DialogList = JsonConvert.DeserializeObject<List<Dialog>>(file);
         }

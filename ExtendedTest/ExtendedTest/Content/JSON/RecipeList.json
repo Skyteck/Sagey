@@ -1,0 +1,55 @@
+﻿[
+  {
+    "Name": "Matches",
+    "_HoverText": "Hover Text!",
+    "ingredients": [
+      {
+        "_ItemType": 1,
+        "Amount": 2
+      },
+      {
+        "_ItemType": 2,
+        "Amount": 1
+      }
+    ],
+    "output": 5,
+    "amount": 2,
+    "CraftingTime": 1.0,
+    "MadeOnTag": 5,
+    "RecipeTexture": null
+  },
+  {
+    "Name": "2xLog",
+    "_HoverText": "Hover Text!",
+    "ingredients": [
+      {
+        "_ItemType": 1,
+        "Amount": 2
+      }
+    ],
+    "output": 1,
+    "amount": 1,
+    "CraftingTime": 0.5,
+    "MadeOnTag": 5,
+    "RecipeTexture": null
+  },
+  {
+    "Name": "Fish Stick",
+    "_HoverText": "Hover Text!",
+    "ingredients": [
+      {
+        "_ItemType": 3,
+        "Amount": 1
+      },
+        {
+            "_ItemType": 1,
+            "Amount": 1
+        }
+    ],
+    "output": 6,
+    "amount": 1,
+    "CraftingTime": 1.0,
+    "MadeOnTag": 0,
+    "RecipeTexture": null
+  }
+]
