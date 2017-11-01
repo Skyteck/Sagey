@@ -1,9 +1,9 @@
-﻿using ExtendedTest.Managers;
+﻿using Sagey.Managers;
 using Microsoft.Xna.Framework.Content;
 
 
 
-namespace ExtendedTest.GameObjects.NPCs
+namespace Sagey.GameObjects.NPCs
 {
     public class Banker : NPC
     {

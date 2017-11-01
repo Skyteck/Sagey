@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace ExtendedTest.GameObjects
+namespace Sagey.GameObjects
 {
     public class Sword : Sprite
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using ExtendedTest.GameObjects.Items;
+using Sagey.GameObjects.Items;
 
-namespace ExtendedTest.GameObjects.Gatherables
+namespace Sagey.GameObjects.Gatherables
 {
     public abstract class Gatherable : WorldObject
     {

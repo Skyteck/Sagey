@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
-using ExtendedTest.GameObjects.Items;
+using Sagey.GameObjects.Items;
 
-namespace ExtendedTest.GameObjects.Gatherables
+namespace Sagey.GameObjects.Gatherables
 {
     public class Rock : Gatherable
     {
@@ -48,7 +48,7 @@ namespace ExtendedTest.GameObjects.Gatherables
 
 
             ItemBundle output = new ItemBundle();
-            output.output = Item.ItemType.kItemOre;
+            output.outputID = Enums.ItemID.kItemOre;
             output.amount = 1;
             output.odds = 100;
             CurrentDrop = output;

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class ItemManager
     {
@@ -41,7 +41,7 @@ namespace ExtendedTest.Managers
 
             foreach (Item item in ItemList)
             {
-                item.itemtexture = GetTexture(item._Name + "Item");
+                item.itemtexture = GetTexture(item._Name.Replace(" ", "") + "Item");
             }
 
             //    string GiveUp = File.ReadAllText(@"Content\JSON\Items2.json");
@@ -127,9 +127,9 @@ namespace ExtendedTest.Managers
             return ItemList.Find(x => x._Name == itemName);
         }
 
-        public Item GetItem(Item.ItemType itemType)
+        public Item GetItem(Enums.ItemID itemType)
         {
-            return ItemList.Find(x => x._Type == itemType);
+            return ItemList.Find(x => x._ID == itemType);
         }
     }
 }

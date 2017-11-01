@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest
+namespace Sagey
 {
     public static class InputHelper
     {

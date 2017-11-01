@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.GameObjects.Gatherables
+namespace Sagey.GameObjects.Gatherables
 {
     class FishingHole : Gatherable
     {
@@ -45,7 +45,7 @@ namespace ExtendedTest.GameObjects.Gatherables
 
 
             Items.ItemBundle output = new Items.ItemBundle();
-            output.output = Item.ItemType.kItemFish;
+            output.outputID = Enums.ItemID.kItemFish;
             output.amount = 1;
             output.odds = 100;
             CurrentDrop = output;

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Items
+namespace Sagey.Items
 {
     class Fish : Item
     {
         public Fish()
         {
-            this._Type = ItemType.kItemFish;
+            this._ID = Enums.ItemID.kItemFish;
             this._Weight = 1;
             this._SaleValue = 1;
             this._Name = "Fish";
@@ -22,7 +22,7 @@ namespace ExtendedTest.Items
     {
         public Log()
         {
-            this._Type = ItemType.kItemLog;
+            this._ID = Enums.ItemID.kItemLog;
             this._Weight = 1;
             this._SaleValue = 1;
             this._Name = "Log";
@@ -33,7 +33,7 @@ namespace ExtendedTest.Items
     {
         public Ore()
         {
-            this._Type = ItemType.kItemOre;
+            this._ID = Enums.ItemID.kItemOre;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "Ore";
@@ -44,7 +44,7 @@ namespace ExtendedTest.Items
     {
         public CookedFish()
         {
-            this._Type = ItemType.kItemMatches;
+            this._ID = Enums.ItemID.kItemMatches;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "CookedFish";
@@ -55,7 +55,7 @@ namespace ExtendedTest.Items
     {
         public Matches()
         {
-            this._Type = ItemType.kItemMatches;
+            this._ID = Enums.ItemID.kItemMatches;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "Matches";
@@ -67,7 +67,7 @@ namespace ExtendedTest.Items
     {
         public FishStick()
         {
-            this._Type = ItemType.kItemFishStick;
+            this._ID = Enums.ItemID.kItemFishStick;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "FishStick";
@@ -78,7 +78,7 @@ namespace ExtendedTest.Items
     {
         public Strawberry()
         {
-            this._Type = ItemType.kStrawberry;
+            this._ID = Enums.ItemID.kItemStrawberry;
             this._Weight = 2;
             this._SaleValue = 1;
             this._Name = "Strawberry";

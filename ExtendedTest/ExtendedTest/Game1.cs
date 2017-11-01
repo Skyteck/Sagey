@@ -11,9 +11,9 @@ using System.Xml.XPath;
 using TiledSharp;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using ExtendedTest.Managers;
+using Sagey.Managers;
 
-namespace ExtendedTest
+namespace Sagey
 {
     /// <summary>
     /// This is the main type for your game.
@@ -171,7 +171,7 @@ namespace ExtendedTest
                     {
                         string[] items = line.Split(' ');
                         Int32.TryParse(items[0], out int itemType);
-                        Item.ItemType type = (Item.ItemType)itemType;
+                        Enums.ItemID type = (Enums.ItemID)itemType;
                         Int32.TryParse(items[1], out int amt);
                         if (bankMode)
                         {
@@ -191,13 +191,13 @@ namespace ExtendedTest
             {
                 player._Position = new Vector2(32, 320);
 
-                _InvenManager.AddItem(Item.ItemType.kItemLog, 5);
-                _InvenManager.AddItem(Item.ItemType.kItemMatches);
-                _InvenManager.AddItem(Item.ItemType.kItemFish, 2);
-                _InvenManager.AddItem(Item.ItemType.kMilkItem, 1);
+                _InvenManager.AddItem(Enums.ItemID.kItemLog, 5);
+                _InvenManager.AddItem(Enums.ItemID.kItemMatches);
+                _InvenManager.AddItem(Enums.ItemID.kItemFish, 2);
+                _InvenManager.AddItem(Enums.ItemID.kItemMilk, 1);
 
-                _BankManager.AddItem(Item.ItemType.kItemLog, 10);
-                _BankManager.AddItem(Item.ItemType.kItemFish, 3);
+                _BankManager.AddItem(Enums.ItemID.kItemLog, 10);
+                _BankManager.AddItem(Enums.ItemID.kItemFish, 3);
             }
             //List<Dialog> dList = new List<Dialog>();
 
@@ -444,8 +444,8 @@ namespace ExtendedTest
                     {
                         if (panel.Name.Equals("Bank"))
                         {
-                            Item.ItemType item = (panel as GameObjects.UIObjects.BankPanel).ProcessClick(InputHelper.MouseScreenPos);
-                            if (item != Item.ItemType.kItemNone)
+                            Enums.ItemID item = (panel as GameObjects.UIObjects.BankPanel).ProcessClick(InputHelper.MouseScreenPos);
+                            if (item != Enums.ItemID.kItemNone)
                             {
                                 _BankManager.RemoveItem(item);
                                 _InvenManager.AddItem(item);
@@ -453,8 +453,8 @@ namespace ExtendedTest
                         }
                         if (panel.Name.Equals("Inventory"))
                         {
-                            Item.ItemType item = (panel as GameObjects.UIObjects.InventoryPanel).ProcessClick(InputHelper.MouseScreenPos);
-                            if (item != Item.ItemType.kItemNone)
+                            Enums.ItemID item = (panel as GameObjects.UIObjects.InventoryPanel).ProcessClick(InputHelper.MouseScreenPos);
+                            if (item != Enums.ItemID.kItemNone)
                             {
                                 _InvenManager.RemoveItem(item);
                                 _BankManager.AddItem(item);

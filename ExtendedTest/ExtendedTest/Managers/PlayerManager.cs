@@ -1,4 +1,4 @@
-﻿using ExtendedTest.GameObjects.Gatherables;
+﻿using Sagey.GameObjects.Gatherables;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class PlayerManager
     {
@@ -339,7 +339,7 @@ namespace ExtendedTest.Managers
         private void Gather(Gatherable gatherable)
         {
             GameObjects.Items.ItemBundle itemGet = _GatherManager.GatherItem(gatherable);
-            if(itemGet.output != Item.ItemType.kItemNone)
+            if(itemGet.outputID != Enums.ItemID.kItemNone)
             {
                 _InventoryManager.AddItem(itemGet);
             }

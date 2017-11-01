@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ExtendedTest.GameObjects.Gatherables
+namespace Sagey.GameObjects.Gatherables
 {
     public abstract class Plant : Gatherable
     {

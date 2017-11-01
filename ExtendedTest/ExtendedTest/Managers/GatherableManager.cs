@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
-using ExtendedTest.GameObjects.Gatherables;
-using ExtendedTest.GameObjects.Gatherables.Plants;
+using Sagey.GameObjects.Gatherables;
+using Sagey.GameObjects.Gatherables.Plants;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class GatherableManager
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 
-namespace ExtendedTest.GameObjects.NPCs.Monsters
+namespace Sagey.GameObjects.NPCs.Monsters
 {
     public class Slime : NPC
     {

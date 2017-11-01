@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest
+namespace Sagey
 {
     public class Recipe
     {
         public string Name;
         public String _HoverText = "Hover Text!";
         public List<Ingredient> ingredients;
-        public Item.ItemType output;
+        public Enums.ItemID outputID;
         public int amount;
         public float CraftingTime;
         public WorldObject.WorldObjectTag MadeOnTag;
@@ -27,7 +27,7 @@ namespace ExtendedTest
 
     public class Ingredient
     {
-        public Item.ItemType _ItemType;
+        public Enums.ItemID _ItemID;
         public int Amount;
         public Ingredient()
         {

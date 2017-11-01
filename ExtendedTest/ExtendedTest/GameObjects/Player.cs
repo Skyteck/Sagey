@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
-using ExtendedTest.GameObjects;
+using Sagey.GameObjects;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ExtendedTest
+namespace Sagey
 {
     public class Player : AnimatedSprite
     {

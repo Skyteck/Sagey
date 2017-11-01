@@ -4,7 +4,7 @@
     "_HoverText": "Hover Text!",
     "ingredients": [
       {
-        "_ItemType": 1,
+        "_ItemID": 1,
         "Amount": 2
       },
       {
@@ -12,7 +12,7 @@
         "Amount": 1
       }
     ],
-    "output": 5,
+    "outputID": 5,
     "amount": 2,
     "CraftingTime": 1.0,
     "MadeOnTag": 5,
@@ -23,11 +23,11 @@
     "_HoverText": "Hover Text!",
     "ingredients": [
       {
-        "_ItemType": 1,
+        "_ItemID": 1,
         "Amount": 2
       }
     ],
-    "output": 1,
+    "outputID": 1,
     "amount": 1,
     "CraftingTime": 0.5,
     "MadeOnTag": 5,
@@ -38,15 +38,15 @@
     "_HoverText": "Hover Text!",
     "ingredients": [
       {
-        "_ItemType": 3,
+        "_ItemID": 3,
         "Amount": 1
       },
-        {
-            "_ItemType": 1,
-            "Amount": 1
-        }
+      {
+        "_ItemID": 1,
+        "Amount": 1
+      }
     ],
-    "output": 6,
+    "outputID": 6,
     "amount": 1,
     "CraftingTime": 1.0,
     "MadeOnTag": 0,

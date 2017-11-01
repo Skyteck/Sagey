@@ -10,7 +10,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace ExtendedTest
+namespace Sagey
 {
 
     public static class CollisionDetection2D

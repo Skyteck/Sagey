@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ExtendedTest.GameObjects.UIObjects
+namespace Sagey.GameObjects.UIObjects
 {
     public class DialogPanel : UIPanel
     {

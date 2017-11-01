@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
-using ExtendedTest.GameObjects.Gatherables;
+using Sagey.GameObjects.Gatherables;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class WorldObjectManager
     {

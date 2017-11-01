@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExtendedTest
+namespace Sagey
 {
 #if WINDOWS || LINUX
     /// <summary>

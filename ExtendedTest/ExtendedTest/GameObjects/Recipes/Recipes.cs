@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Recipes
+namespace Sagey.Recipes
 {
     class MatchesRecipe : Recipe
     {
@@ -13,16 +13,16 @@ namespace ExtendedTest.Recipes
             Name = "Matches";
 
             Ingredient ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemLog;
+            ingredient._ItemID = Enums.ItemID.kItemLog;
             ingredient.Amount = 2;
             ingredients.Add(ingredient);
 
             ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemOre;
+            ingredient._ItemID = Enums.ItemID.kItemOre;
             ingredient.Amount = 1;
             ingredients.Add(ingredient);
 
-            output = Item.ItemType.kItemMatches;
+            outputID = Enums.ItemID.kItemMatches;
             amount = 2;
             CraftingTime = 1.0f; //one second?
             MadeOnTag = WorldObject.WorldObjectTag.kNoneTag;
@@ -36,16 +36,16 @@ namespace ExtendedTest.Recipes
             Name = "Fish Stick";
 
             Ingredient ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemFish;
+            ingredient._ItemID = Enums.ItemID.kItemFish;
             ingredient.Amount = 1;
             ingredients.Add(ingredient);
 
             ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemLog;
+            ingredient._ItemID = Enums.ItemID.kItemLog;
             ingredient.Amount = 1;
             ingredients.Add(ingredient);
 
-            output = Item.ItemType.kItemFishStick;
+            outputID = Enums.ItemID.kItemFishStick;
             amount = 1;
             CraftingTime = 1f;
             MadeOnTag = WorldObject.WorldObjectTag.kFireTag;
@@ -58,11 +58,11 @@ namespace ExtendedTest.Recipes
         {
             Name = "2xLog";
             Ingredient ingredient = new Ingredient();
-            ingredient._ItemType = Item.ItemType.kItemLog;
+            ingredient._ItemID = Enums.ItemID.kItemLog;
             ingredient.Amount = 2;
             ingredients.Add(ingredient);
 
-            output = Item.ItemType.kItemLog;
+            outputID = Enums.ItemID.kItemLog;
             amount = 1;
             CraftingTime = 0.5f;
             MadeOnTag = WorldObject.WorldObjectTag.kNoneTag;

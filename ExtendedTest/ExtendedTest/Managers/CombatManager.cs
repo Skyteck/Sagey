@@ -1,11 +1,11 @@
-﻿using ExtendedTest.GameObjects.NPCs;
+﻿using Sagey.GameObjects.NPCs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public static class CombatManager
     {

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace ExtendedTest
+namespace Sagey
 {
     public class AnimatedSprite : Sprite
     {

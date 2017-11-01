@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.GameObjects.UIObjects
+namespace Sagey.GameObjects.UIObjects
 {
     class UIPanelv2
     {

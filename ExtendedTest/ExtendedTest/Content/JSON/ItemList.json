@@ -1,65 +1,83 @@
-﻿[
-	{
-		"_Name": "Log",
-		"_Weight": 1.0,
-		"_SaleValue": 1,
-		"itemtexture": null,
-		"_Stackable": false,
-		"_Uses": 1,
-		"_Type": 1
-	},
-	{
-		"_Name": "Fish",
-		"_Weight": 1.0,
-		"_SaleValue": 1,
-		"itemtexture": null,
-		"_Stackable": true,
-		"_Uses": 1,
-		"_Type": 3
-	},
-	{
-		"_Name": "Ore",
-		"_Weight": 2.0,
-		"_SaleValue": 1,
-		"itemtexture": null,
-		"_Stackable": false,
-		"_Uses": 1,
-		"_Type": 2
-	},
-	{
-		"_Name": "FishStick",
-		"_Weight": 2.0,
-		"_SaleValue": 1,
-		"itemtexture": null,
-		"_Stackable": false,
-		"_Uses": 1,
-		"_Type": 6
-	},
-	{
-		"_Name": "Matches",
-		"_Weight": 2.0,
-		"_SaleValue": 1,
-		"itemtexture": null,
-		"_Stackable": false,
-		"_Uses": 5,
-		"_Type": 5
-	},
-	{
-		"_Name": "Strawberry",
-		"_Weight": 2.0,
-		"_SaleValue": 1,
-		"itemtexture": null,
-		"_Stackable": true,
-		"_Uses": 1,
-		"_Type": 9
-	},
-	{
-		"_Name": "Milk",
-		"_Weight": 3.0,
-		"_SaleValue": 1,
-		"itemtexture": null,
-		"_Stackable": false,
-		"_Uses": 1,
-		"_Type": 10
-	}
+[
+  {
+    "_Name": "Log",
+    "_Weight": 1.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 1
+  },
+  {
+    "_Name": "Fish",
+    "_Weight": 1.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": true,
+    "_Uses": 1,
+    "_ID": 3
+  },
+  {
+    "_Name": "Ore",
+    "_Weight": 2.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 2
+  },
+  {
+    "_Name": "Fish Stick",
+    "_Weight": 2.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 6
+  },
+  {
+    "_Name": "Matches",
+    "_Weight": 2.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 5,
+    "_ID": 5
+  },
+  {
+    "_Name": "Strawberry",
+    "_Weight": 2.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": true,
+    "_Uses": 1,
+    "_ID": 9
+  },
+  {
+    "_Name": "Milk",
+    "_Weight": 3.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 10
+  },
+  {
+    "_Name": "Bucket",
+    "_Weight": 1.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 7
+  },
+  {
+    "_Name": "Flour",
+    "_Weight": 0.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": true,
+    "_Uses": 1,
+    "_ID": 7
+  }
 ]

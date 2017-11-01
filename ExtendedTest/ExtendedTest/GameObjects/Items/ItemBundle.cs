@@ -1,14 +1,14 @@
-﻿namespace ExtendedTest.GameObjects.Items
+﻿namespace Sagey.GameObjects.Items
 {
     public class ItemBundle
     {
-        public Item.ItemType output;
+        public Enums.ItemID outputID;
         public int odds;
         public int amount;
 
         public ItemBundle()
         {
-            output = Item.ItemType.kItemNone;
+            outputID = Enums.ItemID.kItemNone;
         }
     }
 }

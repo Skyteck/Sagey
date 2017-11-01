@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class TilemapManager
     {

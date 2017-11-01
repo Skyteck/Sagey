@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.GameObjects.Gatherables
+namespace Sagey.GameObjects.Gatherables
 {
     class Tree : Gatherable
     {
@@ -47,12 +47,12 @@ namespace ExtendedTest.GameObjects.Gatherables
             this._CurrentState = Sprite.SpriteState.kStateActive;
 
             Items.ItemBundle output = new Items.ItemBundle();
-            output.output = Item.ItemType.kItemLog;
+            output.outputID = Enums.ItemID.kItemLog;
             output.amount = 1;
             output.odds = 95;
             
             output = new Items.ItemBundle();
-            output.output = Item.ItemType.kItemLog;
+            output.outputID = Enums.ItemID.kItemLog;
             output.amount = 2;
             output.odds = 1;
             CurrentDrop = output;

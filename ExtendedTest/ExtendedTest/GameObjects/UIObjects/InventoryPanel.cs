@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace ExtendedTest.GameObjects.UIObjects
+namespace Sagey.GameObjects.UIObjects
 {
     public class InventoryPanel : UIPanel
     {
@@ -48,16 +48,16 @@ namespace ExtendedTest.GameObjects.UIObjects
             }
         }
 
-        new public Item.ItemType ProcessClick(Vector2 pos)
+        new public Enums.ItemID ProcessClick(Vector2 pos)
         {
             foreach (DrawSpot slot in _PanelSpots.FindAll(x=>x._Active == true))
             {
                 if (slot.myRect.Contains(pos))
                 {
-                    return slot.mySlot.ItemInSlot._Type;
+                    return slot.mySlot.ItemInSlot._ID;
                 }
             }
-            return Item.ItemType.kItemNone;
+            return Enums.ItemID.kItemNone;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

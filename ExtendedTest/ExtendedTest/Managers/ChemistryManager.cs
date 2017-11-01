@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class ChemistryManager
     {
@@ -60,7 +60,7 @@ namespace ExtendedTest.Managers
         {
             foreach (Recipe recipe in RecipeList)
             {
-                recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.output)._Name+"Item");
+                recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.outputID)._Name+"Item");
             }
         }
 
@@ -72,7 +72,7 @@ namespace ExtendedTest.Managers
                 bool itemsFound = false;
                 foreach(Ingredient slot in recipe.ingredients)
                 {
-                    int amt = _InvenManager.getItemCount(slot._ItemType);
+                    int amt = _InvenManager.getItemCount(slot._ItemID);
                     if(amt >= slot.Amount)
                     {
                         itemsFound = true;
@@ -116,9 +116,9 @@ namespace ExtendedTest.Managers
             {
                 foreach(Ingredient slot in recipe.ingredients)
                 {
-                    _InvenManager.RemoveItem(slot._ItemType, slot.Amount);                    
+                    _InvenManager.RemoveItem(slot._ItemID, slot.Amount);                    
                 }
-                _InvenManager.AddItem(recipe.output, recipe.amount);
+                _InvenManager.AddItem(recipe.outputID, recipe.amount);
                 this.CheckRecipes();
             }
             else

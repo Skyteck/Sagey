@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class InventoryManager
     {
@@ -28,10 +28,10 @@ namespace ExtendedTest.Managers
             
         }
                 
-        public void AddItem(Item.ItemType itemType, int amount = 1)
+        public void AddItem(Enums.ItemID itemType, int amount = 1)
         {
             //find if the item already exists in a slot
-            if (itemType == Item.ItemType.kItemNone) return;
+            if (itemType == Enums.ItemID.kItemNone) return;
             bool dirty = false;
             Item itemToAdd = _ItemManager.GetItem(itemType);
 
@@ -41,7 +41,7 @@ namespace ExtendedTest.Managers
                 return;
             }
 
-            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
+            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._ID == itemToAdd._ID);
 
             //item stackable, slot not found make one with amount
             //item not stackable, create new slot with it
@@ -106,12 +106,12 @@ namespace ExtendedTest.Managers
 
         public void AddItem(GameObjects.Items.ItemBundle bundle)
         {
-            AddItem(bundle.output, bundle.amount);
+            AddItem(bundle.outputID, bundle.amount);
         }
 
-        public void RemoveItem(Item.ItemType itemType, int amount = 1)
+        public void RemoveItem(Enums.ItemID itemType, int amount = 1)
         {
-            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Type == itemType);
+            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._ID == itemType);
             ReallyRemoveItem(itemSlot, amount);
 
         }
@@ -177,9 +177,9 @@ namespace ExtendedTest.Managers
             }
         }
 
-        public int getItemCount(Item.ItemType itemType)
+        public int getItemCount(Enums.ItemID itemType)
         {
-            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemType);
+            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._ID == itemType);
             if(itemSlot == null)
             {
                 return 0;
@@ -190,7 +190,7 @@ namespace ExtendedTest.Managers
             }
             else
             {
-                int count = itemSlots.Count(x => x.ItemInSlot._Type == itemType);
+                int count = itemSlots.Count(x => x.ItemInSlot._ID == itemType);
                 return count;
             }
         }
@@ -200,7 +200,7 @@ namespace ExtendedTest.Managers
             List<string> items = new List<string>();
             foreach (ItemSlot slot in itemSlots)
             {
-                string thing = string.Format("{0} {1}", (int)slot.ItemInSlot._Type, slot.Amount);
+                string thing = string.Format("{0} {1}", (int)slot.ItemInSlot._ID, slot.Amount);
                 items.Add(thing);
             }
             return items;

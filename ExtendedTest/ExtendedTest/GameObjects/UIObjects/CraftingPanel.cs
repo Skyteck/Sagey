@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace ExtendedTest.GameObjects.UIObjects
+namespace Sagey.GameObjects.UIObjects
 {
     public class CraftingPanel : UIPanel
     {

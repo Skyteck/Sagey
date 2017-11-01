@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.GameObjects.Gatherables.Plants
+namespace Sagey.GameObjects.Gatherables.Plants
 {
     class StrawberryPlant : Plant
     {
@@ -14,7 +14,7 @@ namespace ExtendedTest.GameObjects.Gatherables.Plants
             _GrowTime = 10;
             this.Name = "StrawberryPlant";
             _MyDrops = new Items.ItemBundle();
-            _MyDrops.output = Item.ItemType.kStrawberry;
+            _MyDrops.outputID = Enums.ItemID.kItemStrawberry;
             _MyDrops.amount = 3;
             _MyDrops.odds = 100;
             CurrentDrop = _MyDrops;

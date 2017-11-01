@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ExtendedTest
+namespace Sagey
 {
     /// <summary>
     /// A NPC is any object in the game world that can move around using its own logic. FindPath is provided to get the character where it's going.

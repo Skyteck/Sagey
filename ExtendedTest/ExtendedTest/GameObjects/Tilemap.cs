@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Linq;
 
-namespace ExtendedTest
+namespace Sagey
 {
     public class TileMap
     {

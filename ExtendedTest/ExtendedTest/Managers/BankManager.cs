@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendedTest.Managers
+namespace Sagey.Managers
 {
     public class BankManager
     {
@@ -24,10 +24,10 @@ namespace ExtendedTest.Managers
             itemSlots = new List<ItemSlot>();
         }
 
-        public void AddItem(Item.ItemType itemType, int amount = 1)
+        public void AddItem(Enums.ItemID itemType, int amount = 1)
         {
             //find if the item already exists in a slot
-            if (itemType == Item.ItemType.kItemNone)
+            if (itemType == Enums.ItemID.kItemNone)
             {
                 return;
             }
@@ -39,7 +39,7 @@ namespace ExtendedTest.Managers
                 return;
             }
 
-            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._Type == itemToAdd._Type);
+            ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._ID == itemToAdd._ID);
             if (itemSlot != null) //All items stack in the bank. Is there a slot for this one?
             {
                 itemSlot.Amount += amount;
@@ -100,9 +100,9 @@ namespace ExtendedTest.Managers
         //    return null;
         //}
 
-        public void RemoveItem(Item.ItemType itemType, int amount = 1)
+        public void RemoveItem(Enums.ItemID itemType, int amount = 1)
         {
-            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Type == itemType);
+            List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._ID == itemType);
             ReallyRemoveItem(itemSlot, amount);
 
         }
@@ -145,7 +145,7 @@ namespace ExtendedTest.Managers
             List<string> items = new List<string>();
             foreach(ItemSlot slot in itemSlots)
             {
-                string thing = string.Format("{0} {1}", (int)slot.ItemInSlot._Type, slot.Amount);
+                string thing = string.Format("{0} {1}", (int)slot.ItemInSlot._ID, slot.Amount);
                 items.Add(thing);
             }
             return items;
