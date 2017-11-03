@@ -41,6 +41,11 @@ namespace Sagey.Enums
         kItemError,
         kItemStrawberry,
         kItemMilk,
-        kItemTest
+        kItemTest,
+        kItemBucket,
+        kItemFlour,
+        kItemWheat,
+        kItemSlimeGoo,
+        kItemGoldPieces
     }
 }

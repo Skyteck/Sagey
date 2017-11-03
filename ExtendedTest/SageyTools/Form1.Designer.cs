@@ -46,6 +46,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.nWeight = new System.Windows.Forms.NumericUpDown();
             this.nSaleValue = new System.Windows.Forms.NumericUpDown();
+            this.listBox2 = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nWeight)).BeginInit();
@@ -203,11 +204,21 @@
             this.nSaleValue.TabIndex = 13;
             this.nSaleValue.ValueChanged += new System.EventHandler(this.nSaleValue_ValueChanged);
             // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(346, 52);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(120, 277);
+            this.listBox2.TabIndex = 14;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(516, 352);
+            this.Controls.Add(this.listBox2);
             this.Controls.Add(this.nSaleValue);
             this.Controls.Add(this.nWeight);
             this.Controls.Add(this.label4);
@@ -252,6 +263,7 @@
         private System.Windows.Forms.NumericUpDown nWeight;
         private System.Windows.Forms.NumericUpDown nSaleValue;
         private System.Windows.Forms.ToolStripButton btnSave;
+        private System.Windows.Forms.ListBox listBox2;
     }
 }
 

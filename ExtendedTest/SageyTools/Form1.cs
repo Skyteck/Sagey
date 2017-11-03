@@ -24,6 +24,17 @@ namespace SageyTools
             string path = @"C:\Users\Richard.Ellzy\Desktop\New folder\Sagey\ExtendedTest\ExtendedTest\Content\JSON\ItemList.json";
 
 
+            Array values = Enum.GetValues(typeof(Sagey.Enums.ItemID));
+
+            foreach (int value in values)
+            {
+                ListItem thing = new ListItem();
+                thing.name = Enum.GetName(typeof(Sagey.Enums.ItemID), value);
+                thing.value = value;
+                listBox2.Items.Add(thing.name);
+            }
+
+
             var file = System.IO.File.ReadAllText(path);
             ItemList = JsonConvert.DeserializeObject<List<Sagey.Item>>(file);
 
@@ -32,6 +43,9 @@ namespace SageyTools
                 listBox1.Items.Add(item._Name);
             }
             listBox1.SelectedIndex = 0;
+
+            
+            
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -42,7 +56,7 @@ namespace SageyTools
             nWeight.Value =  (Decimal)ItemList[listBox1.SelectedIndex]._Weight;
             cbStacks.Checked = ItemList[listBox1.SelectedIndex]._Stackable;
 
-
+            listBox2.SelectedIndex = (int)ItemList[listBox1.SelectedIndex]._ID-1;
         }
 
         private void btnNewItem_Click(object sender, EventArgs e)
@@ -91,5 +105,17 @@ namespace SageyTools
         {
             ItemList[listBox1.SelectedIndex]._Stackable = cbStacks.Checked;
         }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ItemList[listBox1.SelectedIndex]._ID = (Sagey.Enums.ItemID)listBox2.SelectedIndex + 1;
+
+        }
+    }
+
+    public class ListItem
+    {
+        public string name;
+        public int value;
     }
 }

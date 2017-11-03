@@ -195,6 +195,7 @@ namespace Sagey
                 _InvenManager.AddItem(Enums.ItemID.kItemMatches);
                 _InvenManager.AddItem(Enums.ItemID.kItemFish, 2);
                 _InvenManager.AddItem(Enums.ItemID.kItemMilk, 1);
+                _InvenManager.AddItem(Enums.ItemID.kItemBucket, 3);
 
                 _BankManager.AddItem(Enums.ItemID.kItemLog, 10);
                 _BankManager.AddItem(Enums.ItemID.kItemFish, 3);

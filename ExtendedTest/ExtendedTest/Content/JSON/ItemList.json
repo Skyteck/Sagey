@@ -69,7 +69,7 @@
     "itemtexture": null,
     "_Stackable": false,
     "_Uses": 1,
-    "_ID": 7
+    "_ID": 12
   },
   {
     "_Name": "Flour",
@@ -77,6 +77,24 @@
     "_SaleValue": 1,
     "itemtexture": null,
     "_Stackable": true,
+    "_Uses": 1,
+    "_ID": 13
+  },
+  {
+    "_Name": "Slime Goo",
+    "_Weight": 0.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 7
+  },
+  {
+    "_Name": "Wheat",
+    "_Weight": 0.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
     "_Uses": 1,
     "_ID": 7
   }
