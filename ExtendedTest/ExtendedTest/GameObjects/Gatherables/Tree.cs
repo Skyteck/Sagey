@@ -56,6 +56,8 @@ namespace Sagey.GameObjects.Gatherables
             output.amount = 2;
             output.odds = 1;
             CurrentDrop = output;
+
+            InteractText = "Cut";
             Setup();
         }
     }

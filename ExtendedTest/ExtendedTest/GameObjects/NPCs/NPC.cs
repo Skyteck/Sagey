@@ -33,7 +33,7 @@ namespace Sagey
 
         protected List<string> myDialog;
         public bool _Interactable = false;
-
+        public string InteractText = string.Empty;
         public double LeftBoundary { get; private set; }
         public double RightBoundary { get; private set; }
         public double BottomBoundary { get; private set; }

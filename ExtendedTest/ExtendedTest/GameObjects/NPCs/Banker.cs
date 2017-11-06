@@ -12,6 +12,7 @@ namespace Sagey.GameObjects.NPCs
             AddMessages("OpenBank");
             _Interactable = true;
         }
+        
 
         public override void Interact()
         {

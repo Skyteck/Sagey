@@ -18,7 +18,8 @@ namespace Sagey.Managers
 
         //Managers
         ItemManager _ItemManager;
-        
+        BankManager _BankManager;
+
         public Item selectedItem;
 
         public InventoryManager(ItemManager IM)
@@ -27,7 +28,12 @@ namespace Sagey.Managers
             itemSlots = new List<ItemSlot>();
             
         }
-                
+
+        public void SetBankManager(BankManager bm)
+        {
+            _BankManager = bm;
+        }
+
         public void AddItem(Enums.ItemID itemType, int amount = 1)
         {
             //find if the item already exists in a slot
@@ -163,7 +169,6 @@ namespace Sagey.Managers
                 OnInventoryChanged();
             }
         }
-        
 
         public void SelectItem(Item item)
         {
@@ -205,7 +210,13 @@ namespace Sagey.Managers
             }
             return items;
         }
-        
+
+        private void TransferToBank(Enums.ItemID itemID, int amt = 1)
+        {
+            _BankManager.AddItem(itemID, amt);
+            RemoveItem(itemID, amt);
+        }
+
         public void OnInventoryChanged()
         {
             InventoryChanged?.Invoke(this, EventArgs.Empty);

@@ -52,7 +52,7 @@ namespace Sagey.GameObjects.Gatherables
             output.amount = 1;
             output.odds = 100;
             CurrentDrop = output;
-
+            InteractText = "Mine";
             Setup();
         }
         

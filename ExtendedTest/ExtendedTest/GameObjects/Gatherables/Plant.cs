@@ -40,6 +40,7 @@ namespace Sagey.GameObjects.Gatherables
             _Respawns = false;
             _TrueStartHP = 1;
             _StartHP = 1;
+            InteractText = "Harvest";
         }
 
         protected override void UpdateActive(GameTime gameTime)

@@ -47,25 +47,25 @@ namespace Sagey.Managers
         public float _PlayerSpeed { get => playerSpeed; set => playerSpeed = value; }
         private float playerSpeed = 200.0f;
 
-        private Rectangle CheckRect
+        public Rectangle CheckRect
         {
             get
             {
                 if (_Player._Direction == Sprite.Direction.kDirectionDown)
                 {
-                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y + 32, 58, 32);
+                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y + 32, 50, 32);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionUp)
                 {
-                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y - 64, 58, 32);
+                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y - 64, 50, 32);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionLeft)
                 {
-                    return new Rectangle((int)_Player._Position.X - 64, (int)_Player._Position.Y - 26, 32, 58);
+                    return new Rectangle((int)_Player._Position.X - 64, (int)_Player._Position.Y - 26, 32, 50);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionRight)
                 {
-                    return new Rectangle((int)_Player._Position.X + 32, (int)_Player._Position.Y - 32, 32, 58);
+                    return new Rectangle((int)_Player._Position.X + 32, (int)_Player._Position.Y - 26, 32, 50);
                 }
                 else
                 {
@@ -76,6 +76,8 @@ namespace Sagey.Managers
         }
 
         public Sprite _FrontSprite;
+
+        public string currentInteracttext = string.Empty;
 
         public PlayerManager(Player p, InventoryManager IM, WorldObjectManager WOM, NPCManager NPCM, TilemapManager tm, GatherableManager gm)
         {
@@ -91,6 +93,7 @@ namespace Sagey.Managers
         {
             _PlayerPos = _Player._Position;
             _Player._MyState = PlayerState.kStateIdle;
+            currentInteracttext = string.Empty;
             Vector2 currentPos = _Player._Position;
             ProcessKeyboard(gt);
             if(CheckCollision())
@@ -142,6 +145,7 @@ namespace Sagey.Managers
                 spHit = _GatherManager.CheckCollision(CheckRect);
                 if(spHit != null)
                 {
+                    currentInteracttext = (spHit as Gatherable).InteractText;
                     return spHit;
                 }
             }

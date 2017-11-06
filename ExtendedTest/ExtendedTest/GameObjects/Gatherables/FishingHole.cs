@@ -49,7 +49,7 @@ namespace Sagey.GameObjects.Gatherables
             output.amount = 1;
             output.odds = 100;
             CurrentDrop = output;
-
+            InteractText = "Fish";
             _TrueStartHP = 3;
 
             Setup();

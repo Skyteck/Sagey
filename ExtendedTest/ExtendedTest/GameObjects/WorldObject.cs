@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Sagey
 {
+    /// <summary>
+    /// World Objects are things to interact with in the world. Trees, Fires, NPCs, cows?
+    /// </summary>
     public class WorldObject : AnimatedSprite
     {
         private int difficulty;
@@ -16,6 +19,9 @@ namespace Sagey
         private bool isGatherable = false;
         public bool _Detector = false;
         public bool _Walkable = false;
+        public bool _Interactable = false;
+        public string InteractText = string.Empty;
+
         public enum WorldObjectTag
         {
             kFireTag,
@@ -34,12 +40,7 @@ namespace Sagey
         public bool IsGatherable { get => isGatherable; set => isGatherable = value; }
         public int Difficulty { get => difficulty; set => difficulty = value; }
         public WorldObjectTag MyWorldObjectTag { get => myWorldObjectTag; set => myWorldObjectTag = value; }
-
-        public WorldObject()
-        {
-        }
-
-
+        
         protected override void UpdateDead(GameTime gameTime)
         {
             base.UpdateDead(gameTime);

@@ -11,14 +11,20 @@ namespace Sagey.GameObjects.UIObjects
 {
     public class InventoryPanel : UIPanel
     {
+        public event EventHandler ItemSelected;
+
         Managers.InventoryManager _InventoryManager;
         List<DrawSpot> _PanelSpots;
+        DrawSpot SelectedSpot = null;
         int itemsDrawn = 0;
 
         public InventoryPanel(Managers.InventoryManager invenM)
         {
             _InventoryManager = invenM;
             _PanelSpots = new List<DrawSpot>();
+
+            _InventoryManager.InventoryChanged += HandleInventoryChanged;
+            
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -36,28 +42,57 @@ namespace Sagey.GameObjects.UIObjects
         {
             base.Update(gt);
 
-            if(this._BoundingBox.Contains(InputHelper.MouseScreenPos))
-            {
-                foreach(DrawSpot slot in _PanelSpots)
-                {
-                    if(slot.myRect.Contains(InputHelper.MouseScreenPos))
-                    {
-                        Console.WriteLine(slot.MouseOver);
-                    }
-                }
-            }
+            //if (this._BoundingBox.Contains(InputHelper.MouseScreenPos))
+            //{
+            //    foreach (DrawSpot slot in _PanelSpots)
+            //    {
+            //        if (slot.myRect.Contains(InputHelper.MouseScreenPos))
+            //        {
+            //            Console.WriteLine(slot.MouseOver);
+            //        }
+            //    }
+            //}
         }
 
-        new public Enums.ItemID ProcessClick(Vector2 pos)
+        public override void ProcessClick(Vector2 pos)
         {
             foreach (DrawSpot slot in _PanelSpots.FindAll(x=>x._Active == true))
             {
                 if (slot.myRect.Contains(pos))
                 {
-                    return slot.mySlot.ItemInSlot._ID;
+                    DeselectSlot();
+                    SelectSlot(slot);
                 }
             }
-            return Enums.ItemID.kItemNone;
+        }
+
+
+        private void ActivateSlot(ItemSlot slot, Vector2 pos)
+        {
+            _PanelSpots.Find(x => x._Active == false).Setup(slot, pos);
+        }
+
+        private void SelectSlot(DrawSpot spot)
+        {
+            SelectedSpot = spot;
+            SelectedSpot._Selected = true;
+            _InventoryManager.selectedItem = spot.mySlot.ItemInSlot;
+        }
+
+        private void DeselectSlot()
+        {
+            if (SelectedSpot == null) return;
+            SelectedSpot._Selected = false;
+            SelectedSpot = null;
+            if(_InventoryManager.selectedItem != null)
+            {
+                _InventoryManager.selectedItem = null;
+            }
+        }
+
+        public void OnItemSelected()
+        {
+            ItemSelected?.Invoke(this, EventArgs.Empty);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -120,16 +155,7 @@ namespace Sagey.GameObjects.UIObjects
                 //where to draw?
                 Vector2 pos = new Vector2(StartPos.X + (currentColumn * buffer), StartPos.Y + (currentRow * buffer));
                 ActivateSlot(_InventoryManager.itemSlots[itemsDrawn], pos);
-                //draw
-                //_InventoryManager.itemSlots[itemsDrawn]._Position = pos;
-                //_InventoryManager.itemSlots[itemsDrawn].ItemInSlot.Draw(spriteBatch, pos);
-                //_PanelSpots[itemsDrawn].Draw(spriteBatch);
-                //spriteBatch.Draw(newSpot.mySlot.ItemInSlot.itemtexture, pos, Color.White);
-                //if (_PanelSpots[itemsDrawn].mySlot.ItemInSlot._Stackable)
-                //{
-                //    spriteBatch.DrawString(count, _InventoryManager.itemSlots[itemsDrawn].Amount.ToString(), new Vector2(pos.X + 8, pos.Y - 12), Color.White);
-                //}
-                //done drawing
+
                 currentColumn++;
                 if(currentColumn >= columns)
                 {
@@ -157,11 +183,12 @@ namespace Sagey.GameObjects.UIObjects
             }
         }
 
-        private void ActivateSlot(ItemSlot slot, Vector2 pos)
-        {
-            _PanelSpots.Find(x => x._Active == false).Setup(slot, pos);
-        }
 
+
+        public void HandleInventoryChanged(object sender, EventArgs args)
+        {
+            //CheckRecipes();
+        }
     }
 
     public class DrawSpot
@@ -172,6 +199,7 @@ namespace Sagey.GameObjects.UIObjects
         public Texture2D bgTex;
         public string MouseOver;
         int buffer = 34;
+        public bool _Selected = false;
         public DrawSpot(Texture2D tex)
         {
             bgTex = tex;
@@ -205,7 +233,16 @@ namespace Sagey.GameObjects.UIObjects
         {
             if (!_Active) return;
             //draw BG
-            sb.Draw(bgTex, myRect, Color.White);
+            if(_Selected)
+            {
+                int border = 3;
+                Rectangle rect = myRect;
+                sb.Draw(bgTex, new Rectangle(rect.X, rect.Y, border, rect.Height + border), Color.White);
+                sb.Draw(bgTex, new Rectangle(rect.X, rect.Y, rect.Width + border, border), Color.White);
+                sb.Draw(bgTex, new Rectangle(rect.X + rect.Width, rect.Y, border, rect.Height + border), Color.White);
+                sb.Draw(bgTex, new Rectangle(rect.X, rect.Y + rect.Height, rect.Width + border, border), Color.White);
+            }
+            //sb.Draw(bgTex, myRect, Color.White);
             sb.Draw(mySlot.ItemInSlot.itemtexture, new Vector2(_Position.X - 8, _Position.Y + 8), Color.White);
 
             if(mySlot.ItemInSlot._Stackable)

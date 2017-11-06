@@ -428,56 +428,57 @@ namespace Sagey
             //check if there was a click
             if(InputHelper.LeftButtonClicked)
             {
+                if(_InvenManager.selectedItem != null)
+                {
+                    //we have a left click, and the inventory manager has an item selected. FIgure out what we clicked on.
+
+                    //check other inventory items
+
+                    //check world objects
+                    
+                    //check NPCs
+                    
+
+
+
+                }
                 //first check if the click was on any of the panels edge for resizing
                 UIPanel panelHit = _UIManager.CheckPanelEdgesForResize(InputHelper.MouseScreenPos);
-
-                //if panel was hit have panel track mouse and apply changes in update?
-                //if(panelHit != null)
-                //{
-                //    panelHit.MarkToTrack(mouseState);
-                //}
-
 
                 //check if a click was in the crafting panel
                 foreach(UIPanel panel in _UIManager.ActivePanels)
                 {
-                    if(BankMode)
-                    {
-                        if (panel.Name.Equals("Bank"))
-                        {
-                            Enums.ItemID item = (panel as GameObjects.UIObjects.BankPanel).ProcessClick(InputHelper.MouseScreenPos);
-                            if (item != Enums.ItemID.kItemNone)
-                            {
-                                _BankManager.RemoveItem(item);
-                                _InvenManager.AddItem(item);
-                            }
-                        }
-                        if (panel.Name.Equals("Inventory"))
-                        {
-                            Enums.ItemID item = (panel as GameObjects.UIObjects.InventoryPanel).ProcessClick(InputHelper.MouseScreenPos);
-                            if (item != Enums.ItemID.kItemNone)
-                            {
-                                _InvenManager.RemoveItem(item);
-                                _BankManager.AddItem(item);
-                            }
-                        }
-                    }
+                    //if(BankMode)
+                    //{
+                    //    if (panel.Name.Equals("Bank"))
+                    //    {
+                    //        Enums.ItemID item = (panel as GameObjects.UIObjects.BankPanel).ProcessClick(InputHelper.MouseScreenPos);
+                    //        if (item != Enums.ItemID.kItemNone)
+                    //        {
+                    //            _BankManager.RemoveItem(item);
+                    //            _InvenManager.AddItem(item);
+                    //        }
+                    //    }
+                    //    if (panel.Name.Equals("Inventory"))
+                    //    {
+                    //        Enums.ItemID item = (panel as GameObjects.UIObjects.InventoryPanel).ProcessClick(InputHelper.MouseScreenPos);
+                    //        if (item != Enums.ItemID.kItemNone)
+                    //        {
+                    //            _InvenManager.RemoveItem(item);
+                    //            _BankManager.AddItem(item);
+                    //        }
+                    //    }
+                    //}
                     panel.ProcessClick(InputHelper.MouseScreenPos);
                 }
 
             }
             else if(InputHelper.RightButtonClicked)
-            {
-                
+            {               
 
                 //first check if the click was on any of the panels edge for resizing
                 UIPanel panelHit = _UIManager.CheckPanelEdgesForMove(InputHelper.MouseScreenPos);
-
-                //if panel was hit have panel track mouse and apply changes in update?
-                if (panelHit != null)
-                {
-                    panelHit.MarkToMove();
-                }
+                
             }
 
             //if (InputHelper.RightButtonPressed)
@@ -543,21 +544,29 @@ namespace Sagey
             spriteBatch.End();
             spriteBatch.Begin();
             _UIManager.Draw(spriteBatch);
+            spriteBatch.DrawString(font, _PlayerManager.currentInteracttext, new Vector2(100, 100), Color.White);
             spriteBatch.End();
 
         }
 
         private void DrawSelectRect(SpriteBatch sb)
         {
-            if(_SelectedSprite != null)
+            int border = 3;
+            Rectangle rect;
+            if (_SelectedSprite != null)
             {
-                int border = 3;
-                Rectangle rect = _SelectedSprite._BoundingBox;
+                rect = _SelectedSprite._BoundingBox;
                 sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, border, rect.Height + border), Color.White);
                 sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, rect.Width + border, border), Color.White);
                 sb.Draw(_SelectTex, new Rectangle(rect.X + rect.Width, rect.Y, border, rect.Height + border), Color.White);
                 sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y + rect.Height, rect.Width + border, border), Color.White);
             }
+
+            rect = _PlayerManager.CheckRect;
+            sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, border, rect.Height + border), Color.White);
+            sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y, rect.Width + border, border), Color.White);
+            sb.Draw(_SelectTex, new Rectangle(rect.X + rect.Width, rect.Y, border, rect.Height + border), Color.White);
+            sb.Draw(_SelectTex, new Rectangle(rect.X, rect.Y + rect.Height, rect.Width + border, border), Color.White);
         }
 
         private void CheckPlayerHit()
