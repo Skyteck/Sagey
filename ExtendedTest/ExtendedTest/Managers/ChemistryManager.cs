@@ -19,7 +19,7 @@ namespace Sagey.Managers
         NPCManager _NPCManager;
         ContentManager _Content;
         ItemManager _ItemManager;
-
+        public Item selectedItem;
         public List<Recipe> RecipeList;
         public List<Recipe> ActiveRecipes;
 
@@ -37,6 +37,8 @@ namespace Sagey.Managers
             _ItemManager = IM;
 
             _InvenManager.InventoryChanged += HandleInventoryChanged;
+            _InvenManager.ItemSelected += HandleItemSelected;
+            _InvenManager.ItemCombine += HandleItemCombined;
 
             //Recipe matches = new Recipes.MatchesRecipe();
             //RecipeList.Add(matches);
@@ -132,6 +134,16 @@ namespace Sagey.Managers
             CheckRecipes();
         }
 
+        public void HandleItemSelected(object sender, EventArgs args)
+        {
+            selectedItem = _InvenManager.selectedItem;
+        }
+
+        public void HandleItemCombined(object sender, EventArgs args)
+        {
+            Console.WriteLine(selectedItem._Name + " used on: " + _InvenManager.secondItem._Name);
+            selectedItem = null;
+        }
 
         public void OnRecipesChanged()
         {

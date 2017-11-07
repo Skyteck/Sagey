@@ -12,6 +12,8 @@ namespace Sagey.Managers
     public class InventoryManager
     {
         public event EventHandler InventoryChanged;
+        public event EventHandler ItemSelected;
+        public event EventHandler ItemCombine;
 
         public List<ItemSlot> itemSlots;
         public int capacity = 28;
@@ -21,6 +23,7 @@ namespace Sagey.Managers
         BankManager _BankManager;
 
         public Item selectedItem;
+        public Item secondItem;
 
         public InventoryManager(ItemManager IM)
         {
@@ -176,7 +179,14 @@ namespace Sagey.Managers
             {
                 if(itemSlot.ItemInSlot == item)
                 {
+                    if(selectedItem != null)
+                    {
+                        secondItem = itemSlot.ItemInSlot;
+                        OnItemCombine();
+                        return;
+                    }
                     selectedItem = itemSlot.ItemInSlot;
+                    OnItemSelected();
                     return;
                 }
             }
@@ -215,6 +225,18 @@ namespace Sagey.Managers
         {
             _BankManager.AddItem(itemID, amt);
             RemoveItem(itemID, amt);
+        }
+
+        public void OnItemSelected()
+        {
+            ItemSelected?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void OnItemCombine()
+        {
+            ItemCombine?.Invoke(this, EventArgs.Empty);
+            selectedItem = null;
+            secondItem = null;
         }
 
         public void OnInventoryChanged()

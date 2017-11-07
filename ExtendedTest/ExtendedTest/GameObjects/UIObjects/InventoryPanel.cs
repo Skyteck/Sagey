@@ -23,8 +23,7 @@ namespace Sagey.GameObjects.UIObjects
             _InventoryManager = invenM;
             _PanelSpots = new List<DrawSpot>();
 
-            _InventoryManager.InventoryChanged += HandleInventoryChanged;
-            
+            _InventoryManager.ItemCombine += HandleItemCombined;
         }
 
         public override void LoadContent(string path, ContentManager content)
@@ -56,14 +55,30 @@ namespace Sagey.GameObjects.UIObjects
 
         public override void ProcessClick(Vector2 pos)
         {
-            foreach (DrawSpot slot in _PanelSpots.FindAll(x=>x._Active == true))
+            if(_InventoryManager.selectedItem != null)
             {
-                if (slot.myRect.Contains(pos))
+                //we should already have an item selected so see if something else was clicked
+                foreach(DrawSpot slot in _PanelSpots.FindAll(x=>x._Active == true))
                 {
-                    DeselectSlot();
-                    SelectSlot(slot);
+                    if(slot.myRect.Contains(pos))
+                    {
+                        _InventoryManager.SelectItem(slot.mySlot.ItemInSlot);
+                    }
                 }
             }
+            else
+            {
+                foreach (DrawSpot slot in _PanelSpots.FindAll(x => x._Active == true))
+                {
+                    if (slot.myRect.Contains(pos))
+                    {
+                        DeselectSlot();
+                        SelectSlot(slot);
+                        OnItemSelected();
+                    }
+                }
+            }
+
         }
 
 
@@ -76,7 +91,8 @@ namespace Sagey.GameObjects.UIObjects
         {
             SelectedSpot = spot;
             SelectedSpot._Selected = true;
-            _InventoryManager.selectedItem = spot.mySlot.ItemInSlot;
+            _InventoryManager.SelectItem(spot.mySlot.ItemInSlot);
+            //_InventoryManager.selectedItem = spot.mySlot.ItemInSlot;
         }
 
         private void DeselectSlot()
@@ -89,11 +105,16 @@ namespace Sagey.GameObjects.UIObjects
                 _InventoryManager.selectedItem = null;
             }
         }
+        
 
-        public void OnItemSelected()
+        private void ResetSlots()
         {
-            ItemSelected?.Invoke(this, EventArgs.Empty);
+            foreach (DrawSpot spot in _PanelSpots.FindAll(x => x._Active == true))
+            {
+                spot.Reset();
+            }
         }
+
 
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -112,22 +133,22 @@ namespace Sagey.GameObjects.UIObjects
             int currentRow = 0;
             int currentColumn = 0;
 
-            if(toDraw < _InventoryManager.itemSlots.Count)
+            if (toDraw < _InventoryManager.itemSlots.Count)
             {
                 if (this._BoundingBox.Contains(InputHelper.MouseScreenPos) && InputHelper.MouseScrolled)
                 {
-                    if(InputHelper.MouseScrolledUp)
+                    if (InputHelper.MouseScrolledUp)
                     {
                         scrollPos--;
-                        if(scrollPos < 0)
+                        if (scrollPos < 0)
                         {
                             scrollPos = 0;
                         }
                     }
-                    else if(InputHelper.MouseScrolledDown)
+                    else if (InputHelper.MouseScrolledDown)
                     {
                         scrollPos++;
-                        if(scrollPos > rows)
+                        if (scrollPos > rows)
                         {
                             scrollPos = rows;
                         }
@@ -138,9 +159,9 @@ namespace Sagey.GameObjects.UIObjects
             {
                 scrollPos = 0;
             }
-            
+
             itemsDrawn = columns * scrollPos;
-            if(itemsDrawn>= _InventoryManager.itemSlots.Count)
+            if (itemsDrawn >= _InventoryManager.itemSlots.Count)
             {
                 itemsDrawn = _InventoryManager.itemSlots.Count - columns;
             }
@@ -157,37 +178,32 @@ namespace Sagey.GameObjects.UIObjects
                 ActivateSlot(_InventoryManager.itemSlots[itemsDrawn], pos);
 
                 currentColumn++;
-                if(currentColumn >= columns)
+                if (currentColumn >= columns)
                 {
                     currentColumn = 0;
                     currentRow++;
-                    if(currentRow >= rows)
+                    if (currentRow >= rows)
                     {
                         break;
                     }
                 }
                 itemsDrawn++;
             }
-            
-            foreach(DrawSpot spot in _PanelSpots.FindAll(x=>x._Active == true))
+
+            foreach (DrawSpot spot in _PanelSpots.FindAll(x => x._Active == true))
             {
                 spot.Draw(spriteBatch, count);
             }
         }
 
-        private void ResetSlots()
+        public void HandleItemCombined(object sender, EventArgs args)
         {
-            foreach (DrawSpot spot in _PanelSpots.FindAll(x => x._Active == true))
-            {
-                spot.Reset();
-            }
+            DeselectSlot();
         }
 
-
-
-        public void HandleInventoryChanged(object sender, EventArgs args)
+        public void OnItemSelected()
         {
-            //CheckRecipes();
+            ItemSelected?.Invoke(this, EventArgs.Empty);
         }
     }
 

@@ -130,6 +130,18 @@ namespace Sagey.Managers
             }
         }
 
+        public UIPanel GetPanelClicked(Vector2 pos)
+        {
+            foreach(UIPanel panel in ActivePanels)
+            {
+                if(panel._BoundingBox.Contains(pos))
+                {
+                    return panel;
+                }
+            }
+            return null;
+        }
+
         internal UIPanel CheckPanelEdgesForResize(Vector2 mouseClickpos)
         {
             foreach(UIPanel panel in ActivePanels.Where(x=>x._Resizable == true))

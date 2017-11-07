@@ -428,10 +428,15 @@ namespace Sagey
             //check if there was a click
             if(InputHelper.LeftButtonClicked)
             {
-                if(_InvenManager.selectedItem != null)
+                if(_ChemistryManager.selectedItem != null)
                 {
                     //we have a left click, and the inventory manager has an item selected. FIgure out what we clicked on.
-
+                    //clicked on the inventory panel?
+                    UIPanel panel = _UIManager.GetPanelClicked(InputHelper.MouseScreenPos);
+                    if(panel != null && panel.Name == "Inventory")
+                    {
+                        panel.ProcessClick(InputHelper.MouseScreenPos);
+                    }
                     //check other inventory items
 
                     //check world objects
@@ -442,6 +447,9 @@ namespace Sagey
 
 
                 }
+                else
+                {
+                    
                 //first check if the click was on any of the panels edge for resizing
                 UIPanel panelHit = _UIManager.CheckPanelEdgesForResize(InputHelper.MouseScreenPos);
 
@@ -470,6 +478,7 @@ namespace Sagey
                     //    }
                     //}
                     panel.ProcessClick(InputHelper.MouseScreenPos);
+                }
                 }
 
             }
