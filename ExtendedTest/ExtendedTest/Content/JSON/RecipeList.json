@@ -5,11 +5,13 @@
     "ingredients": [
       {
         "_ItemID": 1,
-        "Amount": 2
+        "Amount": 2,
+        "Name": "Log"
       },
       {
-        "_ItemType": 2,
-        "Amount": 1
+        "_ItemID": 2,
+        "Amount": 1,
+        "Name": "Ore"
       }
     ],
     "outputID": 5,
@@ -24,7 +26,8 @@
     "ingredients": [
       {
         "_ItemID": 1,
-        "Amount": 2
+        "Amount": 2,
+        "Name": "Log"
       }
     ],
     "outputID": 1,
@@ -39,11 +42,34 @@
     "ingredients": [
       {
         "_ItemID": 3,
-        "Amount": 1
+        "Amount": 1,
+        "Name": "Fish"
       },
       {
         "_ItemID": 1,
-        "Amount": 1
+        "Amount": 1,
+        "Name": "Log"
+      }
+    ],
+    "outputID": 6,
+    "amount": 1,
+    "CraftingTime": 1.0,
+    "MadeOnTag": 0,
+    "RecipeTexture": null
+  },
+  {
+    "Name": "Fire kit",
+    "_HoverText": "Hover Text!",
+    "ingredients": [
+      {
+        "_ItemID": 1,
+        "Amount": 1,
+        "Name": "Log"
+      },
+      {
+        "_ItemID": 5,
+        "Amount": 1,
+        "Name": "Matches"
       }
     ],
     "outputID": 6,

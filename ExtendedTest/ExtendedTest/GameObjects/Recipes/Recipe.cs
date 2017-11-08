@@ -29,9 +29,12 @@ namespace Sagey
     {
         public Enums.ItemID _ItemID;
         public int Amount;
+        public string Name;
         public Ingredient()
         {
-
+            _ItemID = Enums.ItemID.kItemNone;
+            Amount = 1;
+            Name = "None";
         }
     }
 }

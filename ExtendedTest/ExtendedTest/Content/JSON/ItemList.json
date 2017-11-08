@@ -87,7 +87,7 @@
     "itemtexture": null,
     "_Stackable": false,
     "_Uses": 1,
-    "_ID": 7
+    "_ID": 15
   },
   {
     "_Name": "Wheat",
@@ -96,6 +96,24 @@
     "itemtexture": null,
     "_Stackable": false,
     "_Uses": 1,
-    "_ID": 7
+    "_ID": 14
+  },
+  {
+    "_Name": "Fire Kit",
+    "_Weight": 1.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 17
+  },
+  {
+    "_Name": "Strawberry Dough",
+    "_Weight": 1.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 18
   }
 ]

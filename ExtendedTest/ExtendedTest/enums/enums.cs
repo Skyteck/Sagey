@@ -46,6 +46,8 @@ namespace Sagey.Enums
         kItemFlour,
         kItemWheat,
         kItemSlimeGoo,
-        kItemGoldPieces
+        kItemGoldPieces,
+        kItemFireKit,
+        kItemStrawberryDough
     }
 }

@@ -51,21 +51,23 @@ namespace Sagey.Managers
         {
             get
             {
+                int width = 24;
+                int halfWidth = 12;
                 if (_Player._Direction == Sprite.Direction.kDirectionDown)
                 {
-                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y + 32, 50, 32);
+                    return new Rectangle((int)_Player._Position.X - halfWidth, (int)_Player._Position.Y + 32, width, 32);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionUp)
                 {
-                    return new Rectangle((int)_Player._Position.X - 26, (int)_Player._Position.Y - 64, 50, 32);
+                    return new Rectangle((int)_Player._Position.X - halfWidth , (int)_Player._Position.Y - 64, width, 32);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionLeft)
                 {
-                    return new Rectangle((int)_Player._Position.X - 64, (int)_Player._Position.Y - 26, 32, 50);
+                    return new Rectangle((int)_Player._Position.X - 64, (int)_Player._Position.Y - halfWidth, 32, width);
                 }
                 else if (_Player._Direction == Sprite.Direction.kDirectionRight)
                 {
-                    return new Rectangle((int)_Player._Position.X + 32, (int)_Player._Position.Y - 26, 32, 50);
+                    return new Rectangle((int)_Player._Position.X + 32, (int)_Player._Position.Y - halfWidth, 32, width);
                 }
                 else
                 {
