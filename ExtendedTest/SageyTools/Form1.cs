@@ -78,8 +78,11 @@ namespace SageyTools
             int currentIndex = listBox1.SelectedIndex;
             listBox1.Items.Clear();
 
+            string cd = System.IO.Directory.GetCurrentDirectory();
+            System.IO.Directory.SetCurrentDirectory(@"..\..\..\ExtendedTest\Content\JSON");
+            cd = System.IO.Directory.GetCurrentDirectory();
+            string path = @"ItemList.json";
 
-            string path = @"C:\Users\Richard.Ellzy\Desktop\New folder\Sagey\ExtendedTest\ExtendedTest\Content\JSON\ItemList.json";
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(path))
             {
                 string json = JsonConvert.SerializeObject(ItemList, Formatting.Indented);
@@ -108,8 +111,10 @@ namespace SageyTools
         private void LoadItemStuff()
         {
             listBox1.SelectionMode = SelectionMode.One;
-
-            string path = @"C:\Users\Richard.Ellzy\Desktop\New folder\Sagey\ExtendedTest\ExtendedTest\Content\JSON\ItemList.json";
+            string cd = System.IO.Directory.GetCurrentDirectory();
+                System.IO.Directory.SetCurrentDirectory(@"..\..\..\ExtendedTest\Content\JSON");
+            cd = System.IO.Directory.GetCurrentDirectory();
+            string path = @"ItemList.json";
 
 
             Array values = Enum.GetValues(typeof(Sagey.Enums.ItemID));
@@ -138,7 +143,10 @@ namespace SageyTools
             listBox3.SelectionMode = SelectionMode.One;
 
 
-            string path = @"C:\Users\Richard.Ellzy\Desktop\New folder\Sagey\ExtendedTest\ExtendedTest\Content\JSON\RecipeList.json";
+            string cd = System.IO.Directory.GetCurrentDirectory();
+            System.IO.Directory.SetCurrentDirectory(@"..\..\..\ExtendedTest\Content\JSON");
+            cd = System.IO.Directory.GetCurrentDirectory();
+            string path = @"RecipeList.json";
 
             var file = System.IO.File.ReadAllText(path);
             RecipeList = JsonConvert.DeserializeObject<List<Sagey.Recipe>>(file);
@@ -196,6 +204,7 @@ namespace SageyTools
 
         private void listBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (listBox4.SelectedIndex < 0) return;
             if(ingredientChanged)
             {
                 ingredientChanged = false;
@@ -284,6 +293,37 @@ namespace SageyTools
             RecipeList.Add(newRecipe);
 
             listBox3.SelectedIndex = listBox3.Items.Count - 1;
+        }
+
+        private void btnSaveRecipes_Click(object sender, EventArgs e)
+        {
+
+            int currentIndex = listBox1.SelectedIndex;
+            listBox3.Items.Clear();
+
+            string cd = System.IO.Directory.GetCurrentDirectory();
+            System.IO.Directory.SetCurrentDirectory(@"..\..\..\ExtendedTest\Content\JSON");
+            cd = System.IO.Directory.GetCurrentDirectory();
+            string path = @"RecipeList.json";
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path))
+            {
+                string json = JsonConvert.SerializeObject(RecipeList, Formatting.Indented);
+                file.WriteLine(json);
+            }
+
+            foreach (Sagey.Recipe item in RecipeList)
+            {
+                listBox3.Items.Add(item.Name);
+            }
+            listBox3.SelectedIndex = currentIndex;
+        }
+
+        private void btnDeleteIngredient_Click(object sender, EventArgs e)
+        {
+            RecipeList[listBox3.SelectedIndex].ingredients.RemoveAt(listBox4.SelectedIndex);
+            listBox4.Items.RemoveAt(listBox4.SelectedIndex);
+            listBox4.SelectedIndex = 0;
         }
     }
 

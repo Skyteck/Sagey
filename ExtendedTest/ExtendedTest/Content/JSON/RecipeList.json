@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "Name": "Matches",
     "_HoverText": "Hover Text!",
@@ -15,7 +15,7 @@
       }
     ],
     "outputID": 5,
-    "amount": 2,
+    "amount": 1,
     "CraftingTime": 1.0,
     "MadeOnTag": 5,
     "RecipeTexture": null
@@ -73,6 +73,68 @@
       }
     ],
     "outputID": 6,
+    "amount": 1,
+    "CraftingTime": 1.0,
+    "MadeOnTag": 0,
+    "RecipeTexture": null
+  },
+  {
+    "Name": "Strawberry Dough",
+    "_HoverText": "Hover Text!",
+    "ingredients": [
+      {
+        "_ItemID": 9,
+        "Amount": 1,
+        "Name": "Strawberry"
+      },
+      {
+        "_ItemID": 13,
+        "Amount": 1,
+        "Name": "Flour"
+      },
+      {
+        "_ItemID": 10,
+        "Amount": 1,
+        "Name": "Milk"
+      },
+      {
+        "_ItemID": 21,
+        "Amount": 1,
+        "Name": "Egg"
+      }
+    ],
+    "outputID": 18,
+    "amount": 1,
+    "CraftingTime": 1.0,
+    "MadeOnTag": 0,
+    "RecipeTexture": null
+  },
+  {
+    "Name": "Blueberry Dough",
+    "_HoverText": "Hover Text!",
+    "ingredients": [
+      {
+        "_ItemID": 19,
+        "Amount": 1,
+        "Name": "Blueberry"
+      },
+      {
+        "_ItemID": 13,
+        "Amount": 1,
+        "Name": "Flour"
+      },
+      {
+        "_ItemID": 10,
+        "Amount": 1,
+        "Name": "Milk"
+      },
+      {
+        "_ItemID": 21,
+        "Amount": 1,
+        "Name": "Egg"
+      }
+    ],
+    "outputID": 20,
     "amount": 1,
     "CraftingTime": 1.0,
     "MadeOnTag": 0,

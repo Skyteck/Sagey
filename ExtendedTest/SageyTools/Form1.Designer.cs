@@ -63,6 +63,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnNewRecipe = new System.Windows.Forms.ToolStripButton();
             this.btnSaveRecipes = new System.Windows.Forms.ToolStripButton();
+            this.btnDeleteIngredient = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nSaleValue)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -80,7 +81,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(6, 31);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 277);
+            this.listBox1.Size = new System.Drawing.Size(120, 433);
             this.listBox1.TabIndex = 3;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -160,7 +161,7 @@
             this.listBox2.FormattingEnabled = true;
             this.listBox2.Location = new System.Drawing.Point(340, 31);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(120, 277);
+            this.listBox2.Size = new System.Drawing.Size(120, 433);
             this.listBox2.TabIndex = 14;
             this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             // 
@@ -171,7 +172,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 1);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(657, 499);
+            this.tabControl1.Size = new System.Drawing.Size(516, 499);
             this.tabControl1.TabIndex = 15;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -191,7 +192,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(649, 473);
+            this.tabPage1.Size = new System.Drawing.Size(508, 473);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -203,7 +204,7 @@
             this.BtnSave});
             this.toolStrip2.Location = new System.Drawing.Point(3, 3);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(643, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(502, 25);
             this.toolStrip2.TabIndex = 0;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -229,6 +230,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnDeleteIngredient);
             this.tabPage2.Controls.Add(this.btnAddIngredient);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.numIngredientAmt);
@@ -248,7 +250,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(649, 473);
+            this.tabPage2.Size = new System.Drawing.Size(508, 473);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -398,7 +400,7 @@
             this.btnSaveRecipes});
             this.toolStrip1.Location = new System.Drawing.Point(3, 3);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(643, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(502, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -420,6 +422,17 @@
             this.btnSaveRecipes.Name = "btnSaveRecipes";
             this.btnSaveRecipes.Size = new System.Drawing.Size(23, 22);
             this.btnSaveRecipes.Text = "toolStripButton2";
+            this.btnSaveRecipes.Click += new System.EventHandler(this.btnSaveRecipes_Click);
+            // 
+            // btnDeleteIngredient
+            // 
+            this.btnDeleteIngredient.Location = new System.Drawing.Point(147, 389);
+            this.btnDeleteIngredient.Name = "btnDeleteIngredient";
+            this.btnDeleteIngredient.Size = new System.Drawing.Size(98, 23);
+            this.btnDeleteIngredient.TabIndex = 16;
+            this.btnDeleteIngredient.Text = "Delete Ingredient";
+            this.btnDeleteIngredient.UseVisualStyleBackColor = true;
+            this.btnDeleteIngredient.Click += new System.EventHandler(this.btnDeleteIngredient_Click);
             // 
             // Form1
             // 
@@ -482,6 +495,7 @@
         private System.Windows.Forms.ComboBox cbIngreident;
         private System.Windows.Forms.ListBox listBox4;
         private System.Windows.Forms.Button btnAddIngredient;
+        private System.Windows.Forms.Button btnDeleteIngredient;
     }
 }
 

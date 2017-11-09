@@ -46,7 +46,7 @@
   },
   {
     "_Name": "Strawberry",
-    "_Weight": 2.0,
+    "_Weight": 0.0,
     "_SaleValue": 1,
     "itemtexture": null,
     "_Stackable": true,
@@ -115,5 +115,32 @@
     "_Stackable": false,
     "_Uses": 1,
     "_ID": 18
+  },
+  {
+    "_Name": "Blueberry",
+    "_Weight": 0.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": true,
+    "_Uses": 1,
+    "_ID": 19
+  },
+  {
+    "_Name": "Egg",
+    "_Weight": 0.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": true,
+    "_Uses": 1,
+    "_ID": 21
+  },
+  {
+    "_Name": "Blueberry Dough",
+    "_Weight": 1.0,
+    "_SaleValue": 1,
+    "itemtexture": null,
+    "_Stackable": false,
+    "_Uses": 1,
+    "_ID": 20
   }
 ]
