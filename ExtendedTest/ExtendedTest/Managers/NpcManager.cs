@@ -17,10 +17,12 @@ namespace Sagey.Managers
         public TilemapManager _TilemapManager;
         DialogManager _DialogManager;
         ContentManager _Content;
+        InventoryManager _InventoryManager;
+
         Player thePlayer;
         List<Projectile> _ProjectileList;
 
-        public NPCManager(TilemapManager tMapManager, ContentManager content, Player player, DialogManager dm)
+        public NPCManager(TilemapManager tMapManager, ContentManager content, Player player, DialogManager dm, InventoryManager im)
         {
             _SpriteListActive = new List<NPC>();
             _SpriteListDead = new List<NPC>();
@@ -28,6 +30,7 @@ namespace Sagey.Managers
             _TilemapManager = tMapManager;
             _DialogManager = dm;
             _Content = content;
+            _InventoryManager = im;
             thePlayer = player;
         }
 
@@ -52,6 +55,22 @@ namespace Sagey.Managers
             else if(thing.Type.Equals("Banker"))
             {
                 GameObjects.NPCs.Banker newSprite = new GameObjects.NPCs.Banker(this);
+                newSprite._Position = _TilemapManager.findTile(pos).tileCenter;
+                newSprite.LoadContent("Art/" + thing.Type, _Content);
+                newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);
+                //if (Convert.ToBoolean(thing.Properties["Agressive"]))
+                //{
+                //    //newSprite.AddTarget(thePlayer);
+                //}
+                newSprite._Tag = Sprite.SpriteType.kNPCType;
+                newSprite.Name = thing.Name.ToUpper();
+                newSprite._CurrentState = Sprite.SpriteState.kStateActive;
+                newSprite.parentList = _SpriteListActive;
+                _SpriteListActive.Add(newSprite);
+            }
+            else if (thing.Type.Equals("DairyCow"))
+            {
+                GameObjects.NPCs.DairyCow newSprite = new GameObjects.NPCs.DairyCow(this);
                 newSprite._Position = _TilemapManager.findTile(pos).tileCenter;
                 newSprite.LoadContent("Art/" + thing.Type, _Content);
                 newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);
@@ -143,6 +162,11 @@ namespace Sagey.Managers
         public void PlayDialogue(string msgID)
         {
             _DialogManager.PlayMessage(msgID);
+        }
+
+        public void AddItem(Enums.ItemID itemID, int amt = 1)
+        {
+            _InventoryManager.AddItem(itemID, amt);
         }
     }
 }

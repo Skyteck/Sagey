@@ -74,7 +74,7 @@ namespace Sagey
             _InvenManager = new Managers.InventoryManager(_ItemManager);
             _BankManager = new Managers.BankManager(_ItemManager);
             _MapManager = new Managers.TilemapManager(_NPCManager, _WorldObjectManager);
-            _NPCManager = new Managers.NPCManager(_MapManager,  Content, player, _DialogManager);
+            _NPCManager = new Managers.NPCManager(_MapManager,  Content, player, _DialogManager, _InvenManager);
             _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player);
             _GatherableManager = new Managers.GatherableManager(_MapManager, _InvenManager, Content, player);
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _WorldObjectManager, _NPCManager, Content, _ItemManager);

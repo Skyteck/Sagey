@@ -17,7 +17,7 @@ namespace Sagey.GameObjects.NPCs
         public override void Interact()
         {
             base.Interact();
-            ParentManager.PlayDialogue("OpenBank");
+            _NPCManager.PlayDialogue("OpenBank");
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Sagey
     {
         public List<NPC> parentList;
 
-        protected Managers.NPCManager ParentManager;
+        protected Managers.NPCManager _NPCManager;
         double currentMoveTimer = 6f;
         Vector2 Destination;
         public bool atDestination = true;
@@ -128,7 +128,7 @@ namespace Sagey
 
         public NPC(Managers.NPCManager nm)
         {
-            ParentManager = nm;
+            _NPCManager = nm;
             myPath = new List<Tile>();
             _TargetList = new List<Sprite>();
             Animation idle = new Animation("Idle", 64, 64, 1, 1);
@@ -232,7 +232,7 @@ namespace Sagey
                 {
                     float newX = num.Next((int)this.LeftBoundary + this._Texture.Width / 2, (int)this.RightBoundary - this._Texture.Width / 2);
                     float newY = num.Next((int)this.TopBoundary + this._Texture.Height / 2, (int)this.BottomBoundary - this._Texture.Height / 2);
-                    Tile tileGoal = ParentManager._TilemapManager.findTile(new Vector2(newX, newY));
+                    Tile tileGoal = _NPCManager._TilemapManager.findTile(new Vector2(newX, newY));
                     this.SetDestination(tileGoal.tileCenter);
                 }
 
