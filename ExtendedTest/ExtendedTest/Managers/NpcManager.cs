@@ -18,11 +18,12 @@ namespace Sagey.Managers
         DialogManager _DialogManager;
         ContentManager _Content;
         InventoryManager _InventoryManager;
+        WorldObjectManager _WorldObjectManager;
 
         Player thePlayer;
         List<Projectile> _ProjectileList;
 
-        public NPCManager(TilemapManager tMapManager, ContentManager content, Player player, DialogManager dm, InventoryManager im)
+        public NPCManager(TilemapManager tMapManager, ContentManager content, Player player, DialogManager dm, InventoryManager im, WorldObjectManager wom)
         {
             _SpriteListActive = new List<NPC>();
             _SpriteListDead = new List<NPC>();
@@ -31,6 +32,7 @@ namespace Sagey.Managers
             _DialogManager = dm;
             _Content = content;
             _InventoryManager = im;
+            _WorldObjectManager = wom;
             thePlayer = player;
         }
 
@@ -167,6 +169,12 @@ namespace Sagey.Managers
         public void AddItem(Enums.ItemID itemID, int amt = 1)
         {
             _InventoryManager.AddItem(itemID, amt);
+        }
+
+        internal void NPCDying(NPC npc)
+        {
+            if (npc.ItemDrops.Count <= 0) return;
+            _WorldObjectManager.CreateItem(npc.ItemDrops[0], npc._Position);
         }
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="GameObjects\Gatherables\Gatherable.cs" />
     <Compile Include="GameObjects\Gatherables\EnergyPatch.cs" />
     <Compile Include="GameObjects\Gatherables\Plant.cs" />
+    <Compile Include="GameObjects\Objects\WorldItem.cs" />
     <Compile Include="GameObjects\Recipes\Recipes.cs" />
     <Compile Include="GameObjects\Recipes\Recipe.cs" />
     <Compile Include="GameObjects\NPCs\Monsters\Projectiles\Projectile.cs" />
@@ -165,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtendedTest\GameObjects\NPCs\" />
-    <Folder Include="GameObjects\Objects\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

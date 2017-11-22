@@ -69,6 +69,7 @@ namespace Sagey
         public int defense;
         public int attack;
         public float attackRange = 64f; // tileWidth
+        public List<Enums.ItemID> ItemDrops;
 
         Rectangle huntZone;
 
@@ -133,6 +134,7 @@ namespace Sagey
             _TargetList = new List<Sprite>();
             Animation idle = new Animation("Idle", 64, 64, 1, 1);
             myDialog = new List<string>();
+            ItemDrops = new List<Enums.ItemID>();
             //AddAnimation(idle);
         }
 
@@ -431,8 +433,13 @@ namespace Sagey
             _Invuln = false;
             _Stunned = false;
             _Draw = false;
+            _NPCManager.NPCDying(this);
         }
 
+        private void DropItems()
+        {
+            throw new NotImplementedException();
+        }
 
         public void Tame()
         {

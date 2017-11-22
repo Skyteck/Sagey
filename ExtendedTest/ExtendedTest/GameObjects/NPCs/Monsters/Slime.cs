@@ -20,6 +20,7 @@ namespace Sagey.GameObjects.NPCs.Monsters
             _StartSpeed = 2f;
             _Speed = _StartSpeed;
             Tame();
+            ItemDrops.Add(Enums.ItemID.kItemBucket);
             this._AttackStyle = AttackStyle.kMeleeStyle;
         }
 

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 using Sagey.GameObjects.Gatherables;
+using Sagey.Enums;
+using Sagey.GameObjects.Objects;
 
 namespace Sagey.Managers
 {
@@ -20,12 +22,13 @@ namespace Sagey.Managers
         ContentManager Content;
         TilemapManager _TilemapManager;
         GatherableManager _GatherableManager;
+        ItemManager _ItemManager;
 
         readonly Player thePlayer;
 
         internal List<WorldObject> ObjectList { get => objectList; set => objectList = value; }
 
-        public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player)
+        public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player, ItemManager im)
         {
             ObjectList = new List<WorldObject>();
             objectListInactive = new List<WorldObject>();
@@ -34,6 +37,7 @@ namespace Sagey.Managers
             Content = content;
             thePlayer = player;
             _TilemapManager = mapManager;
+            _ItemManager = im;
         }
 
         public void SetGatherManager(GatherableManager gm)
@@ -144,6 +148,13 @@ namespace Sagey.Managers
             {
                 sprite.Draw(spriteBatch);
             }
+        }
+
+        internal void CreateItem(ItemID itemID, Vector2 position)
+        {
+            WorldItem wi = new WorldItem(_ItemManager.GetItem(itemID), position);
+            ObjectList.Add(wi);
+            
         }
     }
 }
