@@ -45,12 +45,7 @@ namespace Sagey
         {
             base.UpdateDead(gameTime);
         }
-
-        public override void Update(GameTime gt)
-        {
-            base.Update(gt);
-        }
-
+        
         public virtual void DoThing()
         {
 

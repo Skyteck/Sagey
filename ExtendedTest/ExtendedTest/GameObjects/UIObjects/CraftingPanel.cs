@@ -49,11 +49,13 @@ namespace Sagey.GameObjects.UIObjects
 
         public override void ProcessClick(Vector2 pos)
         {
-            foreach (CraftingSlot slot in CraftSlots)
+            List<CraftingSlot> activeSlots = CraftSlots.FindAll(x => x.Active);
+            foreach (CraftingSlot slot in activeSlots)
             {
                 if (slot.MyRect.Contains(pos))
                 {
                     _ChemistryManager.ProcessRecipe(slot.MyRecipe);
+                    break;
                 }
             }
         }
@@ -64,7 +66,10 @@ namespace Sagey.GameObjects.UIObjects
 
 
 
-            if (CraftSlots.Count(x => x.Active == true) <= 0) return;
+            if (CraftSlots.Count(x => x.Active == true) <= 0)
+            {
+                return;
+            }
 
             int rows = 5;
             int columns = 6;

@@ -18,6 +18,8 @@ namespace Sagey.Managers
         List<WorldObject> objectList;
         List<WorldObject> objectListInactive;
         List<WorldObject> detectorList;
+        List<WorldItem> WorldItems;
+
         InventoryManager _InventoryManager;
         ContentManager Content;
         TilemapManager _TilemapManager;
@@ -33,6 +35,7 @@ namespace Sagey.Managers
             ObjectList = new List<WorldObject>();
             objectListInactive = new List<WorldObject>();
             detectorList = new List<WorldObject>();
+            WorldItems = new List<WorldItem>();
             _InventoryManager = invenManager;
             Content = content;
             thePlayer = player;
@@ -90,6 +93,23 @@ namespace Sagey.Managers
             {
                 sprite.Update(gameTime);
             }
+
+            foreach (WorldItem item in WorldItems.FindAll(x=>x._CurrentState == Sprite.SpriteState.kStateActive))
+            {
+                item.Update(gameTime);
+
+
+                if (Vector2.Distance(thePlayer._Position, item._Position) <= 120)
+                {
+                    item.SetTarget(thePlayer);
+                }
+
+                if(item._BoundingBox.Intersects(thePlayer._BoundingBox))
+                {
+                    _InventoryManager.AddItem(item.MyItem._ID);
+                    item.Deactivate();
+                }
+            }
         }
 
         public WorldObject CheckClicks(Vector2 pos)
@@ -144,17 +164,38 @@ namespace Sagey.Managers
         
         public void Draw(SpriteBatch spriteBatch)
         {
+
             foreach(Sprite sprite in ObjectList)
             {
                 sprite.Draw(spriteBatch);
+            }
+
+            foreach(Sprite item in WorldItems.FindAll(x=>x._CurrentState == Sprite.SpriteState.kStateActive))
+            {
+                item.Draw(spriteBatch);
             }
         }
 
         internal void CreateItem(ItemID itemID, Vector2 position)
         {
             WorldItem wi = new WorldItem(_ItemManager.GetItem(itemID), position);
-            ObjectList.Add(wi);
+            WorldItems.Add(wi);
             
         }
+
+        //public List<WorldItem> GetGroundItems(Vector2 pos, int range)
+        //{
+        //    List<WorldItem> itemsInRange = new List<WorldItem>();
+
+        //    foreach(WorldItem item in WorldItems)
+        //    {
+        //        if(Vector2.Distance(pos, item._Position) <= range)
+        //        {
+        //            itemsInRange.Add(item);
+        //        }
+        //    }
+
+        //    return itemsInRange;
+        //}
     }
 }
