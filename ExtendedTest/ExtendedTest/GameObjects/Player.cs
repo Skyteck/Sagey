@@ -151,10 +151,10 @@ namespace Sagey
                 _Rotation = 0;
                 _PlayerAttacking = false;
             }
-            if(comboNum == 5)
-            {
-                this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
-            }
+            //if(comboNum == 5)
+            //{
+            //    this._Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 30;
+            //}
 
             if(sword._CurrentState == SpriteState.kStateActive)
             {
