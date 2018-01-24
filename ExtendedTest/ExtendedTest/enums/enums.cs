@@ -53,4 +53,10 @@ namespace Sagey.Enums
         kItemBlueberryDough,
         kItemEggs
     }
+
+    public enum EventTypes
+    {
+        kEventNPCDying = 1,
+        kEventNPCInteract
+    }
 }

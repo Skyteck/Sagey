@@ -1,0 +1,16 @@
+﻿[
+  {
+    "Objectives": [
+      {
+        "Name": "Milk Cow",
+        "Completed": false,
+        "lfEvent": 2,
+        "EventID": "CowMilk"
+      }
+    ],
+    "QuestID": "CowMilkQuest",
+    "QuestName": "Cow milking quest",
+    "Completed": false,
+    "Active": true
+  }
+]

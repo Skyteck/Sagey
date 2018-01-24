@@ -25,12 +25,13 @@ namespace Sagey.Managers
         TilemapManager _TilemapManager;
         GatherableManager _GatherableManager;
         ItemManager _ItemManager;
+        private EventManager _EventManager;
 
         readonly Player thePlayer;
 
         internal List<WorldObject> ObjectList { get => objectList; set => objectList = value; }
 
-        public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player, ItemManager im)
+        public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player, ItemManager im, EventManager em)
         {
             ObjectList = new List<WorldObject>();
             objectListInactive = new List<WorldObject>();
@@ -41,6 +42,7 @@ namespace Sagey.Managers
             thePlayer = player;
             _TilemapManager = mapManager;
             _ItemManager = im;
+            _EventManager = em;
         }
 
         public void SetGatherManager(GatherableManager gm)

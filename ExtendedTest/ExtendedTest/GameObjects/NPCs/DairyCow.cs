@@ -17,6 +17,7 @@ namespace Sagey.GameObjects.NPCs
         public override void Interact()
         {
             base.Interact();
+            _NPCManager.RaiseEvent(Enums.EventTypes.kEventNPCInteract, "CowMilk");
             _NPCManager.AddItem(Enums.ItemID.kItemMilk, 1);
         }
     }

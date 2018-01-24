@@ -42,7 +42,8 @@ namespace Sagey
         Managers.BankManager _BankManager;
         Managers.GatherableManager _GatherableManager;
         Managers.DialogManager _DialogManager;
-
+        QuestManager _QuestManager;
+        EventManager _EventManager;
         
         //UI        
         Vector2 mouseClickPos;
@@ -50,12 +51,26 @@ namespace Sagey
         Texture2D _SelectTex;
         Sprite _SelectedSprite = null;
         bool BankMode = false;
+
+
+        const int TargetWidth = 480;
+        const int TargetHeight = 270;
+        Matrix Scale;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
+            this.IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
+
+            graphics.PreferredBackBufferWidth = 1920;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 1080;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
+
         }
 
         /// <summary>
@@ -70,18 +85,19 @@ namespace Sagey
             player = new Player();
             _UIManager = new Managers.UIManager();
             _DialogManager = new Managers.DialogManager();
+            _QuestManager = new QuestManager();
+            _EventManager = new EventManager(_QuestManager);
             _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(_ItemManager);
             _BankManager = new Managers.BankManager(_ItemManager);
             _MapManager = new Managers.TilemapManager(_NPCManager, _WorldObjectManager);
-            _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player, _ItemManager);
-            _NPCManager = new Managers.NPCManager(_MapManager, Content, player, _DialogManager, _InvenManager, _WorldObjectManager);
+            _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player, _ItemManager, _EventManager);
+            _NPCManager = new Managers.NPCManager(_MapManager, Content, player, _DialogManager, _InvenManager, _WorldObjectManager, _EventManager);
             _GatherableManager = new Managers.GatherableManager(_MapManager, _InvenManager, Content, player);
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _WorldObjectManager, _NPCManager, Content, _ItemManager);
 
             _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _WorldObjectManager, _NPCManager, _MapManager, _GatherableManager);
             _WorldObjectManager.SetGatherManager(_GatherableManager);
-            camera = new Camera(GraphicsDevice);
             kbHandler = new KbHandler();
 
             _SelectedSprite = new Sprite();
@@ -104,6 +120,13 @@ namespace Sagey
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+
+            camera = new Camera(GraphicsDevice);
+            
+            float scaleX = graphics.PreferredBackBufferWidth / TargetWidth;
+            float scaleY = graphics.PreferredBackBufferHeight / TargetHeight;
+            Scale = Matrix.CreateScale(new Vector3(scaleX, scaleY, 1));
 
             LoadPlayerContent();
             LoadGUI();
@@ -200,6 +223,8 @@ namespace Sagey
                 _BankManager.AddItem(Enums.ItemID.kItemLog, 10);
                 _BankManager.AddItem(Enums.ItemID.kItemFish, 3);
             }
+
+            _QuestManager.GenerateQuest();
             //List<Dialog> dList = new List<Dialog>();
 
             //Dialog d1 = new Dialog();
@@ -234,7 +259,7 @@ namespace Sagey
 
             
 
-            //string text = JsonConvert.SerializeObject(rList, Newtonsoft.Json.Formatting.Indented);
+            string text = JsonConvert.SerializeObject(_QuestManager.GetActiveQuests(), Newtonsoft.Json.Formatting.Indented);
 
             path = Content.RootDirectory + @"\JSON\Dialog_EN_US.json";
             _DialogManager.LoadDialog(path);
@@ -391,11 +416,10 @@ namespace Sagey
                 
                 base.Update(gameTime);
 
-                //Show FPS
-                if((1 / gameTime.ElapsedGameTime.TotalSeconds) <= 59)
-                {
-                    Console.WriteLine("BAD FPS!!!!!!!!!!");
-                }
+                //Console.WriteLine(frameRate);
+
+
+
             }
         }
 
@@ -546,7 +570,7 @@ namespace Sagey
 
             //mouseCursor.Draw(spriteBatch);
             DrawSelectRect(spriteBatch);
-            spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
+            //spriteBatch.DrawString(font, kbHandler.Input, camera.ToWorld(new Vector2(100, 100)), Color.Black);
             //spriteBatch.DrawString(font, player._HP.ToString(), camera.ToWorld(new Vector2(200, 200)), Color.White);
             
             base.Draw(gameTime);
@@ -554,6 +578,10 @@ namespace Sagey
             spriteBatch.Begin();
             _UIManager.Draw(spriteBatch);
             spriteBatch.DrawString(font, _PlayerManager.currentInteracttext, new Vector2(100, 100), Color.White);
+
+
+            var frameRate = 1 / gameTime.ElapsedGameTime.TotalSeconds;
+            spriteBatch.DrawString(font, frameRate.ToString(), new Vector2(100, 400), Color.White);
             spriteBatch.End();
 
         }

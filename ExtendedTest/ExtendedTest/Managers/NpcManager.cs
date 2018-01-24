@@ -19,11 +19,12 @@ namespace Sagey.Managers
         ContentManager _Content;
         InventoryManager _InventoryManager;
         WorldObjectManager _WorldObjectManager;
+        EventManager _EventManager;
 
         Player thePlayer;
         List<Projectile> _ProjectileList;
 
-        public NPCManager(TilemapManager tMapManager, ContentManager content, Player player, DialogManager dm, InventoryManager im, WorldObjectManager wom)
+        public NPCManager(TilemapManager tMapManager, ContentManager content, Player player, DialogManager dm, InventoryManager im, WorldObjectManager wom, EventManager em)
         {
             _SpriteListActive = new List<NPC>();
             _SpriteListDead = new List<NPC>();
@@ -33,6 +34,7 @@ namespace Sagey.Managers
             _Content = content;
             _InventoryManager = im;
             _WorldObjectManager = wom;
+            _EventManager = em;
             thePlayer = player;
         }
 
@@ -174,7 +176,13 @@ namespace Sagey.Managers
         internal void NPCDying(NPC npc)
         {
             if (npc.ItemDrops.Count <= 0) return;
+            RaiseEvent(Enums.EventTypes.kEventNPCDying, npc.Name + "Killed");
             _WorldObjectManager.CreateItem(npc.ItemDrops[0], npc._Position);
+        }
+
+        public void RaiseEvent(Enums.EventTypes eID, string name)
+        {
+            _EventManager.ProcessEvent(eID, name);
         }
     }
 }
