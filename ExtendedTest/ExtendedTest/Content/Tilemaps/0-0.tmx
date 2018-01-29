@@ -128,60 +128,60 @@
   <object id="82" name="Dirt" type="Dirt" x="256" y="1408" width="64" height="64"/>
  </objectgroup>
  <objectgroup name="NPC Layer">
-  <object id="37" name="Slime2" type="Slime" x="768" y="64" width="384" height="384">
+  <object id="37" name="Slime" type="Slime" x="768" y="64" width="384" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
   <object id="42" name="Banker1" type="Banker" x="832" y="704" width="128" height="128"/>
-  <object id="54" name="Slime3" type="Slime" x="1152" y="576" width="448" height="384">
+  <object id="54" name="Slime" type="Slime" x="1152" y="576" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="55" name="Slime3" type="Slime" x="1152" y="352" width="448" height="384">
+  <object id="55" name="Slime" type="Slime" x="1152" y="352" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="56" name="Slime3" type="Slime" x="1152" y="288" width="448" height="384">
+  <object id="56" name="Slime" type="Slime" x="1152" y="288" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="57" name="Slime3" type="Slime" x="1152" y="160" width="448" height="384">
+  <object id="57" name="Slime" type="Slime" x="1152" y="160" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="58" name="Slime3" type="Slime" x="1152" y="32" width="448" height="384">
+  <object id="58" name="Slime" type="Slime" x="1152" y="32" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="59" name="Slime3" type="Slime" x="736" y="176" width="448" height="384">
+  <object id="59" name="Slime" type="Slime" x="736" y="176" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="61" name="Slime3" type="Slime" x="928" y="-80" width="448" height="384">
+  <object id="61" name="Slime" type="Slime" x="928" y="-80" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="63" name="Slime3" type="Slime" x="1008" y="-48" width="448" height="384">
+  <object id="63" name="Slime" type="Slime" x="1008" y="-48" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="64" name="Slime3" type="Slime" x="928" y="160" width="448" height="384">
+  <object id="64" name="Slime" type="Slime" x="928" y="160" width="448" height="384">
    <properties>
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="83" name="DairyCow1" type="DairyCow" x="640" y="1024" width="64" height="64">
+  <object id="83" name="DairyCow" type="DairyCow" x="640" y="1024" width="64" height="64">
    <properties>
-    <property name="Agressive" type="bool" value="true"/>
+    <property name="Agressive" type="bool" value="false"/>
    </properties>
   </object>
  </objectgroup>

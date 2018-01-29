@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CollisionDetection2D.cs" />
     <Compile Include="Commander.cs" />
+    <Compile Include="enums\Delegates.cs" />
     <Compile Include="enums\enums.cs" />
     <Compile Include="FrameCounter.cs" />
     <Compile Include="GameObjects\NPCs\Banker.cs" />

@@ -8,16 +8,39 @@ namespace Sagey.Managers
 {
     public class EventManager
     {
+        List<EventInfo> CurrentEvents;
         private QuestManager _QuestManager;
+        private NPCManager _NPCManager;
 
-        public EventManager(QuestManager questManager)
+        public EventManager(QuestManager questManager, NPCManager nm)
         {
             _QuestManager = questManager;
+            _NPCManager = nm;
+            CurrentEvents = new List<EventInfo>();
+
+            _NPCManager.NPCDyingEvent += HandleNPCDying;
         }
 
-        public void ProcessEvent(Enums.EventTypes TheEvent , String eventName)
+        public void ProcessEvents()
         {
-            Console.WriteLine(eventName);
+            foreach(EventInfo EI in CurrentEvents)
+            {
+                bool eventProcessed = false;
+                _QuestManager.CheckEvent(EI);
+            }
+
+            CurrentEvents.Clear();
         }
+
+        private void HandleNPCDying(NPC theNPC)
+        {
+            CurrentEvents.Add(new EventInfo { EventType = Enums.EventTypes.kEventNPCDying, EventTitle = theNPC.Name });
+        }
+    }
+
+    public class EventInfo
+    {
+        public Enums.EventTypes EventType;
+        public string EventTitle;
     }
 }

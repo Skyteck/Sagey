@@ -62,7 +62,7 @@ namespace Sagey.Managers
         {
             foreach (Recipe recipe in RecipeList)
             {
-                recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.outputID)._Name+"Item");
+                recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.outputID)._Name.Replace(" ", "") +"Item");
             }
         }
 
@@ -145,7 +145,7 @@ namespace Sagey.Managers
             selectedItem = null;
         }
 
-        public void OnRecipesChanged()
+        private void OnRecipesChanged()
         {
             RecipesChanged?.Invoke(this, EventArgs.Empty);
         }

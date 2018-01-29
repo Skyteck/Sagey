@@ -37,6 +37,10 @@ namespace Sagey.Managers
 
         internal Texture2D GetTexture(Item item, bool selected = false)
         {
+            if(item.itemtexture != null)
+            {
+                return item.itemtexture;
+            }
             return GetTexture(item._Name + "Item", selected);
         }
 
