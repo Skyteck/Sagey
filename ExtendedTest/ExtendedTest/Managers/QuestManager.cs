@@ -48,7 +48,7 @@ namespace Sagey.Managers
             List<Quest> ActiveQuests = Quests.FindAll(x => x.Active = true);
             foreach(Quest q in ActiveQuests)
             {
-                List<QuestObjective> currentObjectives = q.Objectives.FindAll(x => x.Active == true);
+                List<QuestObjective> currentObjectives = q.Objectives.FindAll(x => x.Active == true && x.Completed == false);
                 foreach(QuestObjective qo in currentObjectives)
                 {
                     if(eI.EventType == qo.ObjectiveInfo.EventType)

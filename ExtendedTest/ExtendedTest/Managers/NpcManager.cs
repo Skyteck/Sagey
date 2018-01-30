@@ -13,6 +13,7 @@ namespace Sagey.Managers
     public class NPCManager
     {
         public event Delegates.NPCDyingDelegate NPCDyingEvent;
+        public event Delegates.NPCInteractDelegate NPCInteractEvent;
 
         public List<NPC> _SpriteListActive;
         public List<NPC> _SpriteListDead;
@@ -180,8 +181,14 @@ namespace Sagey.Managers
             _WorldObjectManager.CreateItem(npc.ItemDrops[0], npc._Position);
         }
 
-        public void RaiseEvent(Enums.EventTypes eID, string name)
+        public void NPCInteract(Enums.InteractType interactType, string interactID)
         {
+            OnNPCInteract(interactType, interactID);
+        }
+
+        public void OnNPCInteract(Enums.InteractType interactType, string interactID)
+        {
+            NPCInteractEvent?.Invoke(interactType, interactID);
             //_EventManager.ProcessEvent(eID, name);
         }
 

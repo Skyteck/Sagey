@@ -59,4 +59,11 @@ namespace Sagey.Enums
         kEventNPCDying = 1,
         kEventNPCInteract
     }
+
+    public enum InteractType
+    {
+        kInteractTalk = 1,
+        kInteractGiveItem,
+        kInteractTakeItem
+    }
 }

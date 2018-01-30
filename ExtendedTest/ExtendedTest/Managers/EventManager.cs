@@ -19,6 +19,7 @@ namespace Sagey.Managers
             CurrentEvents = new List<EventInfo>();
 
             _NPCManager.NPCDyingEvent += HandleNPCDying;
+            _NPCManager.NPCInteractEvent += HandleNPCInteract;
         }
 
         public void ProcessEvents()
@@ -35,6 +36,11 @@ namespace Sagey.Managers
         private void HandleNPCDying(NPC theNPC)
         {
             CurrentEvents.Add(new EventInfo { EventType = Enums.EventTypes.kEventNPCDying, EventTitle = theNPC.Name });
+        }
+
+        private void HandleNPCInteract(Enums.InteractType interactType, string InteractID)
+        {
+            CurrentEvents.Add(new EventInfo { EventType = Enums.EventTypes.kEventNPCInteract, EventTitle = InteractID });
         }
     }
 
