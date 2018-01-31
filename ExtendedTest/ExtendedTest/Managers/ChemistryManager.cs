@@ -11,7 +11,7 @@ namespace Sagey.Managers
 {
     public class ChemistryManager
     {
-
+        public event Delegates.GameEvent ItemCraftedEvent;
         public event EventHandler RecipesChanged;
 
         InventoryManager _InvenManager;
@@ -64,6 +64,11 @@ namespace Sagey.Managers
             {
                 recipe.RecipeTexture = _ItemManager.GetTexture(_ItemManager.GetItem(recipe.outputID)._Name.Replace(" ", "") +"Item");
             }
+        }
+
+        public void AttachEvents(EventManager em)
+        {
+            ItemCraftedEvent += em.HandleEvent;
         }
 
         public void CheckRecipes()
@@ -121,6 +126,7 @@ namespace Sagey.Managers
                     _InvenManager.RemoveItem(slot._ItemID, slot.Amount);                    
                 }
                 _InvenManager.AddItem(recipe.outputID, recipe.amount);
+                OnItemCrafted(recipe.Name);
                 this.CheckRecipes();
             }
             else
@@ -148,6 +154,11 @@ namespace Sagey.Managers
         private void OnRecipesChanged()
         {
             RecipesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnItemCrafted(string itemName)
+        {
+            ItemCraftedEvent?.Invoke(Enums.EventTypes.kEventItemCrafted, itemName);
         }
     }
 }

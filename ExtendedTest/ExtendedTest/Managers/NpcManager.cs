@@ -12,9 +12,7 @@ namespace Sagey.Managers
 {
     public class NPCManager
     {
-        public event Delegates.NPCDyingDelegate NPCDyingEvent;
-        public event Delegates.NPCInteractDelegate NPCInteractEvent;
-
+        public event Delegates.GameEvent NPCEvent;
         public List<NPC> _SpriteListActive;
         public List<NPC> _SpriteListDead;
         public TilemapManager _TilemapManager;
@@ -37,6 +35,12 @@ namespace Sagey.Managers
             _InventoryManager = im;
             _WorldObjectManager = wom;
             thePlayer = player;
+        }
+
+        public void AttachEvents(EventManager em)
+        {
+            NPCEvent += em.HandleEvent;
+
         }
 
         public void CreateNPC(TmxObject thing, Vector2 pos)
@@ -181,20 +185,20 @@ namespace Sagey.Managers
             _WorldObjectManager.CreateItem(npc.ItemDrops[0], npc._Position);
         }
 
-        public void NPCInteract(Enums.InteractType interactType, string interactID)
+        public void NPCInteract(Enums.EventTypes interactType, string interactID)
         {
             OnNPCInteract(interactType, interactID);
         }
 
-        public void OnNPCInteract(Enums.InteractType interactType, string interactID)
+        public void OnNPCInteract(Enums.EventTypes interactType, string interactID)
         {
-            NPCInteractEvent?.Invoke(interactType, interactID);
-            //_EventManager.ProcessEvent(eID, name);
+            NPCEvent?.Invoke(Enums.EventTypes.kEventNPCInteract, interactID);
         }
 
         private void OnNPCDying(NPC theNPC)
         {
-            NPCDyingEvent?.Invoke(theNPC);
+            //NPCDyingEvent?.Invoke(theNPC);
+            NPCEvent?.Invoke(Enums.EventTypes.kEventNPCDying, theNPC.Name);
         }
     }
 }

@@ -20,8 +20,8 @@ namespace Sagey.Managers
         public void GenerateQuest()
         {
             Quest nq = new Quest();
-            nq.QuestName = "Cow milking quest";
-            nq.QuestID = "CowMilkQuest";
+            nq.QuestName = "My Test Quest";
+            nq.QuestID = "TestQuest";
 
             QuestObjective QO = new QuestObjective();
             QO.Name = "Milk Cow";
@@ -57,12 +57,18 @@ namespace Sagey.Managers
                         {
 
                             qo.currentProgress++;
-                            Console.WriteLine("Objective: " + qo.Name + " Progressed.");
+                            Console.WriteLine("Objective: " + qo.Name + " progressed.");
                             Console.WriteLine("Objective: " + qo.Name + " " + (qo.Amount - qo.currentProgress).ToString() + " to go.");
                             if (qo.currentProgress >= qo.Amount)
                             {
                                 qo.Completed = true;
-                                Console.WriteLine("Objective: " + qo.Name + " Completed");
+                                Console.WriteLine("Objective: " + qo.Name + " completed.");
+                                if(currentObjectives.Count == currentObjectives.FindAll(x=>x.Completed == true).Count)
+                                {
+                                    q.Completed = true;
+                                    q.Active = false;
+                                    Console.WriteLine("Quest: " + q.QuestName + " complete!");
+                                }
                             }
                         }
                     }

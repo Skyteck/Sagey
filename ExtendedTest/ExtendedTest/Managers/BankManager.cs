@@ -11,6 +11,9 @@ namespace Sagey.Managers
 {
     public class BankManager
     {
+        public event Delegates.GameEvent ItemBankedEvent;
+        public event Delegates.GameEvent ItemRemovedEvent;
+
         public ItemManager _ItemManager;
         public List<ItemSlot> itemSlots;
         public Item _SelectedItem;
@@ -39,6 +42,7 @@ namespace Sagey.Managers
                 return;
             }
 
+
             ItemSlot itemSlot = itemSlots.Find(x => x.ItemInSlot._ID == itemToAdd._ID);
             if (itemSlot != null) //All items stack in the bank. Is there a slot for this one?
             {
@@ -56,6 +60,7 @@ namespace Sagey.Managers
                     itemSlot.ItemInSlot = itemToAdd;
                     itemSlot.Amount = amount;
                     itemSlots.Add(itemSlot);
+                    OnItemBanked(itemToAdd._Name);
 
                 }
                 else
@@ -107,7 +112,7 @@ namespace Sagey.Managers
 
         }
 
-        internal void RemoveItem(string name, int amount)
+        internal void RemoveItem(string name, int amount = 1)
         {
             List<ItemSlot> itemSlot = itemSlots.FindAll(x => x.ItemInSlot._Name == name);
 
@@ -123,6 +128,7 @@ namespace Sagey.Managers
                 {
                     slot.Amount -= Amount;
                     numberRemoved = Amount;
+                    OnItemRemoved(slot.ItemInSlot._Name);
                     if (slot.Amount <= 0)
                     {
                         itemSlots.Remove(slot);
@@ -149,6 +155,22 @@ namespace Sagey.Managers
                 items.Add(thing);
             }
             return items;
+        }
+        
+        public void AttachEvents(EventManager em)
+        {
+            ItemBankedEvent += em.HandleEvent;
+            ItemRemovedEvent += em.HandleEvent;
+        }
+
+        private void OnItemBanked(string itemName)
+        {
+            ItemBankedEvent?.Invoke(Enums.EventTypes.kEventItemBanked, itemName);
+        }
+
+        private void OnItemRemoved(string itemName)
+        {
+            ItemRemovedEvent?.Invoke(Enums.EventTypes.kEventItemRemoved, itemName);
         }
     }
 }

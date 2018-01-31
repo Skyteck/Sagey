@@ -57,7 +57,12 @@ namespace Sagey.Enums
     public enum EventTypes
     {
         kEventNPCDying = 1,
-        kEventNPCInteract
+        kEventNPCInteract,
+        kEventItemGathered,
+        kEventItemCrafted,
+        kEventItemPickedUp,
+        kEventItemRemoved,
+        kEventItemBanked
     }
 
     public enum InteractType

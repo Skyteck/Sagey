@@ -3,45 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sagey.Enums;
 
 namespace Sagey.Managers
 {
     public class EventManager
     {
         List<EventInfo> CurrentEvents;
-        private QuestManager _QuestManager;
-        private NPCManager _NPCManager;
+        List<EventInfo> PastEvents;
 
-        public EventManager(QuestManager questManager, NPCManager nm)
+        private QuestManager _QuestManager;
+
+        public EventManager(QuestManager questManager)
         {
             _QuestManager = questManager;
-            _NPCManager = nm;
             CurrentEvents = new List<EventInfo>();
-
-            _NPCManager.NPCDyingEvent += HandleNPCDying;
-            _NPCManager.NPCInteractEvent += HandleNPCInteract;
+            PastEvents = new List<EventInfo>();
+            
         }
 
         public void ProcessEvents()
         {
             foreach(EventInfo EI in CurrentEvents)
             {
-                bool eventProcessed = false;
                 _QuestManager.CheckEvent(EI);
             }
 
+            PastEvents.AddRange(CurrentEvents);
             CurrentEvents.Clear();
         }
 
-        private void HandleNPCDying(NPC theNPC)
+        public void HandleEvent(EventTypes eventType, string eventID)
         {
-            CurrentEvents.Add(new EventInfo { EventType = Enums.EventTypes.kEventNPCDying, EventTitle = theNPC.Name });
+            CurrentEvents.Add(new EventInfo { EventType = eventType, EventTitle = eventID });
         }
 
-        private void HandleNPCInteract(Enums.InteractType interactType, string InteractID)
-        {
-            CurrentEvents.Add(new EventInfo { EventType = Enums.EventTypes.kEventNPCInteract, EventTitle = InteractID });
-        }
     }
 
     public class EventInfo

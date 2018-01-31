@@ -86,15 +86,15 @@ namespace Sagey
             _UIManager = new Managers.UIManager();
             _DialogManager = new Managers.DialogManager();
             _QuestManager = new QuestManager();
+            _EventManager = new EventManager(_QuestManager);
             _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(_ItemManager);
             _BankManager = new Managers.BankManager(_ItemManager);
             _MapManager = new Managers.TilemapManager(_NPCManager, _WorldObjectManager);
-            _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player, _ItemManager, _EventManager);
+            _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player, _ItemManager);
             _NPCManager = new Managers.NPCManager(_MapManager, Content, player, _DialogManager, _InvenManager, _WorldObjectManager);
             _GatherableManager = new Managers.GatherableManager(_MapManager, _InvenManager, Content, player);
             _ChemistryManager = new Managers.ChemistryManager(_InvenManager, _WorldObjectManager, _NPCManager, Content, _ItemManager);
-            _EventManager = new EventManager(_QuestManager, _NPCManager);
 
             _PlayerManager = new Managers.PlayerManager(player, _InvenManager, _WorldObjectManager, _NPCManager, _MapManager, _GatherableManager);
             _WorldObjectManager.SetGatherManager(_GatherableManager);
@@ -109,6 +109,12 @@ namespace Sagey
             _DialogManager.BankOpened += HandleBankOpened;
             _PlayerManager.BankOpened += HandleBankOpened;
             _PlayerManager.PlayerMoved += HandlePlayerMoved;
+
+            _BankManager.AttachEvents(_EventManager);
+            _NPCManager.AttachEvents(_EventManager);
+            _ChemistryManager.AttachEvents(_EventManager);
+            _WorldObjectManager.AttachEvents(_EventManager);
+            _GatherableManager.AttachEvents(_EventManager);
         }
 
 
@@ -289,7 +295,7 @@ namespace Sagey
             inventoryBG._UIManager = _UIManager;
             _UIManager.UIPanels.Add(inventoryBG);
 
-            _UIManager.TogglePanel("Inventory");
+            //_UIManager.TogglePanel("Inventory");
 
             GameObjects.UIObjects.CraftingPanel craftingPanel = new GameObjects.UIObjects.CraftingPanel(_ChemistryManager);
             craftingPanel.LoadContent("Art/BlackTexture", Content);
@@ -391,7 +397,7 @@ namespace Sagey
 
                 if(InputHelper.IsKeyPressed(Keys.J))
                 {
-                    //_DialogManager.PlayMessage("OpenBank");
+                    _BankManager.AddItem(Enums.ItemID.kItemBucket);
                 }
 
                 //if (typingMode && !kbHandler.typingMode) //ugly, but should show that input mode ended...?
@@ -521,22 +527,22 @@ namespace Sagey
             //    //_GatherableManager.CreatePlant(GameObjects.Gatherables.Plant.PlantType.kStrawBerryType, new Vector2(0,0));
             //}
 
-            if (InputHelper.MouseScrolledUp)
-            {
-                camera.Scale += 0.1f;
-                if (camera.Scale > 2f)
-                {
-                    camera.Scale = 2f;
-                }
-            }
-            else if (InputHelper.MouseScrolledDown)
-            {
-                camera.Scale -= 0.1f;
-                if (camera.Scale < 0.6f)
-                {
-                    camera.Scale = 0.6f;
-                }
-            }
+            //if (InputHelper.MouseScrolledUp)
+            //{
+            //    camera.Scale += 0.1f;
+            //    if (camera.Scale > 2f)
+            //    {
+            //        camera.Scale = 2f;
+            //    }
+            //}
+            //else if (InputHelper.MouseScrolledDown)
+            //{
+            //    camera.Scale -= 0.1f;
+            //    if (camera.Scale < 0.6f)
+            //    {
+            //        camera.Scale = 0.6f;
+            //    }
+            //}
             
 
         }
@@ -556,6 +562,8 @@ namespace Sagey
         {
             // TODO: Add your drawing code here
             GraphicsDevice.Clear(Color.Black);
+
+            //http://www.david-amador.com/2009/10/xna-camera-2d-with-zoom-and-rotation/
             spriteBatch.Begin(camera);
 
             _MapManager.Draw(spriteBatch);

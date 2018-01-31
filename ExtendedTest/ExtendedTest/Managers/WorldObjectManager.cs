@@ -15,6 +15,8 @@ namespace Sagey.Managers
 {
     public class WorldObjectManager
     {
+        public event Delegates.GameEvent ItemPickedUpEvent;
+
         List<WorldObject> objectList;
         List<WorldObject> objectListInactive;
         List<WorldObject> detectorList;
@@ -25,13 +27,12 @@ namespace Sagey.Managers
         TilemapManager _TilemapManager;
         GatherableManager _GatherableManager;
         ItemManager _ItemManager;
-        private EventManager _EventManager;
 
         readonly Player thePlayer;
 
         internal List<WorldObject> ObjectList { get => objectList; set => objectList = value; }
 
-        public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player, ItemManager im, EventManager em)
+        public WorldObjectManager(TilemapManager mapManager,  InventoryManager invenManager, ContentManager content, Player player, ItemManager im)
         {
             ObjectList = new List<WorldObject>();
             objectListInactive = new List<WorldObject>();
@@ -42,12 +43,16 @@ namespace Sagey.Managers
             thePlayer = player;
             _TilemapManager = mapManager;
             _ItemManager = im;
-            _EventManager = em;
         }
 
         public void SetGatherManager(GatherableManager gm)
         {
             _GatherableManager = gm;
+        }
+
+        public void AttachEvents(EventManager em)
+        {
+            ItemPickedUpEvent += em.HandleEvent;
         }
 
         public void CreateObject(TmxObject thing, Vector2 pos)
@@ -109,6 +114,7 @@ namespace Sagey.Managers
                 if(item._BoundingBox.Intersects(thePlayer._BoundingBox))
                 {
                     _InventoryManager.AddItem(item.MyItem._ID);
+                    OnItemPickedUp(item.MyItem._Name);
                     item.Deactivate();
                 }
             }
@@ -183,6 +189,11 @@ namespace Sagey.Managers
             WorldItem wi = new WorldItem(_ItemManager.GetItem(itemID), position);
             WorldItems.Add(wi);
             
+        }
+
+        private void OnItemPickedUp(string itemName)
+        {
+            ItemPickedUpEvent?.Invoke(EventTypes.kEventItemPickedUp, itemName);
         }
 
         //public List<WorldItem> GetGroundItems(Vector2 pos, int range)

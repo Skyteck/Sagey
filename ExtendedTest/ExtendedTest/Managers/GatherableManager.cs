@@ -15,6 +15,8 @@ namespace Sagey.Managers
 {
     public class GatherableManager
     {
+        public event Delegates.GameEvent ItemGatheredEvent;
+
         List<Gatherable> _GatherableListActive;
         List<Gatherable> _GatherableListInActive;
         InventoryManager _InventoryManager;
@@ -33,6 +35,11 @@ namespace Sagey.Managers
             Content = content;
             thePlayer = player;
             _TilemapManager = mapManager;
+        }
+
+        public void AttachEvents(EventManager em)
+        {
+            ItemGatheredEvent += em.HandleEvent;
         }
 
         public void LoadContent(ContentManager content)
@@ -156,13 +163,20 @@ namespace Sagey.Managers
             Random ran = new Random();
             thing.GetHit();
             if(thing._HP <= 0)
-            {                
+            {
+                GameObjects.Items.ItemBundle item = thing.GetGathered();
+
                 return thing.GetGathered();
             }
             else
             {
                 return new GameObjects.Items.ItemBundle();
             }
+        }
+
+        private void OnItemGathered(string itemName)
+        {
+            ItemGatheredEvent?.Invoke(Enums.EventTypes.kEventItemGathered, itemName);
         }
 
         public Plant FindPlant(Plant.PlantType type)
