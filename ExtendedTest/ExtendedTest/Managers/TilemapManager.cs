@@ -13,14 +13,10 @@ namespace Sagey.Managers
     public class TilemapManager
     {
         List<TileMap> mapList;
-        NPCManager _NpcManager;
         public TileMap ActiveMap;
-        WorldObjectManager _WorldObjectManager;
-        public TilemapManager(NPCManager npcManager, WorldObjectManager _GameObjectmanager)
+        public TilemapManager()
         {
             mapList = new List<TileMap>();
-            _NpcManager = npcManager;
-            _WorldObjectManager = _GameObjectmanager;
         }
 
         public void AddMap(TileMap newMap)

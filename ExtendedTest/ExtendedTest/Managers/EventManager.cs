@@ -26,6 +26,7 @@ namespace Sagey.Managers
         {
             foreach(EventInfo EI in CurrentEvents)
             {
+                Console.WriteLine(EI.EventTitle);
                 _QuestManager.CheckEvent(EI);
             }
 

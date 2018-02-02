@@ -41,7 +41,7 @@
     "options": [
       {
         "optiontext": "Sure! I've got some stuff to stash.",
-        "Command":  "Open Bank"
+        "Command": "Open Bank"
       },
       {
         "NextMsgID": "BankNo",
@@ -53,6 +53,48 @@
     "ID": "BankNo",
     "textList": [
       "Understandable. Have a slimy day!"
+    ],
+    "options": []
+  },
+  {
+    "ID": "TestQuest",
+    "textList": [
+      "Hi!",
+      "I need you to milk a cow and kill 5 slimes. Okay?"
+    ],
+    "options": [
+      {
+        "optiontext": "Sure! I was bored anyway.",
+        "Command": "Start Quest: TestQuest"
+      },
+      {
+        "NextMsgID": "QuestNo",
+        "optiontext": "Maybe later."
+      }
+    ]
+  },
+  {
+    "ID": "QuestNo",
+    "textList": [
+      "Understandable. Have a slimy day!"
+    ],
+    "options": []
+  },
+  {
+    "ID": "TestQuestAccepted",
+    "textList": [
+      "Hi!",
+      "How's that quest coming along?",
+      "Remember, I need you to milk a cow and kill 5 slimes."
+    ],
+    "options": []
+  },
+  {
+    "ID": "TestQuestCompleted",
+    "textList": [
+      "Hi!",
+      "Thanks for dealing with those slimes. Pesky critters.",
+      "I didn't really have a good reason for making you milk that cow though, haha"
     ],
     "options": []
   }

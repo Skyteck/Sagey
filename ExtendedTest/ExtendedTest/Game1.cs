@@ -24,7 +24,8 @@ namespace Sagey
         SpriteBatch spriteBatch;
         public Player player;
 
-        public Camera  camera;
+        //public Camera  camera;
+        TestCamera _TestCamera;
 
         SpriteFont font;
         bool typingMode = false;
@@ -64,8 +65,8 @@ namespace Sagey
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
-            this.IsFixedTimeStep = false;
-            graphics.SynchronizeWithVerticalRetrace = false;
+            //this.IsFixedTimeStep = false;
+            //graphics.SynchronizeWithVerticalRetrace = false;
 
             graphics.PreferredBackBufferWidth = 1920;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight = 1080;   // set this value to the desired height of your window
@@ -84,13 +85,13 @@ namespace Sagey
             // TODO: Add your initialization logic here
             player = new Player();
             _UIManager = new Managers.UIManager();
-            _DialogManager = new Managers.DialogManager();
             _QuestManager = new QuestManager();
+            _MapManager = new Managers.TilemapManager();
+            _DialogManager = new Managers.DialogManager(_QuestManager);
             _EventManager = new EventManager(_QuestManager);
             _ItemManager = new Managers.ItemManager(Content);
             _InvenManager = new Managers.InventoryManager(_ItemManager);
             _BankManager = new Managers.BankManager(_ItemManager);
-            _MapManager = new Managers.TilemapManager(_NPCManager, _WorldObjectManager);
             _WorldObjectManager = new Managers.WorldObjectManager(_MapManager, _InvenManager, Content, player, _ItemManager);
             _NPCManager = new Managers.NPCManager(_MapManager, Content, player, _DialogManager, _InvenManager, _WorldObjectManager);
             _GatherableManager = new Managers.GatherableManager(_MapManager, _InvenManager, Content, player);
@@ -102,7 +103,10 @@ namespace Sagey
 
             _SelectedSprite = new Sprite();
 
-            InputHelper.Init(camera);
+            InputHelper.Init();
+
+            _TestCamera = new TestCamera(GraphicsDevice);
+
             base.Initialize();
 
             //EVENTS
@@ -128,7 +132,7 @@ namespace Sagey
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-            camera = new Camera(GraphicsDevice);
+            //camera = new Camera(GraphicsDevice);
             
             float scaleX = graphics.PreferredBackBufferWidth / TargetWidth;
             float scaleY = graphics.PreferredBackBufferHeight / TargetHeight;
@@ -418,8 +422,8 @@ namespace Sagey
                 _GatherableManager.Update(gameTime);
                 
 
-                ProcessCamera(gameTime);
-
+                //ProcessCamera(gameTime);
+                _TestCamera._Position = player._Position;
                 _UIManager.Update(gameTime);
                 
                 base.Update(gameTime);
@@ -547,12 +551,12 @@ namespace Sagey
 
         }
 
-        private void ProcessCamera(GameTime gameTime)
-        {
-            this.camera.Position = _PlayerManager._PlayerPos;
+        //private void ProcessCamera(GameTime gameTime)
+        //{
+        //    this.camera.Position = _PlayerManager._PlayerPos;
 
-            camera.Update(gameTime);
-        }
+        //    camera.Update(gameTime);
+        //}
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -564,7 +568,14 @@ namespace Sagey
             GraphicsDevice.Clear(Color.Black);
 
             //http://www.david-amador.com/2009/10/xna-camera-2d-with-zoom-and-rotation/
-            spriteBatch.Begin(camera);
+            //spriteBatch.Begin(camera);
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                        BlendState.AlphaBlend,
+                        null,
+                        null,
+                        null,
+                        null,
+                        _TestCamera.GetTransform());
 
             _MapManager.Draw(spriteBatch);
 

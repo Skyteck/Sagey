@@ -46,6 +46,7 @@
     <Compile Include="enums\Delegates.cs" />
     <Compile Include="enums\enums.cs" />
     <Compile Include="FrameCounter.cs" />
+    <Compile Include="GameObjects\NPCs\QuestSlime.cs" />
     <Compile Include="GameObjects\NPCs\Banker.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\AnimatedSprite.cs" />
@@ -104,6 +105,8 @@
     <Compile Include="GameObjects\Sprite.cs" />
     <Compile Include="Quests\Objective.cs" />
     <Compile Include="Quests\Quest.cs" />
+    <Compile Include="gfd\SpriteBatchExtensions.cs" />
+    <Compile Include="gfd\TestCamera.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Comora, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">

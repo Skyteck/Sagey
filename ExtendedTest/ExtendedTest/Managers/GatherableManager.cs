@@ -165,8 +165,8 @@ namespace Sagey.Managers
             if(thing._HP <= 0)
             {
                 GameObjects.Items.ItemBundle item = thing.GetGathered();
-
-                return thing.GetGathered();
+                OnItemGathered(item.outputID.ToString());
+                return item;
             }
             else
             {

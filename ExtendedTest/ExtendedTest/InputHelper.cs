@@ -15,14 +15,14 @@ namespace Sagey
         static MouseState CurrentMouseState;
         static KeyboardState PrevKBState;
         static KeyboardState CurrentKBState;
-        static Camera camera;
-        public static void Init(Camera c)
+        //static Camera camera;
+        public static void Init()
         {
             PrevKBState = new KeyboardState();
             CurrentKBState = Keyboard.GetState();
             PrevMouseState = new MouseState();
             CurrentMouseState = Mouse.GetState();
-            camera = c;
+            //camera = c;
         }
 
         public static void Update()
@@ -84,21 +84,21 @@ namespace Sagey
 
         #region Mouse Stuff
         #region General mouse
-        public static Vector2 MouseWorldPos
-        {
-            get
-            {
-                return camera.ToWorld(HelperFunctions.PointToVector(CurrentMouseState.Position));
-            }
-        }
+        //public static Vector2 MouseWorldPos
+        //{
+        //    get
+        //    {
+        //        return camera.ToWorld(HelperFunctions.PointToVector(CurrentMouseState.Position));
+        //    }
+        //}
 
-        public static Vector2 PrevMouseWorldPos
-        {
-            get
-            {
-                return camera.ToWorld(HelperFunctions.PointToVector(PrevMouseState.Position));
-            }
-        }
+        //public static Vector2 PrevMouseWorldPos
+        //{
+        //    get
+        //    {
+        //        return camera.ToWorld(HelperFunctions.PointToVector(PrevMouseState.Position));
+        //    }
+        //}
 
         public static Vector2 MouseScreenPos
         {

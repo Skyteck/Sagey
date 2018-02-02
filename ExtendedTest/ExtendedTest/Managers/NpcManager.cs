@@ -93,6 +93,22 @@ namespace Sagey.Managers
                 newSprite.parentList = _SpriteListActive;
                 _SpriteListActive.Add(newSprite);
             }
+            else if (thing.Type.Equals("QuestSlime"))
+            {
+                GameObjects.NPCs.QuestSlime newSprite = new GameObjects.NPCs.QuestSlime(this);
+                newSprite._Position = _TilemapManager.findTile(pos).tileCenter;
+                newSprite.LoadContent("Art/" + thing.Type, _Content);
+                newSprite.SetBoundaries(thing.X, thing.Width, thing.Height, thing.Y);
+                //if (Convert.ToBoolean(thing.Properties["Agressive"]))
+                //{
+                //    //newSprite.AddTarget(thePlayer);
+                //}
+                newSprite._Tag = Sprite.SpriteType.kNPCType;
+                newSprite.Name = thing.Name.ToUpper();
+                newSprite._CurrentState = Sprite.SpriteState.kStateActive;
+                newSprite.parentList = _SpriteListActive;
+                _SpriteListActive.Add(newSprite);
+            }
         }
 
         public void UpdateNPCs(GameTime gameTime)

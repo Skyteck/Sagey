@@ -179,10 +179,15 @@
     <property name="Agressive" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="83" name="DairyCow" type="DairyCow" x="640" y="1024" width="64" height="64">
-   <properties>
-    <property name="Agressive" type="bool" value="false"/>
-   </properties>
-  </object>
+   <object id="83" name="DairyCow" type="DairyCow" x="640" y="1024" width="64" height="64">
+     <properties>
+       <property name="Agressive" type="bool" value="false"/>
+     </properties>
+   </object>
+   <object id="83" name="QuestSlime" type="QuestSlime" x="540" y="1024" width="64" height="64">
+     <properties>
+       <property name="Agressive" type="bool" value="false"/>
+     </properties>
+   </object>
  </objectgroup>
 </map>

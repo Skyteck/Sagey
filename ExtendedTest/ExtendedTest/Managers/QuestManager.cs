@@ -9,6 +9,8 @@ namespace Sagey.Managers
 {
     public class QuestManager
     {
+        public event Delegates.GameEvent QuestAcceptedEvent;
+
         List<Quest> Quests;
 
         public QuestManager()
@@ -16,6 +18,10 @@ namespace Sagey.Managers
             Quests = new List<Quest>();
         }
 
+        public void AttachEvents(EventManager em)
+        {
+            QuestAcceptedEvent += em.HandleEvent;
+        }
 
         public void GenerateQuest()
         {
@@ -38,9 +44,20 @@ namespace Sagey.Managers
 
             nq.Objectives.Add(QO2);
             nq.Objectives.Add(QO);
-            nq.Active = true;
+            nq.Active = false;
             Quests.Add(nq);
             
+        }
+
+        public void ActivateQuest(String QuestID)
+        {
+            Quest questTofind = Quests.Find(x => x.QuestID == QuestID);
+
+            if(questTofind.Completed == false)
+            {
+                //if reqs met
+                questTofind.Active = true;
+            }
         }
 
         internal void CheckEvent(EventInfo eI)
@@ -79,6 +96,11 @@ namespace Sagey.Managers
         public List<Quest> GetActiveQuests()
         {
             return Quests.FindAll(x => x.Active);
+        }
+
+        public bool CheckQuestCompleted(string questID)
+        {
+            return Quests.Find(x => x.QuestID == questID).Completed;
         }
     }
 }

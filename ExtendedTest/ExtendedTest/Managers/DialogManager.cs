@@ -11,12 +11,16 @@ namespace Sagey.Managers
     {
         public event EventHandler DialogPlayed;
         public event EventHandler BankOpened;
+        public event EventHandler QuestStarted;
 
         List<Dialog> _DialogList;
         public Dialog CurrentDialog;
 
-        public DialogManager()
+        QuestManager _QuestManager;
+
+        public DialogManager(QuestManager qm)
         {
+            _QuestManager = qm;
             _DialogList = new List<Dialog>();
         }
 
@@ -45,9 +49,18 @@ namespace Sagey.Managers
             string msgID = option.NextMsgID;
             PlayMessage(msgID);
 
-            if(option.Command!= null && option.Command == "Open Bank")
+            if(option.Command != null)
             {
-                OnBankOpened();
+                if(option.Command == "Open Bank")
+                {
+                    OnBankOpened();
+                }
+                else if(option.Command.Contains("Start Quest"))
+                {
+                    string QuestID = option.Command;
+                    QuestID = QuestID.Replace("Start Quest:", "").Trim();
+                    _QuestManager.ActivateQuest(QuestID);
+                }
             }
 
         }
